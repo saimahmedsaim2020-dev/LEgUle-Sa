@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== রিসেট ===== */
         * {
             margin: 0;
             padding: 0;
@@ -32,7 +31,7 @@
 
         /* ===== হেডার ===== */
         header {
-            background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 50%, #16213e 100%);
+            background: linear-gradient(135deg, #0d0d1a, #1a1a2e, #16213e);
             padding: 18px 25px;
             border-bottom: 3px solid #e74c3c;
             position: sticky;
@@ -58,7 +57,7 @@
             font-size: 32px;
             font-weight: 800;
             letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #ffffff 0%, #e74c3c 100%);
+            background: linear-gradient(135deg, #ffffff, #e74c3c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -257,55 +256,50 @@
             box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
         }
 
-        /* ===== URL ইনপুট ===== */
-        .url-input-section {
-            margin-bottom: 30px;
-        }
-        .input-container {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .input-container input {
-            flex: 1;
-            min-width: 250px;
-            padding: 14px 22px;
-            border-radius: 50px;
-            border: 2px solid #222;
-            background: #111;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.4s ease;
-            font-family: inherit;
-        }
-        .input-container input:focus {
-            border-color: #e74c3c;
-            box-shadow: 0 0 30px rgba(231, 76, 60, 0.1);
-        }
-        .input-container input::placeholder {
-            color: #555;
-        }
-        .input-container button {
-            padding: 14px 35px;
-            border-radius: 50px;
-            border: none;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s ease;
+        /* ===== লাইক ও শেয়ার ===== */
+        .video-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
-            white-space: nowrap;
+            gap: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(145deg, #1a1a1a, #111111);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+        }
+        .video-actions .action-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
             font-family: inherit;
         }
-        .input-container button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 35px rgba(231, 76, 60, 0.4);
+        .video-actions .action-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
         }
+        .video-actions .action-btn.liked {
+            color: #e74c3c;
+        }
+        .video-actions .action-btn.liked i {
+            color: #e74c3c;
+        }
+        .video-actions .action-btn i {
+            font-size: 20px;
+        }
+        .video-actions .action-btn .count {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* ===== এম্বেড নোটিস ===== */
         .embed-notice {
             background: rgba(231, 76, 60, 0.1);
             border: 1px solid rgba(231, 76, 60, 0.2);
@@ -376,7 +370,7 @@
             gap: 10px;
         }
 
-        /* ===== অন্যান্য স্ট্রিম ===== */
+        /* ===== স্ট্রিম গ্রিড ===== */
         .other-streams {
             margin-bottom: 35px;
         }
@@ -404,6 +398,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             cursor: pointer;
             transition: all 0.4s ease;
+            position: relative;
         }
         .stream-card:hover {
             transform: translateY(-8px);
@@ -426,10 +421,16 @@
             font-size: 17px;
             font-weight: 700;
             margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .stream-card .stream-info-card p {
             color: #888;
             font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .stream-card .stream-info-card .live-tag {
             color: #e74c3c;
@@ -472,13 +473,6 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            .input-container {
-                flex-direction: column;
-            }
-            .input-container button {
-                width: 100%;
-                justify-content: center;
-            }
             .stream-grid {
                 grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             }
@@ -488,6 +482,9 @@
             }
             .player-wrapper {
                 aspect-ratio: 16/9;
+            }
+            .video-actions {
+                justify-content: center;
             }
         }
         @media (max-width: 480px) {
@@ -507,6 +504,10 @@
             .admin-btn {
                 padding: 8px 16px;
                 font-size: 13px;
+            }
+            .video-actions .action-btn {
+                font-size: 14px;
+                padding: 6px 12px;
             }
         }
     </style>
@@ -534,6 +535,7 @@
             <div class="player-wrapper" id="playerWrapper">
                 <video id="mainVideo" controls autoplay playsinline>
                     <source id="videoSource" src="" type="application/x-mpegURL" />
+                    <source id="videoSourceMp4" src="" type="video/mp4" />
                     আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
                 </video>
                 <iframe id="embedPlayer" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
@@ -548,6 +550,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ভিডিও কন্ট্রোল -->
             <div class="video-controls">
                 <div class="quality-control">
                     <label><i class="fas fa-sliders-h"></i> রেজোলিউশন:</label>
@@ -561,16 +565,25 @@
                 </div>
                 <div class="stream-controls">
                     <button id="fullscreenBtn"><i class="fas fa-expand"></i> পূর্ণ পর্দা</button>
+                    <button id="volumeUpBtn"><i class="fas fa-volume-up"></i></button>
+                    <button id="volumeDownBtn"><i class="fas fa-volume-down"></i></button>
                 </div>
             </div>
-        </section>
 
-        <!-- URL ইনপুট -->
-        <section class="url-input-section">
-            <div class="input-container">
-                <input type="text" id="videoUrlInput" placeholder="YouTube URL বা স্ট্রিম লিংক দিন..." />
-                <button id="loadVideoBtn"><i class="fas fa-play"></i> দেখুন</button>
+            <!-- লাইক ও শেয়ার -->
+            <div class="video-actions">
+                <button class="action-btn" id="likeBtn">
+                    <i class="fas fa-heart"></i>
+                    <span class="count" id="likeCount">0</span>
+                </button>
+                <button class="action-btn" id="shareBtn">
+                    <i class="fas fa-share-alt"></i>
+                    <span>শেয়ার</span>
+                </button>
+                <span id="currentVideoId" style="display:none;"></span>
             </div>
+
+            <!-- এম্বেড নোটিস -->
             <div class="embed-notice" id="embedNotice">
                 <i class="fas fa-info-circle"></i> YouTube/ভিডিও প্ল্যাটফর্মের কন্টেন্ট এম্বেড প্লেয়ারে দেখানো হচ্ছে।
             </div>
@@ -615,18 +628,23 @@
             collection,
             onSnapshot,
             query,
-            orderBy
+            orderBy,
+            doc,
+            updateDoc,
+            increment,
+            getDoc,
+            setDoc
         } from "firebase/firestore";
 
-        // ----- Firebase কনফিগারেশন (আপনার নিজেরটি বসান) -----
+        // ----- Firebase কনফিগারেশন -----
         const firebaseConfig = {
             apiKey: "AIzaSyBimdIKDEfbTa2PJyX5MY9Z585clkFZz98",
-  authDomain: "legule-sa.firebaseapp.com",
-  projectId: "legule-sa",
-  storageBucket: "legule-sa.firebasestorage.app",
-  messagingSenderId: "136313153279",
-  appId: "1:136313153279:web:1aaa832933d0874cf04eca",
-  measurementId: "G-Q7R70R2XZ1"
+            authDomain: "legule-sa.firebaseapp.com",
+            projectId: "legule-sa",
+            storageBucket: "legule-sa.firebasestorage.app",
+            messagingSenderId: "136313153279",
+            appId: "1:136313153279:web:1aaa832933d0874cf04eca",
+            measurementId: "G-Q7R70R2XZ1"
         };
 
         // ইনিৎ
@@ -636,25 +654,36 @@
         // ----- DOM রেফারেন্স -----
         const video = document.getElementById('mainVideo');
         const videoSource = document.getElementById('videoSource');
+        const videoSourceMp4 = document.getElementById('videoSourceMp4');
         const embedPlayer = document.getElementById('embedPlayer');
         const playerWrapper = document.getElementById('playerWrapper');
         const streamTitle = document.getElementById('streamTitle');
         const streamChannel = document.getElementById('streamChannel');
-        const videoUrlInput = document.getElementById('videoUrlInput');
-        const loadVideoBtn = document.getElementById('loadVideoBtn');
         const qualitySelect = document.getElementById('qualitySelect');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const volumeUpBtn = document.getElementById('volumeUpBtn');
+        const volumeDownBtn = document.getElementById('volumeDownBtn');
         const streamGrid = document.getElementById('streamGrid');
         const adContainer = document.getElementById('adContainer');
         const embedNotice = document.getElementById('embedNotice');
+        const likeBtn = document.getElementById('likeBtn');
+        const likeCount = document.getElementById('likeCount');
+        const shareBtn = document.getElementById('shareBtn');
+        const currentVideoId = document.getElementById('currentVideoId');
 
         let currentStreamUrl = '';
+        let currentStreamId = '';
+        let currentStreamName = '';
+        let currentStreamChannel = '';
+        let isLiked = false;
 
-        // ===== URL ডিটেক্ট =====
+        // ===== ইউআরএল ডিটেক্ট =====
         function isYouTubeUrl(url) {
             return url.includes('youtube.com/watch') ||
                 url.includes('youtu.be/') ||
-                url.includes('youtube.com/embed/');
+                url.includes('youtube.com/embed/') ||
+                url.includes('youtube.com/live/') ||
+                url.includes('youtube.com/shorts/');
         }
 
         function isEmbeddableUrl(url) {
@@ -662,7 +691,8 @@
                 url.includes('facebook.com') ||
                 url.includes('dailymotion.com') ||
                 url.includes('vimeo.com') ||
-                url.includes('twitch.tv');
+                url.includes('twitch.tv') ||
+                url.includes('dailymotion.com/video/');
         }
 
         function getEmbedUrl(url) {
@@ -674,25 +704,44 @@
                     videoId = url.split('v=')[1]?.split('&')[0] || '';
                 } else if (url.includes('embed/')) {
                     videoId = url.split('embed/')[1]?.split('?')[0] || '';
+                } else if (url.includes('youtube.com/live/')) {
+                    videoId = url.split('youtube.com/live/')[1]?.split('?')[0] || '';
+                } else if (url.includes('youtube.com/shorts/')) {
+                    videoId = url.split('youtube.com/shorts/')[1]?.split('?')[0] || '';
                 }
                 if (videoId) {
                     return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+                }
+            }
+            if (url.includes('vimeo.com')) {
+                const videoId = url.split('vimeo.com/')[1]?.split('/')[0] || '';
+                if (videoId) {
+                    return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+                }
+            }
+            if (url.includes('dailymotion.com')) {
+                const videoId = url.split('dailymotion.com/video/')[1]?.split('_')[0] || '';
+                if (videoId) {
+                    return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
                 }
             }
             return url;
         }
 
         // ===== ভিডিও লোড =====
-        function loadVideo(url, name = '', channel = '') {
+        function loadVideo(url, name = '', channel = '', videoId = '') {
             if (!url) return;
             currentStreamUrl = url;
+            currentStreamName = name || 'লাইভ স্ট্রিম';
+            currentStreamChannel = channel || 'চ্যানেল';
+            currentStreamId = videoId || '';
 
             // সব লুকান
             video.style.display = 'none';
             embedPlayer.style.display = 'none';
             embedNotice.style.display = 'none';
 
-            // চেক করুন এম্বেডযোগ্য কিনা
+            // URL আপডেট
             if (isEmbeddableUrl(url)) {
                 const embedUrl = getEmbedUrl(url);
                 embedPlayer.src = embedUrl;
@@ -700,43 +749,176 @@
                 embedNotice.style.display = 'block';
                 streamTitle.textContent = name || 'এম্বেড ভিডিও';
                 streamChannel.textContent = channel || 'প্ল্যাটফর্ম';
-            } else {
+                // ইউআরএল আপডেট
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('v', videoId || url);
+                window.history.replaceState({}, '', newUrl);
+            } else if (url.endsWith('.m3u8') || url.includes('.m3u8')) {
                 videoSource.src = url;
+                videoSourceMp4.src = '';
                 video.load();
                 video.play().catch(e => console.log('অটোপ্লে ব্লক:', e));
                 video.style.display = 'block';
                 streamTitle.textContent = name || 'লাইভ স্ট্রিম';
                 streamChannel.textContent = channel || 'চ্যানেল';
+            } else if (url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg')) {
+                videoSourceMp4.src = url;
+                videoSource.src = '';
+                video.load();
+                video.play().catch(e => console.log('অটোপ্লে ব্লক:', e));
+                video.style.display = 'block';
+                streamTitle.textContent = name || 'ভিডিও';
+                streamChannel.textContent = channel || 'ফাইল';
+            } else {
+                try {
+                    new URL(url);
+                    embedPlayer.src = url;
+                    embedPlayer.style.display = 'block';
+                    embedNotice.style.display = 'block';
+                    streamTitle.textContent = name || 'এম্বেড কন্টেন্ট';
+                    streamChannel.textContent = channel || 'প্ল্যাটফর্ম';
+                } catch {
+                    alert('❌ এই URL সাপোর্টেড নয়! YouTube, M3U8 বা MP4 URL দিন।');
+                }
             }
 
-            videoUrlInput.value = url;
+            // লাইক রিসেট
+            isLiked = false;
+            likeBtn.classList.remove('liked');
+            loadLikes(videoId || url);
+
+            // ভিডিও আইডি সেট
+            currentVideoId.textContent = videoId || url;
         }
 
-        // ===== ইভেন্ট লিসেনার =====
-        loadVideoBtn.addEventListener('click', () => {
-            const url = videoUrlInput.value.trim();
-            if (url) {
-                if (isYouTubeUrl(url)) {
-                    loadVideo(url, 'YouTube ভিডিও', 'YouTube');
+        // ===== লাইক ফাংশন =====
+        async function loadLikes(videoId) {
+            if (!videoId) return;
+            try {
+                const docRef = doc(db, 'likes', videoId);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    likeCount.textContent = docSnap.data().count || 0;
                 } else {
-                    loadVideo(url, 'কাস্টম স্ট্রিম', 'ইউজার ইনপুট');
+                    likeCount.textContent = '0';
+                }
+            } catch (error) {
+                console.error('লাইক লোড করতে সমস্যা:', error);
+            }
+        }
+
+        async function toggleLike() {
+            const videoId = currentVideoId.textContent;
+            if (!videoId) {
+                alert('কোন ভিডিও নির্বাচন করা হয়নি!');
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'likes', videoId);
+                const docSnap = await getDoc(docRef);
+
+                if (isLiked) {
+                    // আনলাইক
+                    if (docSnap.exists()) {
+                        await updateDoc(docRef, {
+                            count: increment(-1)
+                        });
+                    }
+                    isLiked = false;
+                    likeBtn.classList.remove('liked');
+                } else {
+                    // লাইক
+                    if (docSnap.exists()) {
+                        await updateDoc(docRef, {
+                            count: increment(1)
+                        });
+                    } else {
+                        await setDoc(docRef, {
+                            count: 1,
+                            videoId: videoId,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
+                    isLiked = true;
+                    likeBtn.classList.add('liked');
+                }
+
+                // আপডেটেড কাউন্ট লোড
+                await loadLikes(videoId);
+
+            } catch (error) {
+                console.error('লাইক আপডেট করতে সমস্যা:', error);
+                alert('লাইক দিতে সমস্যা হয়েছে!');
+            }
+        }
+
+        // ===== শেয়ার ফাংশন =====
+        function shareVideo() {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: currentStreamName || 'LEgUle Sa',
+                    text: `${currentStreamName || 'লাইভ স্ট্রিম'} দেখুন!`,
+                    url: url
+                }).catch(err => console.log('শেয়ার বাতিল:', err));
+            } else {
+                // কপি টু ক্লিপবোর্ড
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('✅ লিংক কপি করা হয়েছে!');
+                }).catch(() => {
+                    // ফলব্যাক
+                    const textarea = document.createElement('textarea');
+                    textarea.value = url;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('✅ লিংক কপি করা হয়েছে!');
+                });
+            }
+        }
+
+        // ===== কোয়ালিটি চেঞ্জ =====
+        qualitySelect.addEventListener('change', function() {
+            const quality = this.value;
+            if (currentStreamUrl) {
+                // HLS এর জন্য কোয়ালিটি চেঞ্জ
+                if (currentStreamUrl.includes('.m3u8')) {
+                    // কিছু HLS প্লেয়ার কোয়ালিটি সাপোর্ট করে
+                    console.log('কোয়ালিটি পরিবর্তন:', quality);
+                    // এখানে HLS কোয়ালিটি চেঞ্জের কোড
                 }
             }
         });
 
-        videoUrlInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') loadVideoBtn.click();
+        // ===== ভলিউম কন্ট্রোল =====
+        volumeUpBtn.addEventListener('click', () => {
+            if (video.volume < 0.9) {
+                video.volume = Math.min(1, video.volume + 0.1);
+            } else {
+                video.volume = 1;
+            }
         });
 
-        qualitySelect.addEventListener('change', () => {
-            console.log('কোয়ালিটি পরিবর্তন:', qualitySelect.value);
+        volumeDownBtn.addEventListener('click', () => {
+            if (video.volume > 0.1) {
+                video.volume = Math.max(0, video.volume - 0.1);
+            } else {
+                video.volume = 0;
+            }
         });
 
+        // ===== ফুলস্ক্রিন =====
         fullscreenBtn.addEventListener('click', () => {
             const elem = playerWrapper;
             if (elem.requestFullscreen) elem.requestFullscreen();
             else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
         });
+
+        // ===== লাইক ও শেয়ার ইভেন্ট =====
+        likeBtn.addEventListener('click', toggleLike);
+        shareBtn.addEventListener('click', shareVideo);
 
         // ===== ফায়ারস্টোর থেকে স্ট্রিম লোড =====
         function loadStreams() {
@@ -764,17 +946,29 @@
                         `;
                     card.addEventListener('click', () => {
                         if (data.url) {
-                            if (isYouTubeUrl(data.url)) {
-                                loadVideo(data.url, data.name || 'YouTube ভিডিও', data.channel ||
-                                'YouTube');
-                            } else {
-                                loadVideo(data.url, data.name || 'লাইভ স্ট্রিম', data.channel ||
-                                    'চ্যানেল');
-                            }
+                            const videoId = doc.id;
+                            loadVideo(data.url, data.name || 'লাইভ স্ট্রিম', data.channel || 'চ্যানেল',
+                                videoId);
                         }
                     });
                     streamGrid.appendChild(card);
                 });
+
+                // ইউআরএল প্যারামিটার চেক
+                const params = new URLSearchParams(window.location.search);
+                const videoParam = params.get('v');
+                if (videoParam) {
+                    // স্ট্রিম খোঁজ
+                    snapshot.forEach((doc) => {
+                        if (doc.id === videoParam) {
+                            const data = doc.data();
+                            if (data.url) {
+                                loadVideo(data.url, data.name || 'লাইভ স্ট্রিম', data.channel || 'চ্যানেল',
+                                    doc.id);
+                            }
+                        }
+                    });
+                }
             }, (err) => console.error('স্ট্রিম লোডে সমস্যা:', err));
         }
 
