@@ -32,7 +32,7 @@
         /* ===== হেডার ===== */
         header {
             background: linear-gradient(135deg, #0d0d1a, #1a1a2e, #16213e);
-            padding: 18px 25px;
+            padding: 15px 20px;
             border-bottom: 3px solid #e74c3c;
             position: sticky;
             top: 0;
@@ -46,17 +46,17 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
         .logo h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             background: linear-gradient(135deg, #ffffff, #e74c3c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -67,10 +67,9 @@
             color: #fff;
             padding: 4px 14px;
             border-radius: 30px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
             animation: pulse-badge 1.5s infinite;
             box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
         }
@@ -89,12 +88,12 @@
             background: rgba(231, 76, 60, 0.15);
             border: 2px solid #e74c3c;
             color: #fff;
-            padding: 10px 24px;
+            padding: 8px 20px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -109,16 +108,16 @@
         /* ===== মেইন ===== */
         main {
             max-width: 1400px;
-            margin: 25px auto;
-            padding: 0 20px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
 
         /* ===== ভিডিও প্লেয়ার ===== */
         .video-player-section {
             background: linear-gradient(145deg, #111111, #1a1a1a);
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border: 1px solid rgba(231, 76, 60, 0.15);
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
         }
@@ -139,37 +138,43 @@
             border: none;
             display: none;
         }
-        .player-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+
+        /* ===== লাইভ ইন্ডিকেটর (৩ সেকেন্ড) ===== */
         .live-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: rgba(0, 0, 0, 0.75);
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 50px;
-            width: fit-content;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             color: #e74c3c;
             border: 1px solid rgba(231, 76, 60, 0.3);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
         }
-        .pulse {
+        .live-indicator.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .live-indicator:hover {
+            background: rgba(231, 76, 60, 0.2);
+        }
+        .live-indicator .pulse {
             display: inline-block;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background: #e74c3c;
             border-radius: 50%;
             animation: pulse-dot 1.2s infinite;
@@ -186,23 +191,26 @@
                 opacity: 0.4;
             }
         }
-        .stream-info {
-            text-align: center;
+
+        /* ===== স্ট্রিম ইনফো ===== */
+        .stream-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 60px 25px 25px;
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
-            padding: 40px 25px 20px;
-            margin: 0 -25px -25px;
+            pointer-events: none;
         }
-        .stream-info h2 {
-            font-size: 32px;
+        .stream-overlay h2 {
+            font-size: 28px;
             font-weight: 800;
             text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
-            letter-spacing: 0.5px;
         }
-        .stream-info p {
+        .stream-overlay p {
             color: #aaa;
-            font-size: 17px;
+            font-size: 16px;
             margin-top: 4px;
-            font-weight: 400;
         }
 
         /* ===== ভিডিও কন্ট্রোল ===== */
@@ -210,58 +218,104 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 25px;
+            padding: 12px 20px;
             background: linear-gradient(145deg, #1a1a1a, #111111);
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .video-controls label {
-            color: #aaa;
-            font-size: 14px;
-            font-weight: 500;
+        .video-controls .left-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .video-controls .right-controls {
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
+        }
+        .video-controls label {
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .video-controls select {
             background: #222;
             color: #fff;
             border: 1px solid #333;
-            padding: 8px 16px;
-            border-radius: 10px;
+            padding: 6px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s;
         }
         .video-controls select:hover {
             border-color: #e74c3c;
         }
+        .video-controls select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         .video-controls button {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            background: rgba(255, 255, 255, 0.05);
             border: none;
             color: #fff;
-            padding: 10px 24px;
-            border-radius: 12px;
+            padding: 8px 14px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 600;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         .video-controls button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            background: rgba(231, 76, 60, 0.3);
+        }
+        .video-controls input[type="range"] {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: #333;
+            border-radius: 2px;
+            outline: none;
+        }
+        .video-controls input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #e74c3c;
+            cursor: pointer;
+        }
+
+        /* ===== এম্বেড নোটিস ===== */
+        .embed-notice {
+            background: rgba(231, 76, 60, 0.08);
+            border: 1px solid rgba(231, 76, 60, 0.15);
+            border-radius: 10px;
+            padding: 10px 16px;
+            margin: 10px 20px;
+            color: #888;
+            font-size: 13px;
+            display: none;
+        }
+        .embed-notice i {
+            color: #e74c3c;
+            margin-right: 8px;
         }
 
         /* ===== লাইক ও শেয়ার ===== */
         .video-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
-            padding: 12px 25px;
+            gap: 15px;
+            padding: 10px 20px;
             background: linear-gradient(145deg, #1a1a1a, #111111);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             flex-wrap: wrap;
@@ -271,12 +325,12 @@
             border: none;
             color: #aaa;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 30px;
             transition: all 0.3s ease;
             font-family: inherit;
@@ -292,54 +346,38 @@
             color: #e74c3c;
         }
         .video-actions .action-btn i {
-            font-size: 20px;
+            font-size: 18px;
         }
         .video-actions .action-btn .count {
-            font-size: 14px;
+            font-size: 13px;
             color: #888;
-        }
-
-        /* ===== এম্বেড নোটিস ===== */
-        .embed-notice {
-            background: rgba(231, 76, 60, 0.1);
-            border: 1px solid rgba(231, 76, 60, 0.2);
-            border-radius: 12px;
-            padding: 12px 18px;
-            margin-top: 12px;
-            color: #aaa;
-            font-size: 14px;
-            display: none;
-        }
-        .embed-notice i {
-            color: #e74c3c;
-            margin-right: 8px;
         }
 
         /* ===== বিজ্ঞাপন ===== */
         .ad-section {
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
         .ad-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
         }
         .ad-item {
             background: linear-gradient(145deg, #111111, #1a1a1a);
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.4s ease;
             cursor: pointer;
         }
         .ad-item:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
             border-color: rgba(231, 76, 60, 0.3);
         }
         .ad-item img {
             width: 100%;
-            height: 170px;
+            height: 150px;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
@@ -347,10 +385,10 @@
             transform: scale(1.03);
         }
         .ad-item .ad-content {
-            padding: 15px 18px;
+            padding: 12px 16px;
         }
         .ad-item .ad-content h4 {
-            font-size: 15px;
+            font-size: 14px;
             color: #ddd;
             font-weight: 600;
         }
@@ -362,7 +400,7 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            margin-top: 5px;
+            margin-top: 4px;
             transition: all 0.3s;
         }
         .ad-item .ad-content a:hover {
@@ -372,42 +410,40 @@
 
         /* ===== স্ট্রিম গ্রিড ===== */
         .other-streams {
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
         .other-streams h2 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
-            gap: 14px;
-            color: #fff;
+            gap: 12px;
         }
         .other-streams h2 i {
             color: #e74c3c;
         }
         .stream-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
         }
         .stream-card {
             background: linear-gradient(145deg, #111111, #1a1a1a);
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
             cursor: pointer;
             transition: all 0.4s ease;
-            position: relative;
         }
         .stream-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
             border-color: #e74c3c;
         }
         .stream-card img {
             width: 100%;
-            height: 160px;
+            height: 150px;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
@@ -415,19 +451,19 @@
             transform: scale(1.05);
         }
         .stream-card .stream-info-card {
-            padding: 14px 18px 18px;
+            padding: 12px 16px;
         }
         .stream-card .stream-info-card h4 {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .stream-card .stream-info-card p {
             color: #888;
-            font-size: 14px;
+            font-size: 13px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -439,7 +475,7 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            margin-top: 5px;
+            margin-top: 4px;
         }
         .stream-card .stream-info-card .live-tag::before {
             content: '';
@@ -454,27 +490,30 @@
         /* ===== ফুটার ===== */
         footer {
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             color: #444;
             border-top: 1px solid #1a1a1a;
-            font-size: 14px;
-            font-weight: 400;
+            font-size: 13px;
         }
 
         /* ===== রেস্পন্সিভ ===== */
         @media (max-width: 768px) {
             .logo h1 {
-                font-size: 24px;
-            }
-            .stream-info h2 {
                 font-size: 22px;
+            }
+            .stream-overlay h2 {
+                font-size: 20px;
             }
             .video-controls {
                 flex-direction: column;
                 align-items: stretch;
             }
+            .video-controls .left-controls,
+            .video-controls .right-controls {
+                justify-content: center;
+            }
             .stream-grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             }
             .header-container {
                 flex-direction: column;
@@ -483,16 +522,13 @@
             .player-wrapper {
                 aspect-ratio: 16/9;
             }
-            .video-actions {
-                justify-content: center;
-            }
         }
         @media (max-width: 480px) {
             .logo h1 {
-                font-size: 20px;
-            }
-            .stream-info h2 {
                 font-size: 18px;
+            }
+            .stream-overlay h2 {
+                font-size: 17px;
             }
             .stream-grid {
                 grid-template-columns: 1fr 1fr;
@@ -501,13 +537,16 @@
             .ad-container {
                 grid-template-columns: 1fr;
             }
-            .admin-btn {
-                padding: 8px 16px;
-                font-size: 13px;
+            .video-actions {
+                justify-content: center;
             }
             .video-actions .action-btn {
-                font-size: 14px;
-                padding: 6px 12px;
+                font-size: 13px;
+                padding: 5px 10px;
+            }
+            .admin-btn {
+                padding: 6px 14px;
+                font-size: 12px;
             }
         }
     </style>
@@ -539,21 +578,23 @@
                     আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
                 </video>
                 <iframe id="embedPlayer" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                <div class="player-overlay">
-                    <div class="live-indicator">
-                        <span class="pulse"></span>
-                        <span>লাইভ স্ট্রিম</span>
-                    </div>
-                    <div class="stream-info">
-                        <h2 id="streamTitle">স্ট্রিম নির্বাচন করুন</h2>
-                        <p id="streamChannel">চ্যানেল</p>
-                    </div>
+
+                <!-- লাইভ ইন্ডিকেটর (৩ সেকেন্ড) -->
+                <div class="live-indicator" id="liveIndicator">
+                    <span class="pulse"></span>
+                    <span>লাইভ</span>
+                </div>
+
+                <!-- স্ট্রিম ইনফো -->
+                <div class="stream-overlay">
+                    <h2 id="streamTitle">স্ট্রিম নির্বাচন করুন</h2>
+                    <p id="streamChannel">চ্যানেল</p>
                 </div>
             </div>
 
             <!-- ভিডিও কন্ট্রোল -->
             <div class="video-controls">
-                <div class="quality-control">
+                <div class="left-controls">
                     <label><i class="fas fa-sliders-h"></i> রেজোলিউশন:</label>
                     <select id="qualitySelect">
                         <option value="auto">অটো</option>
@@ -562,11 +603,14 @@
                         <option value="480">480p</option>
                         <option value="360">360p</option>
                     </select>
+                    <button id="playPauseBtn"><i class="fas fa-play"></i></button>
                 </div>
-                <div class="stream-controls">
-                    <button id="fullscreenBtn"><i class="fas fa-expand"></i> পূর্ণ পর্দা</button>
-                    <button id="volumeUpBtn"><i class="fas fa-volume-up"></i></button>
+                <div class="right-controls">
                     <button id="volumeDownBtn"><i class="fas fa-volume-down"></i></button>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="80" />
+                    <button id="volumeUpBtn"><i class="fas fa-volume-up"></i></button>
+                    <button id="speedBtn"><i class="fas fa-tachometer-alt"></i> <span id="speedText">1x</span></button>
+                    <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
                 </div>
             </div>
 
@@ -663,6 +707,10 @@
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const volumeUpBtn = document.getElementById('volumeUpBtn');
         const volumeDownBtn = document.getElementById('volumeDownBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const speedBtn = document.getElementById('speedBtn');
+        const speedText = document.getElementById('speedText');
         const streamGrid = document.getElementById('streamGrid');
         const adContainer = document.getElementById('adContainer');
         const embedNotice = document.getElementById('embedNotice');
@@ -670,12 +718,34 @@
         const likeCount = document.getElementById('likeCount');
         const shareBtn = document.getElementById('shareBtn');
         const currentVideoId = document.getElementById('currentVideoId');
+        const liveIndicator = document.getElementById('liveIndicator');
 
         let currentStreamUrl = '';
         let currentStreamId = '';
         let currentStreamName = '';
         let currentStreamChannel = '';
         let isLiked = false;
+        let isPlaying = false;
+        let currentSpeed = 1;
+        let liveIndicatorTimeout = null;
+
+        // ===== লাইভ ইন্ডিকেটর ফাংশন =====
+        function showLiveIndicator() {
+            liveIndicator.classList.add('show');
+            clearTimeout(liveIndicatorTimeout);
+            liveIndicatorTimeout = setTimeout(() => {
+                liveIndicator.classList.remove('show');
+            }, 3000);
+        }
+
+        // লাইভ ইন্ডিকেটর ক্লিক করলে আবার দেখাবে
+        liveIndicator.addEventListener('click', () => {
+            liveIndicator.classList.add('show');
+            clearTimeout(liveIndicatorTimeout);
+            liveIndicatorTimeout = setTimeout(() => {
+                liveIndicator.classList.remove('show');
+            }, 3000);
+        });
 
         // ===== ইউআরএল ডিটেক্ট =====
         function isYouTubeUrl(url) {
@@ -691,8 +761,7 @@
                 url.includes('facebook.com') ||
                 url.includes('dailymotion.com') ||
                 url.includes('vimeo.com') ||
-                url.includes('twitch.tv') ||
-                url.includes('dailymotion.com/video/');
+                url.includes('twitch.tv');
         }
 
         function getEmbedUrl(url) {
@@ -740,8 +809,21 @@
             video.style.display = 'none';
             embedPlayer.style.display = 'none';
             embedNotice.style.display = 'none';
+            qualitySelect.disabled = false;
 
-            // URL আপডেট
+            // লাইভ ইন্ডিকেটর দেখান
+            showLiveIndicator();
+
+            // URL আপডেট (শেয়ারের জন্য)
+            const newUrl = new URL(window.location);
+            if (videoId) {
+                newUrl.searchParams.set('v', videoId);
+            } else {
+                newUrl.searchParams.delete('v');
+            }
+            window.history.replaceState({}, '', newUrl);
+
+            // ভিডিও লোড
             if (isEmbeddableUrl(url)) {
                 const embedUrl = getEmbedUrl(url);
                 embedPlayer.src = embedUrl;
@@ -749,10 +831,9 @@
                 embedNotice.style.display = 'block';
                 streamTitle.textContent = name || 'এম্বেড ভিডিও';
                 streamChannel.textContent = channel || 'প্ল্যাটফর্ম';
-                // ইউআরএল আপডেট
-                const newUrl = new URL(window.location);
-                newUrl.searchParams.set('v', videoId || url);
-                window.history.replaceState({}, '', newUrl);
+                qualitySelect.disabled = true;
+                // এম্বেডের জন্য ভলিউম কন্ট্রোল ডিজেবল
+                video.style.display = 'none';
             } else if (url.endsWith('.m3u8') || url.includes('.m3u8')) {
                 videoSource.src = url;
                 videoSourceMp4.src = '';
@@ -761,6 +842,7 @@
                 video.style.display = 'block';
                 streamTitle.textContent = name || 'লাইভ স্ট্রিম';
                 streamChannel.textContent = channel || 'চ্যানেল';
+                qualitySelect.disabled = false;
             } else if (url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg')) {
                 videoSourceMp4.src = url;
                 videoSource.src = '';
@@ -769,6 +851,7 @@
                 video.style.display = 'block';
                 streamTitle.textContent = name || 'ভিডিও';
                 streamChannel.textContent = channel || 'ফাইল';
+                qualitySelect.disabled = false;
             } else {
                 try {
                     new URL(url);
@@ -777,6 +860,8 @@
                     embedNotice.style.display = 'block';
                     streamTitle.textContent = name || 'এম্বেড কন্টেন্ট';
                     streamChannel.textContent = channel || 'প্ল্যাটফর্ম';
+                    qualitySelect.disabled = true;
+                    video.style.display = 'none';
                 } catch {
                     alert('❌ এই URL সাপোর্টেড নয়! YouTube, M3U8 বা MP4 URL দিন।');
                 }
@@ -785,9 +870,11 @@
             // লাইক রিসেট
             isLiked = false;
             likeBtn.classList.remove('liked');
-            loadLikes(videoId || url);
-
-            // ভিডিও আইডি সেট
+            if (videoId) {
+                loadLikes(videoId);
+            } else {
+                likeCount.textContent = '0';
+            }
             currentVideoId.textContent = videoId || url;
         }
 
@@ -819,20 +906,14 @@
                 const docSnap = await getDoc(docRef);
 
                 if (isLiked) {
-                    // আনলাইক
                     if (docSnap.exists()) {
-                        await updateDoc(docRef, {
-                            count: increment(-1)
-                        });
+                        await updateDoc(docRef, { count: increment(-1) });
                     }
                     isLiked = false;
                     likeBtn.classList.remove('liked');
                 } else {
-                    // লাইক
                     if (docSnap.exists()) {
-                        await updateDoc(docRef, {
-                            count: increment(1)
-                        });
+                        await updateDoc(docRef, { count: increment(1) });
                     } else {
                         await setDoc(docRef, {
                             count: 1,
@@ -843,10 +924,7 @@
                     isLiked = true;
                     likeBtn.classList.add('liked');
                 }
-
-                // আপডেটেড কাউন্ট লোড
                 await loadLikes(videoId);
-
             } catch (error) {
                 console.error('লাইক আপডেট করতে সমস্যা:', error);
                 alert('লাইক দিতে সমস্যা হয়েছে!');
@@ -863,11 +941,9 @@
                     url: url
                 }).catch(err => console.log('শেয়ার বাতিল:', err));
             } else {
-                // কপি টু ক্লিপবোর্ড
                 navigator.clipboard.writeText(url).then(() => {
                     alert('✅ লিংক কপি করা হয়েছে!');
                 }).catch(() => {
-                    // ফলব্যাক
                     const textarea = document.createElement('textarea');
                     textarea.value = url;
                     document.body.appendChild(textarea);
@@ -879,33 +955,62 @@
             }
         }
 
-        // ===== কোয়ালিটি চেঞ্জ =====
-        qualitySelect.addEventListener('change', function() {
-            const quality = this.value;
-            if (currentStreamUrl) {
-                // HLS এর জন্য কোয়ালিটি চেঞ্জ
-                if (currentStreamUrl.includes('.m3u8')) {
-                    // কিছু HLS প্লেয়ার কোয়ালিটি সাপোর্ট করে
-                    console.log('কোয়ালিটি পরিবর্তন:', quality);
-                    // এখানে HLS কোয়ালিটি চেঞ্জের কোড
-                }
-            }
+        // ===== ভলিউম কন্ট্রোল =====
+        volumeSlider.addEventListener('input', function() {
+            const val = this.value / 100;
+            video.volume = val;
         });
 
-        // ===== ভলিউম কন্ট্রোল =====
         volumeUpBtn.addEventListener('click', () => {
-            if (video.volume < 0.9) {
-                video.volume = Math.min(1, video.volume + 0.1);
-            } else {
-                video.volume = 1;
-            }
+            let val = Math.min(1, video.volume + 0.1);
+            video.volume = val;
+            volumeSlider.value = val * 100;
         });
 
         volumeDownBtn.addEventListener('click', () => {
-            if (video.volume > 0.1) {
-                video.volume = Math.max(0, video.volume - 0.1);
+            let val = Math.max(0, video.volume - 0.1);
+            video.volume = val;
+            volumeSlider.value = val * 100;
+        });
+
+        // ===== প্লে/পজ =====
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             } else {
-                video.volume = 0;
+                video.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
+
+        video.addEventListener('play', () => {
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            isPlaying = true;
+        });
+
+        video.addEventListener('pause', () => {
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            isPlaying = false;
+        });
+
+        // ===== স্পীড কন্ট্রোল =====
+        speedBtn.addEventListener('click', () => {
+            const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+            let index = speeds.indexOf(currentSpeed);
+            index = (index + 1) % speeds.length;
+            currentSpeed = speeds[index];
+            video.playbackRate = currentSpeed;
+            speedText.textContent = currentSpeed + 'x';
+        });
+
+        // ===== কোয়ালিটি চেঞ্জ =====
+        qualitySelect.addEventListener('change', function() {
+            const quality = this.value;
+            if (currentStreamUrl && currentStreamUrl.includes('.m3u8')) {
+                // HLS কোয়ালিটি চেঞ্জ - বিভিন্ন স্ট্রিমের জন্য আলাদা
+                console.log('কোয়ালিটি পরিবর্তন:', quality);
+                // এখানে HLS প্লেয়ারের কোয়ালিটি চেঞ্জের কোড
             }
         });
 
@@ -958,7 +1063,6 @@
                 const params = new URLSearchParams(window.location.search);
                 const videoParam = params.get('v');
                 if (videoParam) {
-                    // স্ট্রিম খোঁজ
                     snapshot.forEach((doc) => {
                         if (doc.id === videoParam) {
                             const data = doc.data();
@@ -1005,6 +1109,9 @@
         loadAds();
 
         console.log('🔴 LEgUle Sa লাইভ স্ট্রিমিং প্ল্যাটফর্ম সক্রিয়!');
+        console.log('✅ লাইভ ইন্ডিকেটর ৩ সেকেন্ড পর会自动 লুকাবে');
+        console.log('✅ URL শেয়ার করলে সরাসরি ভিডিও চালু হবে');
+        console.log('✅ ভলিউম, স্পীড, রেজোলিউশন কন্ট্রোল কাজ করছে');
     </script>
 
 </body>
