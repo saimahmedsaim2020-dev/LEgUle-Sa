@@ -928,31 +928,172 @@
             }, 5000);
         }
 
-        // ===== Cloudinary আপলোড =====
-        async function uploadToCloudinary(file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', 'apna45');
-            formData.append('cloud_name', 'drwjjz7l7');
+        // ============================================================
+// =============== CLOUDINARY আপলোড ফাংশন ====================
+// ============================================================
 
-            try {
-                const response = await fetch(
-                    'https://api.cloudinary.com/v1_1/drwjjz7l7/image/upload', {
-                        method: 'POST',
-                        body: formData
-                    }
-                );
-                const data = await response.json();
-                if (data.secure_url) {
-                    return data.secure_url;
-                } else {
-                    throw new Error('Cloudinary upload failed');
-                }
-            } catch (error) {
-                console.error('Cloudinary error:', error);
-                throw error;
+// ----- আপনার Cloudinary কনফিগারেশন -----
+const CLOUDINARY_CONFIG = {
+    cloudName: 'drwjjz7l7',
+    apiKey: '956395631878227',
+    apiSecret: 'fVGD9SRFjsXjfPW732WWhgMWf7I',
+    uploadPreset: 'apna45',
+    folder: 'legule-sa' // যেখানে ছবি সংরক্ষণ হবে
+};
+
+/**
+ * Cloudinary এ ছবি আপলোড করুন
+ * @param {File} file - আপলোড করার ফাইল
+ * @returns {Promise<string>} - আপলোড হওয়া ছবির URL
+ */
+async function uploadToCloudinary(file) {
+    // ফাইল ভ্যালিডেশন
+    if (!file) {
+        throw new Error('কোন ফাইল নির্বাচন করা হয়নি!');
+    }
+
+    // ফাইল সাইজ চেক (5MB এর বেশি নয়)
+    if (file.size > 5 * 1024 * 1024) {
+        throw new Error('ছবির সাইজ 5MB এর বেশি!');
+    }
+
+    // ফাইল টাইপ চেক (শুধু ইমেজ)
+    if (!file.type.startsWith('image/')) {
+        throw new Error('শুধু ছবি ফাইল আপলোড করুন!');
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+    formData.append('cloud_name', CLOUDINARY_CONFIG.cloudName);
+    formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
+    formData.append('folder', CLOUDINARY_CONFIG.folder);
+
+    try {
+        const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`,
+            {
+                method: 'POST',
+                body: formData
             }
+        );
+
+        const data = await response.json();
+
+        // সফল আপলোড
+        if (data.secure_url) {
+            return data.secure_url;
         }
+
+        // এরর হ্যান্ডলিং
+        console.error('Cloudinary Error Response:', data);
+        throw new Error(data.error?.message || 'Cloudinary আপলোড ব্যর্থ হয়েছে!');
+
+    } catch (error) {
+        console.error('Cloudinary Upload Error:', error);
+        throw error;
+    }
+}
+
+/**
+ * একাধিক ছবি আপলোড করুন
+ * @param {File[]} files - আপলোড করার ফাইলগুলোর অ্যারে
+ * @returns {Promise<string[]>} - আপলোড হওয়া ছবির URL গুলো
+ */
+async function uploadMultipleToCloudinary(files) {
+    if (!files || files.length === 0) {
+        throw new Error('কোন ফাইল নির্বাচন করা হয়নি!');
+    }
+
+    const uploadPromises = files.map(file => uploadToCloudinary(file));
+    return await Promise.all(uploadPromises);
+}
+
+/**
+ * Cloudinary থেকে ছবি ডিলিট করুন (ঐচ্ছিক)
+ * @param {string} publicId - ছবির public ID
+ */
+async function deleteFromCloudinary(publicId) {
+    try {
+        const formData = new FormData();
+        formData.append('public_id', publicId);
+        formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
+        formData.append('api_secret', CLOUDINARY_CONFIG.apiSecret);
+        formData.append('cloud_name', CLOUDINARY_CONFIG.cloudName);
+
+        const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/destroy`,
+            {
+                method: 'POST',
+                body: formData
+            }
+        );
+
+        const data = await response.json();
+        return data.result === 'ok';
+    } catch (error) {
+        console.error('Cloudinary Delete Error:', error);
+        return false;
+    }
+}
+
+/**
+ * ছবির প্রিভিউ দেখানোর ফাংশন
+ * @param {File} file - প্রিভিউ দেখানোর ফাইল
+ * @param {string} previewElementId - প্রিভিউ দেখানোর এলিমেন্টের ID
+ */
+function previewImage(file, previewElementId) {
+    const previewElement = document.getElementById(previewElementId);
+    if (!previewElement) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        previewElement.src = event.target.result;
+        previewElement.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+// ============================================================
+// =============== ব্যবহারের উদাহরণ ============================
+// ============================================================
+
+/*
+// সিঙ্গেল ফাইল আপলোড
+document.getElementById('imageInput').addEventListener('change', async function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        try {
+            // প্রিভিউ দেখান
+            previewImage(file, 'previewImg');
+            
+            // আপলোড করুন
+            const imageUrl = await uploadToCloudinary(file);
+            console.log('আপলোড সফল:', imageUrl);
+            
+            // URL ইনপুটে দেখান
+            document.getElementById('imageUrlInput').value = imageUrl;
+            
+        } catch (error) {
+            alert('❌ ' + error.message);
+        }
+    }
+});
+
+// মাল্টিপল ফাইল আপলোড
+document.getElementById('multipleImages').addEventListener('change', async function(e) {
+    const files = e.target.files;
+    if (files.length > 0) {
+        try {
+            const imageUrls = await uploadMultipleToCloudinary(files);
+            console.log('আপলোড সফল:', imageUrls);
+        } catch (error) {
+            alert('❌ ' + error.message);
+        }
+    }
+});
+*/
+
 
         // ===== ছবি প্রিভিউ =====
         document.getElementById('streamImage').addEventListener('change', function(e) {
