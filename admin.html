@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>LEgUle Sa – অ্যাডমিন প্যানেল</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: #0a0a0a; color: #ffffff; min-height: 100vh; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #e74c3c; border-radius: 10px; }
+        header {
+            background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 50%, #16213e 100%);
+            padding: 18px 25px;
+            border-bottom: 3px solid #e74c3c;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(231, 76, 60, 0.15);
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #e74c3c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .back-btn {
+            background: rgba(231, 76, 60, 0.15);
+            border: 2px solid #e74c3c;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .back-btn:hover {
+            background: #e74c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+        .admin-container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .admin-card {
+            background: linear-gradient(145deg, #111111, #1a1a1a);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+        .admin-card h2 {
+            color: #e74c3c;
+            font-size: 20px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #aaa;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 2px solid #222;
+            background: #0a0a0a;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .form-group input:focus { border-color: #e74c3c; box-shadow: 0 0 20px rgba(231, 76, 60, 0.1); }
+        .form-group input[type="file"] { padding: 10px; background: #0a0a0a; }
+        .submit-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border: none;
+            color: #fff;
+            padding: 14px 25px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(231, 76, 60, 0.4);
+        }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .image-preview {
+            margin-top: 10px;
+            display: none;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #222;
+        }
+        .image-preview img { width: 100%; max-height: 200px; object-fit: cover; display: block; }
+        .list-container {
+            background: linear-gradient(145deg, #111111, #1a1a1a);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 25px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+        .list-container h2 {
+            color: #e74c3c;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            background: #0a0a0a;
+            border-radius: 12px;
+            border-left: 4px solid #e74c3c;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        .list-item:hover { background: #111; }
+        .list-item .item-info { flex: 1; }
+        .list-item .item-name { font-weight: 700; font-size: 15px; }
+        .list-item .item-detail { color: #888; font-size: 13px; }
+        .list-item .item-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 1px solid #333;
+        }
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .delete-btn:hover { background: rgba(231, 76, 60, 0.15); }
+        .message {
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+        }
+        .message.success {
+            display: block;
+            background: rgba(46, 204, 113, 0.15);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        .message.error {
+            display: block;
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        .message.loading {
+            display: block;
+            background: rgba(52, 152, 219, 0.15);
+            border: 1px solid #3498db;
+            color: #3498db;
+        }
+        @media (max-width: 768px) {
+            .admin-grid { grid-template-columns: 1fr; }
+            .logo h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo"><h1>⚡ LEgUle Sa <span style="font-size:16px;color:#888;margin-left:10px;font-weight:400;">অ্যাডমিন</span></h1></div>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> মূল সাইটে ফিরুন</a>
+        </div>
+    </header>
+    <div class="admin-container">
+        <div id="message" class="message"></div>
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h2><i class="fas fa-plus-circle"></i> নতুন লাইভ স্ট্রিম</h2>
+                <form id="addStreamForm">
+                    <div class="form-group">
+                        <label>স্ট্রিমের নাম *</label>
+                        <input type="text" id="streamName" placeholder="যেমন: ক্রিকেট ম্যাচ" required />
+                    </div>
+                    <div class="form-group">
+                        <label>স্ট্রিম URL (M3U8 / HLS) *</label>
+                        <input type="url" id="streamUrl" placeholder="https://example.com/stream.m3u8" required />
+                    </div>
+                    <div class="form-group">
+                        <label>চ্যানেল / বিভাগ</label>
+                        <input type="text" id="streamChannel" placeholder="যেমন: স্পোর্টস" />
+                    </div>
+                    <div class="form-group">
+                        <label>থাম্বনেইল ছবি আপলোড করুন</label>
+                        <input type="file" id="streamImage" accept="image/*" />
+                        <div class="image-preview" id="streamImagePreview">
+                            <img id="streamPreviewImg" src="#" alt="প্রিভিউ" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>অথবা থাম্বনেইল ছবির লিংক দিন</label>
+                        <input type="url" id="streamThumbnail" placeholder="https://example.com/thumb.jpg" />
+                    </div>
+                    <button type="submit" class="submit-btn" id="streamSubmitBtn"><i class="fas fa-save"></i> স্ট্রিম সংরক্ষণ করুন</button>
+                </form>
+            </div>
+            <div class="admin-card">
+                <h2><i class="fas fa-ad"></i> বিজ্ঞাপন আপলোড</h2>
+                <form id="addAdForm">
+                    <div class="form-group">
+                        <label>বিজ্ঞাপনের নাম *</label>
+                        <input type="text" id="adName" placeholder="বিজ্ঞাপনের নাম" required />
+                    </div>
+                    <div class="form-group">
+                        <label>বিজ্ঞাপনের ছবি আপলোড করুন</label>
+                        <input type="file" id="adImage" accept="image/*" />
+                        <div class="image-preview" id="adImagePreview">
+                            <img id="adPreviewImg" src="#" alt="প্রিভিউ" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>অথবা ছবির লিংক দিন</label>
+                        <input type="url" id="adImageUrl" placeholder="https://example.com/ad-image.jpg" />
+                    </div>
+                    <div class="form-group">
+                        <label>বিজ্ঞাপনের লিংক (ঐচ্ছিক)</label>
+                        <input type="url" id="adLink" placeholder="https://example.com" />
+                    </div>
+                    <button type="submit" class="submit-btn" id="adSubmitBtn"><i class="fas fa-upload"></i> বিজ্ঞাপন সংরক্ষণ করুন</button>
+                </form>
+            </div>
+        </div>
+        <div class="list-container">
+            <h2><i class="fas fa-list"></i> বিদ্যমান লাইভ স্ট্রিম</h2>
+            <div id="streamList"></div>
+        </div>
+        <div class="list-container">
+            <h2><i class="fas fa-images"></i> বিদ্যমান বিজ্ঞাপন</h2>
+            <div id="adList"></div>
+        </div>
+    </div>
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
+                "firebase/storage": "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"
+            }
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from "firebase/firestore";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+        const firebaseConfig = {
+            apiKey: "AIzaSyBimdIKDEfbTa2PJyX5MY9Z585clkFZz98",
+  authDomain: "legule-sa.firebaseapp.com",
+  projectId: "legule-sa",
+  storageBucket: "legule-sa.firebasestorage.app",
+  messagingSenderId: "136313153279",
+  appId: "1:136313153279:web:1aaa832933d0874cf04eca",
+  measurementId: "G-Q7R70R2XZ1"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const messageDiv = document.getElementById('message');
+        const streamList = document.getElementById('streamList');
+        const adList = document.getElementById('adList');
+        const streamSubmitBtn = document.getElementById('streamSubmitBtn');
+        const adSubmitBtn = document.getElementById('adSubmitBtn');
+        function showMessage(text, type = 'success') {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            setTimeout(() => { messageDiv.className = 'message'; }, 5000);
+        }
+        document.getElementById('streamImage').addEventListener('change', function(e) {
+            const preview = document.getElementById('streamImagePreview');
+            const img = document.getElementById('streamPreviewImg');
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) { img.src = event.target.result; preview.style.display = 'block'; };
+                reader.readAsDataURL(file);
+            } else { preview.style.display = 'none'; }
+        });
+        document.getElementById('adImage').addEventListener('change', function(e) {
+            const preview = document.getElementById('adImagePreview');
+            const img = document.getElementById('adPreviewImg');
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) { img.src = event.target.result; preview.style.display = 'block'; };
+                reader.readAsDataURL(file);
+            } else { preview.style.display = 'none'; }
+        });
+        document.getElementById('addStreamForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('streamName').value.trim();
+            const url = document.getElementById('streamUrl').value.trim();
+            const channel = document.getElementById('streamChannel').value.trim();
+            const imageFile = document.getElementById('streamImage').files[0];
+            const imageUrl = document.getElementById('streamThumbnail').value.trim();
+            if (!name || !url) { showMessage('স্ট্রিমের নাম এবং URL দিতে হবে!', 'error'); return; }
+            if (!imageFile && !imageUrl) { showMessage('থাম্বনেইল ছবি আপলোড বা লিংক দিন!', 'error'); return; }
+            streamSubmitBtn.disabled = true;
+            streamSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সংরক্ষণ...';
+            showMessage('স্ট্রিম সংরক্ষণ করা হচ্ছে...', 'loading');
+            try {
+                let finalImageUrl = imageUrl;
+                if (imageFile) {
+                    const storageRef = ref(storage, `streams/${Date.now()}_${imageFile.name}`);
+                    const snapshot = await uploadBytes(storageRef, imageFile);
+                    finalImageUrl = await getDownloadURL(snapshot.ref);
+                } else if (imageUrl) { try { new URL(imageUrl); } catch { throw new Error('ছবির লিংক সঠিক নয়!'); } }
+                await addDoc(collection(db, 'streams'), {
+                    name, url, channel: channel || 'জেনারেল',
+                    thumbnail: finalImageUrl, timestamp: new Date().toISOString()
+                });
+                showMessage('✅ স্ট্রিম সংরক্ষিত!', 'success');
+                document.getElementById('addStreamForm').reset();
+                document.getElementById('streamImagePreview').style.display = 'none';
+            } catch (error) {
+                showMessage(`❌ ${error.message}`, 'error');
+            } finally {
+                streamSubmitBtn.disabled = false;
+                streamSubmitBtn.innerHTML = '<i class="fas fa-save"></i> স্ট্রিম সংরক্ষণ করুন';
+            }
+        });
+        document.getElementById('addAdForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('adName').value.trim();
+            const link = document.getElementById('adLink').value.trim();
+            const imageFile = document.getElementById('adImage').files[0];
+            const imageUrl = document.getElementById('adImageUrl').value.trim();
+            if (!name) { showMessage('বিজ্ঞাপনের নাম দিতে হবে!', 'error'); return; }
+            if (!imageFile && !imageUrl) { showMessage('ছবি আপলোড বা লিংক দিন!', 'error'); return; }
+            adSubmitBtn.disabled = true;
+            adSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সংরক্ষণ...';
+            showMessage('বিজ্ঞাপন সংরক্ষণ করা হচ্ছে...', 'loading');
+            try {
+                let finalImageUrl = imageUrl;
+                if (imageFile) {
+                    const storageRef = ref(storage, `ads/${Date.now()}_${imageFile.name}`);
+                    const snapshot = await uploadBytes(storageRef, imageFile);
+                    finalImageUrl = await getDownloadURL(snapshot.ref);
+                } else if (imageUrl) { try { new URL(imageUrl); } catch { throw new Error('ছবির লিংক সঠিক নয়!'); } }
+                await addDoc(collection(db, 'ads'), {
+                    name, link: link || '', imageUrl: finalImageUrl, timestamp: new Date().toISOString()
+                });
+                showMessage('✅ বিজ্ঞাপন সংরক্ষিত!', 'success');
+                document.getElementById('addAdForm').reset();
+                document.getElementById('adImagePreview').style.display = 'none';
+            } catch (error) {
+                showMessage(`❌ ${error.message}`, 'error');
+            } finally {
+                adSubmitBtn.disabled = false;
+                adSubmitBtn.innerHTML = '<i class="fas fa-upload"></i> বিজ্ঞাপন সংরক্ষণ করুন';
+            }
+        });
+        function loadStreamList() {
+            const q = query(collection(db, 'streams'), orderBy('timestamp', 'desc'));
+            onSnapshot(q, (snapshot) => {
+                streamList.innerHTML = '';
+                if (snapshot.empty) { streamList.innerHTML = '<p style="color:#666;text-align:center;padding:20px;">কোন স্ট্রিম নেই</p>'; return; }
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.innerHTML = `
+                        <div style="display:flex;align-items:center;flex:1;">
+                            ${data.thumbnail ? `<img src="${data.thumbnail}" class="item-preview" onerror="this.style.display='none'" />` : ''}
+                            <div class="item-info">
+                                <span class="item-name">${data.name || 'নামহীন'}</span>
+                                <span class="item-detail">${data.channel || 'চ্যানেল'} • ${data.url ? '🔗 লিংক আছে' : ''}</span>
+                            </div>
+                        </div>
+                        <button class="delete-btn" data-id="${doc.id}"><i class="fas fa-trash"></i></button>
+                    `;
+                    streamList.appendChild(div);
+                    div.querySelector('.delete-btn').addEventListener('click', async (e) => {
+                        if (confirm('ডিলিট করতে চান?')) {
+                            try { await deleteDoc(doc(db, 'streams', e.target.closest('button').dataset.id));
+                            showMessage('✅ ডিলিট করা হয়েছে!', 'success'); } catch (error) { showMessage('❌ সমস্যা!', 'error'); }
+                        }
+                    });
+                });
+            }, (error) => { streamList.innerHTML = '<p style="color:#e74c3c;">স্ট্রিম লোড করতে সমস্যা</p>'; });
+        }
+        function loadAdList() {
+            const q = query(collection(db, 'ads'), orderBy('timestamp', 'desc'));
+            onSnapshot(q, (snapshot) => {
+                adList.innerHTML = '';
+                if (snapshot.empty) { adList.innerHTML = '<p style="color:#666;text-align:center;padding:20px;">কোন বিজ্ঞাপন নেই</p>'; return; }
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.innerHTML = `
+                        <div style="display:flex;align-items:center;flex:1;">
+                            ${data.imageUrl ? `<img src="${data.imageUrl}" class="item-preview" onerror="this.style.display='none'" />` : ''}
+                            <div class="item-info">
+                                <span class="item-name">${data.name || 'বিজ্ঞাপন'}</span>
+                                <span class="item-detail">${data.link ? '🔗 লিংক আছে' : 'লিংক নেই'}</span>
+                            </div>
+                        </div>
+                        <button class="delete-btn" data-id="${doc.id}"><i class="fas fa-trash"></i></button>
+                    `;
+                    adList.appendChild(div);
+                    div.querySelector('.delete-btn').addEventListener('click', async (e) => {
+                        if (confirm('ডিলিট করতে চান?')) {
+                            try { await deleteDoc(doc(db, 'ads', e.target.closest('button').dataset.id));
+                            showMessage('✅ ডিলিট করা হয়েছে!', 'success'); } catch (error) { showMessage('❌ সমস্যা!', 'error'); }
+                        }
+                    });
+                });
+            }, (error) => { adList.innerHTML = '<p style="color:#e74c3c;">বিজ্ঞাপন লোড করতে সমস্যা</p>'; });
+        }
+        loadStreamList();
+        loadAdList();
+        console.log('🛠️ LEgUle Sa অ্যাডমিন প্যানেল সক্রিয়!');
+    </script>
+</body>
+</html>
