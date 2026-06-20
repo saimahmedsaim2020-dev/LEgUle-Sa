@@ -1,686 +1,1595 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>LEgUle Sa – লাইভ ভিডিও স্ট্রিমিং</title>
+    <title>LEgUle Sa – Live Streaming Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ===== RESET & BASE ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: #0a0a0a;
-            color: #ffffff;
+            color: #fff;
             min-height: 100vh;
+            overflow-x: hidden;
         }
-        ::-webkit-scrollbar {
-            width: 8px;
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #e50914; border-radius: 10px; }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 9999;
+            background: #2ecc71;
+            color: #fff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideIn 0.4s ease;
+            max-width: 400px;
         }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #e74c3c;
-            border-radius: 10px;
+        .toast.error { background: #e50914; }
+        .toast.info { background: #3498db; }
+        .toast.warning { background: #f39c12; }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        /* ===== হেডার ===== */
+        /* ===== HEADER ===== */
         header {
-            background: linear-gradient(135deg, #0d0d1a, #1a1a2e, #16213e);
-            padding: 15px 20px;
-            border-bottom: 3px solid #e74c3c;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
-            box-shadow: 0 4px 30px rgba(231, 76, 60, 0.15);
+            background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.7) 80%, transparent 100%);
+            padding: 12px 30px;
+            transition: all 0.4s ease;
         }
+        header.scrolled { background: rgba(10,10,10,0.98); box-shadow: 0 4px 30px rgba(0,0,0,0.8); }
         .header-container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
             flex-wrap: wrap;
-            gap: 10px;
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logo-icon {
+            font-size: 28px;
+            color: #e50914;
+            background: rgba(229,9,20,0.15);
+            padding: 6px 10px;
+            border-radius: 10px;
         }
         .logo h1 {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #ffffff, #e74c3c);
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #e50914);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.5px;
         }
         .live-badge {
-            background: #e74c3c;
+            background: #e50914;
             color: #fff;
-            padding: 4px 14px;
+            padding: 2px 10px;
             border-radius: 30px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            text-transform: uppercase;
             animation: pulse-badge 1.5s infinite;
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        @keyframes pulse-badge {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.6;
-                transform: scale(0.95);
-            }
+        @keyframes pulse-badge { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(0.95); } }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
-        .admin-btn {
-            background: rgba(231, 76, 60, 0.15);
-            border: 2px solid #e74c3c;
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 30px;
-            cursor: pointer;
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
             font-size: 14px;
             font-weight: 600;
             transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .admin-btn:hover {
-            background: #e74c3c;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
-        }
-
-        /* ===== মেইন ===== */
-        main {
-            max-width: 1400px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        /* ===== ভিডিও প্লেয়ার ===== */
-        .video-player-section {
-            background: linear-gradient(145deg, #111111, #1a1a1a);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            border: 1px solid rgba(231, 76, 60, 0.15);
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
-        }
-        .player-wrapper {
             position: relative;
-            background: #000;
-            aspect-ratio: 16/9;
-        }
-        .player-wrapper video {
-            width: 100%;
-            height: 100%;
-            display: none;
-            background: #000;
-        }
-        .player-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: none;
-        }
-
-        /* ===== লাইভ ইন্ডিকেটর (৩ সেকেন্ড) ===== */
-        .live-indicator {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 14px;
-            color: #e74c3c;
-            border: 1px solid rgba(231, 76, 60, 0.3);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 4px 0;
             cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
-            opacity: 0;
-            transform: translateY(-10px);
-            pointer-events: none;
         }
-        .live-indicator.show {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-        .live-indicator:hover {
-            background: rgba(231, 76, 60, 0.2);
-        }
-        .live-indicator .pulse {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: #e74c3c;
-            border-radius: 50%;
-            animation: pulse-dot 1.2s infinite;
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.6);
-        }
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.6);
-                opacity: 0.4;
-            }
-        }
-
-        /* ===== স্ট্রিম ইনফো ===== */
-        .stream-overlay {
+        .nav-menu a:hover, .nav-menu a.active { color: #fff; }
+        .nav-menu a.active::after {
+            content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -2px;
             left: 0;
             right: 0;
-            padding: 60px 25px 25px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
-            pointer-events: none;
-        }
-        .stream-overlay h2 {
-            font-size: 28px;
-            font-weight: 800;
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
-        }
-        .stream-overlay p {
-            color: #aaa;
-            font-size: 16px;
-            margin-top: 4px;
-        }
-
-        /* ===== ভিডিও কন্ট্রোল ===== */
-        .video-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 20px;
-            background: linear-gradient(145deg, #1a1a1a, #111111);
-            flex-wrap: wrap;
-            gap: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .video-controls .left-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .video-controls .right-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .video-controls label {
-            color: #aaa;
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .video-controls select {
-            background: #222;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s;
-        }
-        .video-controls select:hover {
-            border-color: #e74c3c;
-        }
-        .video-controls select:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .video-controls button {
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .video-controls button:hover {
-            background: rgba(231, 76, 60, 0.3);
-        }
-        .video-controls input[type="range"] {
-            width: 80px;
-            height: 4px;
-            -webkit-appearance: none;
-            background: #333;
+            height: 2px;
+            background: #e50914;
             border-radius: 2px;
-            outline: none;
-        }
-        .video-controls input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #e74c3c;
-            cursor: pointer;
         }
 
-        /* ===== এম্বেড নোটিস ===== */
-        .embed-notice {
-            background: rgba(231, 76, 60, 0.08);
-            border: 1px solid rgba(231, 76, 60, 0.15);
-            border-radius: 10px;
-            padding: 10px 16px;
-            margin: 10px 20px;
-            color: #888;
-            font-size: 13px;
-            display: none;
-        }
-        .embed-notice i {
-            color: #e74c3c;
-            margin-right: 8px;
-        }
-
-        /* ===== লাইক ও শেয়ার ===== */
-        .video-actions {
+        .nav-right {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 10px 20px;
-            background: linear-gradient(145deg, #1a1a1a, #111111);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            flex-wrap: wrap;
         }
-        .video-actions .action-btn {
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 30px;
+            padding: 4px 14px;
+            transition: all 0.3s ease;
+        }
+        .search-box:focus-within { border-color: #e50914; box-shadow: 0 0 20px rgba(229,9,20,0.1); background: rgba(0,0,0,0.6); }
+        .search-box input {
             background: transparent;
             border: none;
-            color: #aaa;
+            color: #fff;
+            padding: 6px 8px;
+            font-size: 13px;
+            outline: none;
+            width: 140px;
+            font-family: inherit;
+        }
+        .search-box input::placeholder { color: #666; }
+        .search-box button {
+            background: transparent;
+            border: none;
+            color: #888;
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
+            padding: 4px;
+            transition: all 0.3s;
+        }
+        .search-box button:hover { color: #fff; }
+
+        .auth-buttons {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 14px;
+        }
+        .btn-login {
+            background: transparent;
+            border: 2px solid rgba(229,9,20,0.3);
+            color: #fff;
+            padding: 6px 18px;
             border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
             transition: all 0.3s ease;
             font-family: inherit;
         }
-        .video-actions .action-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
+        .btn-login:hover { border-color: #e50914; background: rgba(229,9,20,0.1); }
+        .btn-signup {
+            background: linear-gradient(135deg, #e50914, #b20710);
+            border: none;
             color: #fff;
-        }
-        .video-actions .action-btn.liked {
-            color: #e74c3c;
-        }
-        .video-actions .action-btn.liked i {
-            color: #e74c3c;
-        }
-        .video-actions .action-btn i {
-            font-size: 18px;
-        }
-        .video-actions .action-btn .count {
-            font-size: 13px;
-            color: #888;
-        }
-
-        /* ===== বিজ্ঞাপন ===== */
-        .ad-section {
-            margin-bottom: 30px;
-        }
-        .ad-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 18px;
-        }
-        .ad-item {
-            background: linear-gradient(145deg, #111111, #1a1a1a);
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
+            padding: 6px 18px;
+            border-radius: 30px;
             cursor: pointer;
-        }
-        .ad-item:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            border-color: rgba(231, 76, 60, 0.3);
-        }
-        .ad-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .ad-item:hover img {
-            transform: scale(1.03);
-        }
-        .ad-item .ad-content {
-            padding: 12px 16px;
-        }
-        .ad-item .ad-content h4 {
-            font-size: 14px;
-            color: #ddd;
             font-weight: 600;
-        }
-        .ad-item .ad-content a {
-            color: #e74c3c;
-            text-decoration: none;
             font-size: 13px;
-            font-weight: 500;
-            display: inline-flex;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .btn-signup:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
+
+        .user-profile {
+            display: none;
             align-items: center;
-            gap: 5px;
-            margin-top: 4px;
+            gap: 8px;
+            cursor: pointer;
+            position: relative;
+        }
+        .user-profile .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e50914, #b20710);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+            background-size: cover;
+            background-position: center;
+        }
+        .user-profile .avatar:hover { border-color: #e50914; }
+        .user-profile .username { font-size: 13px; font-weight: 600; }
+        .user-profile .dropdown {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: rgba(20,20,20,0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 10px 0;
+            min-width: 200px;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .user-profile .dropdown.active { display: block; }
+        .user-profile .dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
             transition: all 0.3s;
         }
-        .ad-item .ad-content a:hover {
-            color: #ff6b6b;
-            gap: 10px;
-        }
+        .user-profile .dropdown a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .user-profile .dropdown a i { width: 20px; color: #888; }
+        .user-profile .dropdown .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 6px 20px; }
 
-        /* ===== স্ট্রিম গ্রিড ===== */
-        .other-streams {
-            margin-bottom: 30px;
+        .hamburger { display: none; font-size: 24px; cursor: pointer; color: #fff; padding: 4px; }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            height: 85vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            margin-top: 0;
+            overflow: hidden;
+            background: #0a0a0a;
         }
-        .other-streams h2 {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 60%, transparent 100%);
+            z-index: 1;
+        }
+        .hero .hero-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .hero .hero-bg video, .hero .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+        .hero-content .badge {
+            display: inline-block;
+            background: rgba(229,9,20,0.2);
+            border: 1px solid rgba(229,9,20,0.3);
+            color: #e50914;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .hero-content h1 {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        .hero-content h1 span { color: #e50914; }
+        .hero-content p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .hero-content .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .hero-content .hero-buttons .btn-primary {
+            background: linear-gradient(135deg, #e50914, #b20710);
+            border: none;
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hero-content .hero-buttons .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(229,9,20,0.4); }
+        .hero-content .hero-buttons .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hero-content .hero-buttons .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+        .hero-content .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 25px;
+        }
+        .hero-content .hero-stats .stat h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #e50914;
+        }
+        .hero-content .hero-stats .stat p { font-size: 13px; color: #888; margin: 0; }
+
+        /* ===== ROWS ===== */
+        .section-title {
             font-size: 22px;
             font-weight: 700;
-            margin-bottom: 18px;
+            margin-bottom: 12px;
+            padding: 0 30px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .other-streams h2 i {
-            color: #e74c3c;
+        .section-title i { color: #e50914; }
+        .section-title .view-all {
+            font-size: 14px;
+            color: #888;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: auto;
         }
-        .stream-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
+        .section-title .view-all:hover { color: #e50914; }
+
+        .row-container {
+            padding: 0 30px;
+            margin-bottom: 30px;
+            position: relative;
         }
-        .stream-card {
-            background: linear-gradient(145deg, #111111, #1a1a1a);
-            border-radius: 14px;
+        .row-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 8px 0 20px;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+        .row-scroll::-webkit-scrollbar { display: none; }
+
+        .row-scroll .movie-card {
+            flex: 0 0 220px;
+            min-width: 220px;
+            border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
             cursor: pointer;
             transition: all 0.4s ease;
+            position: relative;
+            background: #111;
         }
-        .stream-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            border-color: #e74c3c;
+        .row-scroll .movie-card:hover {
+            transform: scale(1.08);
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
-        .stream-card img {
+        .row-scroll .movie-card .thumb {
+            position: relative;
             width: 100%;
-            height: 150px;
+            padding-top: 56.25%;
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+        .row-scroll .movie-card .thumb img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s;
         }
-        .stream-card:hover img {
-            transform: scale(1.05);
+        .row-scroll .movie-card:hover .thumb img { transform: scale(1.05); }
+        .row-scroll .movie-card .thumb .top-badge {
+            position: absolute;
+            top: 8px; left: 8px;
+            background: #e50914;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 4px;
         }
-        .stream-card .stream-info-card {
-            padding: 12px 16px;
+        .row-scroll .movie-card .thumb .top-badge.live { animation: pulse-badge 1.5s infinite; }
+        .row-scroll .movie-card .thumb .duration {
+            position: absolute;
+            bottom: 8px; right: 8px;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
         }
-        .stream-card .stream-info-card h4 {
-            font-size: 16px;
+        .row-scroll .movie-card .info {
+            padding: 12px 14px;
+        }
+        .row-scroll .movie-card .info h4 {
+            font-size: 15px;
             font-weight: 700;
             margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .stream-card .stream-info-card p {
+        .row-scroll .movie-card .info p {
             color: #888;
-            font-size: 13px;
+            font-size: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .stream-card .stream-info-card .live-tag {
-            color: #e74c3c;
-            font-size: 12px;
-            font-weight: 700;
-            display: inline-flex;
+        .row-scroll .movie-card .info .meta {
+            display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             margin-top: 4px;
+            font-size: 11px;
+            color: #666;
         }
-        .stream-card .stream-info-card .live-tag::before {
+        .row-scroll .movie-card .info .meta .rating { color: #f1c40f; }
+
+        /* ===== VIDEO PLAYER ===== */
+        .video-player-section {
+            display: none;
+            max-width: 1200px;
+            margin: 80px auto 30px;
+            padding: 0 20px;
+            position: relative;
+        }
+        .video-player-section .player-container {
+            background: #111;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .custom-video-wrapper {
+            position: relative;
+            background: #000;
+            aspect-ratio: 16/9;
+            width: 100%;
+        }
+        .custom-video-wrapper video,
+        .custom-video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #000;
+        }
+        .custom-video-wrapper iframe { display: none; }
+
+        /* ===== CONTROLS OVERLAY ===== */
+        .video-controls-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 60px 20px 16px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85) 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .custom-video-wrapper:hover .video-controls-overlay,
+        .video-controls-overlay.show { opacity: 1; pointer-events: auto; }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 8px;
+            transition: height 0.2s;
+        }
+        .progress-bar-container:hover { height: 6px; }
+        .progress-bar-container .progress-filled {
+            height: 100%;
+            background: #e50914;
+            border-radius: 4px;
+            width: 0%;
+            position: relative;
+        }
+        .progress-bar-container .progress-filled::after {
             content: '';
+            position: absolute;
+            right: -6px;
+            top: -4px;
+            width: 12px;
+            height: 12px;
+            background: #e50914;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .progress-bar-container:hover .progress-filled::after { opacity: 1; }
+
+        .controls-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .controls-row button {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: inherit;
+        }
+        .controls-row button:hover { background: rgba(255,255,255,0.1); }
+        .controls-row .time-display {
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 500;
+            min-width: 100px;
+            font-variant-numeric: tabular-nums;
+        }
+        .controls-row .volume-slider {
+            width: 70px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            transition: width 0.3s;
+        }
+        .controls-row .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e50914;
+            cursor: pointer;
+        }
+        .controls-row .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e50914;
+            cursor: pointer;
+            border: none;
+        }
+        .controls-row .quality-select,
+        .controls-row .speed-select {
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            outline: none;
+        }
+        .controls-row .quality-select:hover,
+        .controls-row .speed-select:hover { border-color: #e50914; }
+        .controls-row .quality-select option,
+        .controls-row .speed-select option { background: #1a1a1a; color: #fff; }
+
+        .controls-row .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        /* ===== LIVE INDICATOR ===== */
+        .live-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #e50914;
+            border: 1px solid rgba(229,9,20,0.3);
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .live-indicator.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .live-indicator .pulse {
             display: inline-block;
             width: 8px;
             height: 8px;
-            background: #e74c3c;
+            background: #e50914;
             border-radius: 50%;
             animation: pulse-dot 1.2s infinite;
         }
+        @keyframes pulse-dot {
+            0%,100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.6); opacity: 0.4; }
+        }
 
-        /* ===== ফুটার ===== */
-        footer {
+        /* ===== AD OVERLAY ===== */
+        .ad-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+        .ad-overlay.active { display: flex; }
+        .ad-overlay .ad-content {
             text-align: center;
-            padding: 25px;
-            color: #444;
-            border-top: 1px solid #1a1a1a;
+            max-width: 80%;
+        }
+        .ad-overlay .ad-content img,
+        .ad-overlay .ad-content video {
+            max-width: 100%;
+            max-height: 60vh;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .ad-overlay .ad-timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .ad-overlay .skip-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: inherit;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .ad-overlay .skip-btn.active { opacity: 1; pointer-events: auto; background: #e50914; border-color: #e50914; }
+        .ad-overlay .skip-btn:hover { transform: scale(1.05); }
+        .ad-overlay .ad-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(229,9,20,0.8);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ===== VIDEO INFO (BELOW PLAYER - YOUTUBE STYLE) ===== */
+        .video-info {
+            padding: 16px 20px 10px;
+            background: #0a0a0a;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .video-info .video-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+        .video-info .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: #888;
+        }
+        .video-info .video-meta .channel-name {
+            color: #e50914;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .video-info .video-meta .channel-name:hover { text-decoration: underline; }
+        .video-info .video-meta .video-views { color: #666; }
+        .video-info .video-meta .video-date { color: #555; }
+
+        /* ===== VIDEO ACTIONS ROW ===== */
+        .video-actions-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0 4px;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            margin-top: 8px;
+        }
+        .video-actions-row .action-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .video-actions-row .action-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .video-actions-row .action-btn.liked { color: #e50914; }
+        .video-actions-row .action-btn.liked i { color: #e50914; }
+        .video-actions-row .action-btn i { font-size: 18px; }
+        .video-actions-row .action-btn .count { font-size: 13px; color: #888; }
+        .video-actions-row .action-btn#subscribeBtn {
+            color: #e50914;
+            border: 2px solid #e50914;
+            border-radius: 30px;
+            padding: 4px 16px;
+        }
+        .video-actions-row .action-btn#subscribeBtn.subscribed {
+            background: rgba(229,9,20,0.15);
+            color: #fff;
+            border-color: #333;
+        }
+        .video-actions-row .action-btn#subscribeBtn:hover { background: rgba(229,9,20,0.2); }
+
+        /* ===== RECOMMENDED SECTION ===== */
+        .recommended-section {
+            padding: 16px 20px 20px;
+            background: #0a0a0a;
+        }
+        .recommended-section .recommended-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .recommended-section .recommended-title i { color: #e50914; }
+        .recommended-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+        }
+        .recommended-grid .rec-card {
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .recommended-grid .rec-card:hover {
+            transform: translateY(-4px);
+            border-color: #e50914;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        .recommended-grid .rec-card .thumb {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+        .recommended-grid .rec-card .thumb img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .recommended-grid .rec-card:hover .thumb img { transform: scale(1.04); }
+        .recommended-grid .rec-card .rec-info {
+            padding: 10px 12px;
+        }
+        .recommended-grid .rec-card .rec-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+        .recommended-grid .rec-card .rec-info p {
+            color: #888;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .recommended-grid .rec-card .rec-info .rec-views {
+            color: #666;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        /* ===== AUTH MODAL ===== */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .auth-modal.active { display: flex; }
+        .auth-modal .auth-box {
+            background: linear-gradient(145deg, #111, #1a1a1a);
+            border-radius: 20px;
+            padding: 35px 30px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(229,9,20,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .auth-modal .auth-box .close-auth {
+            float: right;
+            font-size: 22px;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.3s;
+        }
+        .auth-modal .auth-box .close-auth:hover { color: #fff; }
+        .auth-modal .auth-box h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #fff, #e50914);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .auth-modal .auth-box p {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .auth-modal .form-group { margin-bottom: 14px; }
+        .auth-modal .form-group label {
+            display: block;
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .auth-modal .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 2px solid #222;
+            background: #0a0a0a;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .auth-modal .form-group input:focus { border-color: #e50914; }
+        .auth-modal .auth-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e50914, #b20710);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .auth-modal .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
+        .auth-modal .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .auth-modal .social-auth {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .auth-modal .social-auth button {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #222;
+            border-radius: 10px;
+            background: #0a0a0a;
+            color: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .auth-modal .social-auth button:hover { border-color: #e50914; background: #111; }
+        .auth-modal .auth-switch {
+            text-align: center;
+            margin-top: 12px;
+            color: #888;
             font-size: 13px;
         }
+        .auth-modal .auth-switch a {
+            color: #e50914;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .auth-modal .auth-switch a:hover { text-decoration: underline; }
+        .auth-error {
+            color: #e50914;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        .auth-error.show { display: block; }
 
-        /* ===== রেস্পন্সিভ ===== */
+        /* ===== PROFILE MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: linear-gradient(145deg, #111, #1a1a1a);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(229,9,20,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .modal-box .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-box .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e50914;
+        }
+        .modal-box .modal-header .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.3s;
+        }
+        .modal-box .modal-header .close-modal:hover { color: #fff; }
+
+        .image-preview {
+            margin-top: 8px;
+            display: none;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #222;
+            max-width: 150px;
+        }
+        .image-preview img { width: 100%; max-height: 150px; object-fit: cover; display: block; }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .form-actions .btn-submit {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #e50914, #b20710);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .form-actions .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
+        .form-actions .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .form-actions .btn-cancel {
+            padding: 10px 28px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: transparent;
+            color: #888;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .form-actions .btn-cancel:hover { border-color: #e50914; color: #fff; }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            padding: 50px 25px;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .mobile-menu.active { display: flex; }
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+        }
+        .mobile-menu a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .mobile-menu a:hover { color: #e50914; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
+            padding: 30px 20px 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 20px;
+        }
+        .footer-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+        }
+        .footer-col h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .footer-col p, .footer-col a {
+            color: #888;
+            font-size: 13px;
+            text-decoration: none;
+            display: block;
+            padding: 3px 0;
+            transition: all 0.3s;
+        }
+        .footer-col a:hover { color: #e50914; }
+        .footer-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: #aaa;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .footer-social a:hover { background: #e50914; color: #fff; transform: translateY(-3px); }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 20px;
+            color: #555;
+            font-size: 12px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero { height: 70vh; padding: 0 30px; }
+            .hero-content h1 { font-size: 40px; }
+            .hero-content p { font-size: 16px; }
+        }
         @media (max-width: 768px) {
-            .logo h1 {
-                font-size: 22px;
-            }
-            .stream-overlay h2 {
-                font-size: 20px;
-            }
-            .video-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .video-controls .left-controls,
-            .video-controls .right-controls {
-                justify-content: center;
-            }
-            .stream-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-            .header-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .player-wrapper {
-                aspect-ratio: 16/9;
-            }
+            header { padding: 10px 16px; }
+            .nav-menu { display: none; }
+            .hamburger { display: block; }
+            .auth-buttons .btn-login, .auth-buttons .btn-signup { display: none; }
+            .hero { height: 60vh; min-height: 400px; padding: 0 20px; }
+            .hero-content h1 { font-size: 30px; }
+            .hero-content p { font-size: 14px; }
+            .hero-content .hero-stats { gap: 15px; }
+            .hero-content .hero-stats .stat h3 { font-size: 18px; }
+            .row-scroll .movie-card { flex: 0 0 160px; min-width: 160px; }
+            .section-title { font-size: 18px; padding: 0 16px; }
+            .row-container { padding: 0 16px; }
+            .video-player-section { padding: 0 10px; margin-top: 70px; }
+            .video-info .video-title { font-size: 20px; }
+            .video-actions-row .action-btn { font-size: 13px; padding: 4px 10px; }
+            .recommended-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+            .footer-container { grid-template-columns: 1fr 1fr; }
+            .auth-modal .auth-box { padding: 25px 20px; }
+            .search-box input { width: 80px; }
+            .controls-row .volume-slider { width: 50px; }
+            .controls-row button { font-size: 15px; padding: 3px 4px; }
+            .controls-row .time-display { font-size: 11px; min-width: 70px; }
+            .controls-row .quality-select, .controls-row .speed-select { font-size: 10px; padding: 2px 6px; }
         }
         @media (max-width: 480px) {
-            .logo h1 {
-                font-size: 18px;
-            }
-            .stream-overlay h2 {
-                font-size: 17px;
-            }
-            .stream-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-            .ad-container {
-                grid-template-columns: 1fr;
-            }
-            .video-actions {
-                justify-content: center;
-            }
-            .video-actions .action-btn {
-                font-size: 13px;
-                padding: 5px 10px;
-            }
-            .admin-btn {
-                padding: 6px 14px;
-                font-size: 12px;
-            }
+            .hero-content h1 { font-size: 24px; }
+            .hero-content .hero-buttons .btn-primary,
+            .hero-content .hero-buttons .btn-secondary { padding: 8px 20px; font-size: 14px; }
+            .row-scroll .movie-card { flex: 0 0 130px; min-width: 130px; }
+            .row-scroll .movie-card .info h4 { font-size: 13px; }
+            .logo h1 { font-size: 20px; }
+            .logo-icon { font-size: 20px; padding: 4px 8px; }
+            .footer-container { grid-template-columns: 1fr; }
+            .video-info .video-title { font-size: 17px; }
+            .video-actions-row .action-btn { font-size: 12px; padding: 3px 8px; }
+            .video-actions-row .action-btn i { font-size: 15px; }
+            .recommended-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .recommended-grid .rec-card .rec-info h4 { font-size: 12px; }
+            .video-player-section { margin-top: 60px; padding: 0 6px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ====== হেডার ====== -->
-    <header>
+    <!-- ====== HEADER ====== -->
+    <header id="header">
         <div class="header-container">
-            <div class="logo">
-                <h1><span class="highlight">LEgUle</span> Sa</h1>
-                <span class="live-badge"><i class="fas fa-circle" style="font-size:8px;margin-right:5px;"></i> লাইভ</span>
+            <div class="logo" id="logoHome">
+                <span class="logo-icon"><i class="fas fa-bolt"></i></span>
+                <h1>LEgUle Sa</h1>
+                <span class="live-badge"><i class="fas fa-circle" style="font-size:6px;margin-right:4px;"></i> Live</span>
             </div>
-            <div class="header-controls">
-                <a href="admin.html" class="admin-btn"><i class="fas fa-user-shield"></i> অ্যাডমিন</a>
+
+            <div class="nav-menu" id="navMenu">
+                <a class="active" data-category="all">Home</a>
+                <a data-category="live">Live</a>
+                <a data-category="movie">Movies</a>
+                <a data-category="series">Series</a>
+                <a data-category="cartoon">Cartoon</a>
+                <a data-category="sports">Sports</a>
+                <div class="nav-right">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search..." id="searchInput" />
+                        <button id="searchBtn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="auth-buttons">
+                        <button class="btn-login" id="loginOpenBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+                        <button class="btn-signup" id="signupOpenBtn"><i class="fas fa-user-plus"></i> Sign Up</button>
+                    </div>
+                    <div class="user-profile" id="userProfile">
+                        <div class="avatar" id="userAvatar">U</div>
+                        <span class="username" id="userName">User</span>
+                        <i class="fas fa-chevron-down" style="font-size:10px;color:#888;"></i>
+                        <div class="dropdown" id="profileDropdown">
+                            <a href="#" id="profileBtn"><i class="fas fa-user"></i> Profile</a>
+                            <a href="#" id="watchlistBtn"><i class="fas fa-list"></i> Watchlist</a>
+                            <a href="#" id="historyBtn"><i class="fas fa-history"></i> History</a>
+                            <div class="divider"></div>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="hamburger" id="hamburgerBtn"><i class="fas fa-bars"></i></div>
         </div>
     </header>
 
-    <!-- ====== মেইন ====== -->
+    <!-- ====== MOBILE MENU ====== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="close-btn" id="closeMobileMenu"><i class="fas fa-times"></i></div>
+        <a data-category="all" class="active">Home</a>
+        <a data-category="live">Live</a>
+        <a data-category="movie">Movies</a>
+        <a data-category="series">Series</a>
+        <a data-category="cartoon">Cartoon</a>
+        <a data-category="sports">Sports</a>
+        <a href="#" id="mobileLoginBtn"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="#" id="mobileSignupBtn"><i class="fas fa-user-plus"></i> Sign Up</a>
+        <a href="#" id="mobileLogoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- ====== AUTH MODAL ====== -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-box">
+            <span class="close-auth" id="closeAuthModal"><i class="fas fa-times"></i></span>
+            <h2 id="authTitle">Login</h2>
+            <p id="authSubtitle">Login to your account</p>
+            <div class="auth-error" id="authError"></div>
+            <form id="authForm">
+                <div class="form-group" id="nameGroup" style="display:none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Your name" />
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="authEmail" placeholder="example@email.com" required />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" placeholder="Enter password" required />
+                </div>
+                <button type="submit" class="auth-btn" id="authSubmitBtn">Login</button>
+            </form>
+            <div class="social-auth">
+                <button id="googleAuthBtn"><i class="fab fa-google"></i> Google</button>
+                <button id="facebookAuthBtn"><i class="fab fa-facebook"></i> Facebook</button>
+            </div>
+            <div class="auth-switch">
+                <span id="authSwitchText">New? <a id="authSwitchLink">Sign Up</a></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== MAIN ====== -->
     <main>
 
-        <!-- ভিডিও প্লেয়ার -->
-        <section class="video-player-section">
-            <div class="player-wrapper" id="playerWrapper">
-                <video id="mainVideo" controls autoplay playsinline>
-                    <source id="videoSource" src="" type="application/x-mpegURL" />
-                    <source id="videoSourceMp4" src="" type="video/mp4" />
-                    আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
-                </video>
-                <iframe id="embedPlayer" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
-                <!-- লাইভ ইন্ডিকেটর (৩ সেকেন্ড) -->
-                <div class="live-indicator" id="liveIndicator">
-                    <span class="pulse"></span>
-                    <span>লাইভ</span>
-                </div>
-
-                <!-- স্ট্রিম ইনফো -->
-                <div class="stream-overlay">
-                    <h2 id="streamTitle">স্ট্রিম নির্বাচন করুন</h2>
-                    <p id="streamChannel">চ্যানেল</p>
-                </div>
+        <!-- ====== HERO ====== -->
+        <section class="hero" id="heroSection">
+            <div class="hero-bg">
+                <img src="https://via.placeholder.com/1920x1080/1a1a1a/444?text=LEgUle+Sa" alt="Hero Banner" id="heroImage" />
+                <video id="heroVideo" muted autoplay loop playsinline style="display:none;"></video>
             </div>
-
-            <!-- ভিডিও কন্ট্রোল -->
-            <div class="video-controls">
-                <div class="left-controls">
-                    <label><i class="fas fa-sliders-h"></i> রেজোলিউশন:</label>
-                    <select id="qualitySelect">
-                        <option value="auto">অটো</option>
-                        <option value="1080">1080p</option>
-                        <option value="720">720p</option>
-                        <option value="480">480p</option>
-                        <option value="360">360p</option>
-                    </select>
-                    <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+            <div class="hero-content">
+                <div class="badge">🔥 Trending</div>
+                <h1 id="heroTitle">LEgUle Sa <span>Live</span></h1>
+                <p id="heroDesc">The best live streaming platform. Watch anytime, anywhere.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" id="heroWatchBtn"><i class="fas fa-play"></i> Watch Now</button>
+                    <button class="btn-secondary" id="heroInfoBtn"><i class="fas fa-info-circle"></i> More Info</button>
                 </div>
-                <div class="right-controls">
-                    <button id="volumeDownBtn"><i class="fas fa-volume-down"></i></button>
-                    <input type="range" id="volumeSlider" min="0" max="100" value="80" />
-                    <button id="volumeUpBtn"><i class="fas fa-volume-up"></i></button>
-                    <button id="speedBtn"><i class="fas fa-tachometer-alt"></i> <span id="speedText">1x</span></button>
-                    <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3 id="statStreams">10K+</h3>
+                        <p>Live Streams</p>
+                    </div>
+                    <div class="stat">
+                        <h3 id="statUsers">50K+</h3>
+                        <p>Active Users</p>
+                    </div>
+                    <div class="stat">
+                        <h3 id="statChannels">100+</h3>
+                        <p>Channels</p>
+                    </div>
                 </div>
-            </div>
-
-            <!-- লাইক ও শেয়ার -->
-            <div class="video-actions">
-                <button class="action-btn" id="likeBtn">
-                    <i class="fas fa-heart"></i>
-                    <span class="count" id="likeCount">0</span>
-                </button>
-                <button class="action-btn" id="shareBtn">
-                    <i class="fas fa-share-alt"></i>
-                    <span>শেয়ার</span>
-                </button>
-                <span id="currentVideoId" style="display:none;"></span>
-            </div>
-
-            <!-- এম্বেড নোটিস -->
-            <div class="embed-notice" id="embedNotice">
-                <i class="fas fa-info-circle"></i> YouTube/ভিডিও প্ল্যাটফর্মের কন্টেন্ট এম্বেড প্লেয়ারে দেখানো হচ্ছে।
             </div>
         </section>
 
-        <!-- বিজ্ঞাপন -->
-        <section class="ad-section">
-            <div class="ad-container" id="adContainer"></div>
+        <!-- ====== VIDEO PLAYER (FULL UPDATED) ====== -->
+        <section class="video-player-section" id="videoPlayerSection">
+            <div class="player-container">
+                <div class="custom-video-wrapper" id="playerWrapper">
+                    <video id="mainVideo" playsinline preload="metadata">
+                        <source id="videoSource" src="" type="application/x-mpegURL" />
+                        <source id="videoSourceMp4" src="" type="video/mp4" />
+                        Your browser does not support video.
+                    </video>
+                    <iframe id="embedPlayer" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+                    <div class="live-indicator" id="liveIndicator">
+                        <span class="pulse"></span>
+                        <span>Live</span>
+                    </div>
+
+                    <div class="ad-overlay" id="adOverlay">
+                        <div class="ad-label">Advertisement</div>
+                        <div class="ad-timer" id="adTimer">5s</div>
+                        <div class="ad-content" id="adContent">
+                            <img id="adImage" src="" alt="Advertisement" style="display:none;" />
+                            <video id="adVideo" muted autoplay playsinline style="display:none;"></video>
+                        </div>
+                        <button class="skip-btn" id="skipAdBtn">Skip Ad <i class="fas fa-forward"></i></button>
+                    </div>
+
+                    <div class="video-controls-overlay" id="customControls">
+                        <div class="progress-bar-container" id="progressBar">
+                            <div class="progress-filled" id="progressFilled"></div>
+                        </div>
+                        <div class="controls-row">
+                            <button id="playPauseBtn" title="Play/Pause"><i class="fas fa-play"></i></button>
+                            <button id="muteBtn" title="Mute/Unmute"><i class="fas fa-volume-up"></i></button>
+                            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" title="Volume" />
+                            <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                            <select class="speed-select" id="speedSelect" title="Speed">
+                                <option value="0.5">0.5x</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1x</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+                            <select class="quality-select" id="qualitySelect" title="Quality">
+                                <option value="auto">Auto</option>
+                                <option value="1080">1080p</option>
+                                <option value="720">720p</option>
+                                <option value="480">480p</option>
+                                <option value="360">360p</option>
+                            </select>
+                            <div class="right-controls">
+                                <button id="pipBtn" title="Picture-in-Picture"><i class="fas fa-window-restore"></i></button>
+                                <button id="fullscreenBtn" title="Fullscreen"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== VIDEO INFO (BELOW PLAYER) ===== -->
+                <div class="video-info" id="videoInfo">
+                    <h2 class="video-title" id="streamTitle">Select a stream</h2>
+                    <div class="video-meta">
+                        <span class="channel-name" id="streamChannel">Channel</span>
+                        <span class="video-views" id="videoViews">0 views</span>
+                        <span class="video-date" id="videoDate"></span>
+                    </div>
+                    <div class="video-actions-row">
+                        <button class="action-btn" id="likeBtn">
+                            <i class="fas fa-heart"></i>
+                            <span class="count" id="likeCount">0</span>
+                        </button>
+                        <button class="action-btn" id="shareBtn">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Share</span>
+                        </button>
+                        <button class="action-btn" id="downloadBtn">
+                            <i class="fas fa-download"></i>
+                            <span>Download</span>
+                        </button>
+                        <button class="action-btn" id="saveBtn">
+                            <i class="fas fa-bookmark"></i>
+                            <span>Save</span>
+                        </button>
+                        <button class="action-btn" id="subscribeBtn">
+                            <i class="fas fa-bell"></i>
+                            <span id="subscribeText">Subscribe</span>
+                        </button>
+                        <span id="currentVideoId" style="display:none;"></span>
+                        <span id="currentVideoUrl" style="display:none;"></span>
+                    </div>
+                </div>
+
+                <!-- ===== RECOMMENDED SECTION ===== -->
+                <div class="recommended-section" id="recommendedSection">
+                    <h3 class="recommended-title"><i class="fas fa-play-circle"></i> Recommended Videos</h3>
+                    <div class="recommended-grid" id="recommendedGrid"></div>
+                </div>
+            </div>
         </section>
 
-        <!-- অন্যান্য লাইভ স্ট্রিম -->
-        <section class="other-streams">
-            <h2><i class="fas fa-broadcast-tower"></i> অন্যান্য লাইভ স্ট্রিম</h2>
-            <div class="stream-grid" id="streamGrid"></div>
-        </section>
+        <!-- ====== ROWS ====== -->
+        <div id="rowsContainer">
+            <div class="row-container">
+                <div class="section-title"><i class="fas fa-fire"></i> Trending Now <span class="view-all" data-category="all">View All →</span></div>
+                <div class="row-scroll" id="trendingRow"></div>
+            </div>
+            <div class="row-container">
+                <div class="section-title"><i class="fas fa-broadcast-tower" style="color:#e50914;"></i> Live Now <span class="view-all" data-category="live">View All →</span></div>
+                <div class="row-scroll" id="liveRow"></div>
+            </div>
+            <div class="row-container">
+                <div class="section-title"><i class="fas fa-film"></i> Movies <span class="view-all" data-category="movie">View All →</span></div>
+                <div class="row-scroll" id="movieRow"></div>
+            </div>
+            <div class="row-container">
+                <div class="section-title"><i class="fas fa-tv"></i> Series <span class="view-all" data-category="series">View All →</span></div>
+                <div class="row-scroll" id="seriesRow"></div>
+            </div>
+            <div class="row-container">
+                <div class="section-title"><i class="fas fa-child"></i> Cartoon <span class="view-all" data-category="cartoon">View All →</span></div>
+                <div class="row-scroll" id="cartoonRow"></div>
+            </div>
+            <div class="row-container">
+                <div class="section-title"><i class="fas fa-football-ball"></i> Sports <span class="view-all" data-category="sports">View All →</span></div>
+                <div class="row-scroll" id="sportsRow"></div>
+            </div>
+        </div>
+
+        <!-- ====== GRID VIEW ====== -->
+        <div class="row-container" id="gridView" style="display:none;">
+            <div class="section-title">
+                <i class="fas fa-th-large"></i> All Videos
+                <span class="view-all" id="closeGridView">× Close</span>
+            </div>
+            <div class="stream-grid" id="streamGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;"></div>
+        </div>
 
     </main>
 
-    <!-- ====== ফুটার ====== -->
+    <!-- ====== FOOTER ====== -->
     <footer>
-        <p>&copy; 2026 LEgUle Sa - সর্বস্বত্ব সংরক্ষিত</p>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4><i class="fas fa-bolt" style="color:#e50914;"></i> LEgUle Sa</h4>
+                <p>The best live streaming platform.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="#" data-category="all">Home</a>
+                <a href="#" data-category="live">Live</a>
+                <a href="#" data-category="movie">Movies</a>
+                <a href="#" data-category="series">Series</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>App Download</h4>
+                <a href="#"><i class="fab fa-google-play"></i> Google Play</a>
+                <a href="#"><i class="fab fa-apple"></i> App Store</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 LEgUle Sa. All rights reserved.</p>
+        </div>
     </footer>
 
     <!-- ============================================================ -->
-    <!-- =============== ফায়ারবেস + জাভাস্ক্রিপ্ট ================== -->
+    <!-- =============== FIREBASE + JAVASCRIPT ====================== -->
     <!-- ============================================================ -->
 
     <script type="importmap">
         {
             "imports": {
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
+                "firebase/storage": "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"
             }
         }
     </script>
 
     <script type="module">
-        // ----- ইমপোর্ট -----
+        // ============================================================
+        // FIREBASE IMPORTS
+        // ============================================================
         import { initializeApp } from "firebase/app";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider,
+            FacebookAuthProvider,
+            onAuthStateChanged,
+            signOut,
+            updateProfile,
+            updatePassword
+        } from "firebase/auth";
         import {
             getFirestore,
             collection,
+            addDoc,
             onSnapshot,
+            doc,
+            deleteDoc,
             query,
             orderBy,
-            doc,
+            getDoc,
+            setDoc,
             updateDoc,
             increment,
-            getDoc,
-            setDoc
+            where,
+            getDocs,
+            serverTimestamp
         } from "firebase/firestore";
+        import {
+            getStorage,
+            ref,
+            uploadBytes,
+            getDownloadURL
+        } from "firebase/storage";
 
-        // ----- Firebase কনফিগারেশন -----
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBimdIKDEfbTa2PJyX5MY9Z585clkFZz98",
             authDomain: "legule-sa.firebaseapp.com",
@@ -691,11 +1600,56 @@
             measurementId: "G-Q7R70R2XZ1"
         };
 
-        // ইনিৎ
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+        const facebookProvider = new FacebookAuthProvider();
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
-        // ----- DOM রেফারেন্স -----
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const header = document.getElementById('header');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+        const mobileSignupBtn = document.getElementById('mobileSignupBtn');
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        const loginOpenBtn = document.getElementById('loginOpenBtn');
+        const signupOpenBtn = document.getElementById('signupOpenBtn');
+        const userProfile = document.getElementById('userProfile');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        const authModal = document.getElementById('authModal');
+        const closeAuthModal = document.getElementById('closeAuthModal');
+        const authTitle = document.getElementById('authTitle');
+        const authSubtitle = document.getElementById('authSubtitle');
+        const authForm = document.getElementById('authForm');
+        const authEmail = document.getElementById('authEmail');
+        const authPassword = document.getElementById('authPassword');
+        const authName = document.getElementById('authName');
+        const nameGroup = document.getElementById('nameGroup');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const authError = document.getElementById('authError');
+        const authSwitchText = document.getElementById('authSwitchText');
+        const authSwitchLink = document.getElementById('authSwitchLink');
+        const googleAuthBtn = document.getElementById('googleAuthBtn');
+        const facebookAuthBtn = document.getElementById('facebookAuthBtn');
+
+        const heroSection = document.getElementById('heroSection');
+        const heroImage = document.getElementById('heroImage');
+        const heroVideo = document.getElementById('heroVideo');
+        const heroTitle = document.getElementById('heroTitle');
+        const heroDesc = document.getElementById('heroDesc');
+        const heroWatchBtn = document.getElementById('heroWatchBtn');
+        const heroInfoBtn = document.getElementById('heroInfoBtn');
+
+        const videoPlayerSection = document.getElementById('videoPlayerSection');
         const video = document.getElementById('mainVideo');
         const videoSource = document.getElementById('videoSource');
         const videoSourceMp4 = document.getElementById('videoSourceMp4');
@@ -703,65 +1657,492 @@
         const playerWrapper = document.getElementById('playerWrapper');
         const streamTitle = document.getElementById('streamTitle');
         const streamChannel = document.getElementById('streamChannel');
-        const qualitySelect = document.getElementById('qualitySelect');
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const volumeUpBtn = document.getElementById('volumeUpBtn');
-        const volumeDownBtn = document.getElementById('volumeDownBtn');
-        const volumeSlider = document.getElementById('volumeSlider');
+        const videoViews = document.getElementById('videoViews');
+        const videoDate = document.getElementById('videoDate');
+        const liveIndicator = document.getElementById('liveIndicator');
+
+        // Controls
         const playPauseBtn = document.getElementById('playPauseBtn');
-        const speedBtn = document.getElementById('speedBtn');
-        const speedText = document.getElementById('speedText');
-        const streamGrid = document.getElementById('streamGrid');
-        const adContainer = document.getElementById('adContainer');
-        const embedNotice = document.getElementById('embedNotice');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const progressBar = document.getElementById('progressBar');
+        const progressFilled = document.getElementById('progressFilled');
+        const speedSelect = document.getElementById('speedSelect');
+        const qualitySelect = document.getElementById('qualitySelect');
+        const pipBtn = document.getElementById('pipBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const customControls = document.getElementById('customControls');
+
         const likeBtn = document.getElementById('likeBtn');
         const likeCount = document.getElementById('likeCount');
         const shareBtn = document.getElementById('shareBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const subscribeBtn = document.getElementById('subscribeBtn');
+        const subscribeText = document.getElementById('subscribeText');
         const currentVideoId = document.getElementById('currentVideoId');
-        const liveIndicator = document.getElementById('liveIndicator');
+        const currentVideoUrl = document.getElementById('currentVideoUrl');
 
+        const adOverlay = document.getElementById('adOverlay');
+        const adTimer = document.getElementById('adTimer');
+        const adImage = document.getElementById('adImage');
+        const adVideo = document.getElementById('adVideo');
+        const adContent = document.getElementById('adContent');
+        const skipAdBtn = document.getElementById('skipAdBtn');
+
+        const trendingRow = document.getElementById('trendingRow');
+        const liveRow = document.getElementById('liveRow');
+        const movieRow = document.getElementById('movieRow');
+        const seriesRow = document.getElementById('seriesRow');
+        const cartoonRow = document.getElementById('cartoonRow');
+        const sportsRow = document.getElementById('sportsRow');
+        const streamGrid = document.getElementById('streamGrid');
+        const gridView = document.getElementById('gridView');
+        const closeGridView = document.getElementById('closeGridView');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const logoHome = document.getElementById('logoHome');
+        const navLinks = document.querySelectorAll('.nav-menu a[data-category]');
+        const mobileNavLinks = document.querySelectorAll('.mobile-menu a[data-category]');
+        const viewAllBtns = document.querySelectorAll('.view-all[data-category]');
+        const recommendedGrid = document.getElementById('recommendedGrid');
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentUser = null;
+        let currentUserData = null;
+        let isAuthModeLogin = true;
         let currentStreamUrl = '';
         let currentStreamId = '';
         let currentStreamName = '';
         let currentStreamChannel = '';
         let isLiked = false;
-        let isPlaying = false;
-        let currentSpeed = 1;
         let liveIndicatorTimeout = null;
+        let allStreams = [];
+        let adsList = [];
+        let adSkipped = false;
+        let adTimerInterval = null;
+        let currentCategory = 'all';
+        let searchTerm = '';
+        let controlsTimeout = null;
+        let isDragging = false;
 
-        // ===== লাইভ ইন্ডিকেটর ফাংশন =====
-        function showLiveIndicator() {
-            liveIndicator.classList.add('show');
-            clearTimeout(liveIndicatorTimeout);
-            liveIndicatorTimeout = setTimeout(() => {
-                liveIndicator.classList.remove('show');
-            }, 3000);
+        // ============================================================
+        // AUTH FUNCTIONS
+        // ============================================================
+        function showAuthModal(mode = 'login') {
+            isAuthModeLogin = mode === 'login';
+            authModal.classList.add('active');
+            authError.classList.remove('show');
+            authError.textContent = '';
+            if (mode === 'login') {
+                authTitle.textContent = 'Login';
+                authSubtitle.textContent = 'Login to your account';
+                authSubmitBtn.textContent = 'Login';
+                authSwitchText.innerHTML = 'New? <a id="authSwitchLink">Sign Up</a>';
+                nameGroup.style.display = 'none';
+                authName.removeAttribute('required');
+            } else {
+                authTitle.textContent = 'Sign Up';
+                authSubtitle.textContent = 'Create a new account';
+                authSubmitBtn.textContent = 'Sign Up';
+                authSwitchText.innerHTML = 'Already have an account? <a id="authSwitchLink">Login</a>';
+                nameGroup.style.display = 'block';
+                authName.setAttribute('required', 'required');
+            }
+            document.getElementById('authSwitchLink').addEventListener('click', () => {
+                showAuthModal(isAuthModeLogin ? 'signup' : 'login');
+            });
         }
 
-        // লাইভ ইন্ডিকেটর ক্লিক করলে আবার দেখাবে
-        liveIndicator.addEventListener('click', () => {
-            liveIndicator.classList.add('show');
-            clearTimeout(liveIndicatorTimeout);
-            liveIndicatorTimeout = setTimeout(() => {
-                liveIndicator.classList.remove('show');
-            }, 3000);
+        function closeAuthModalFn() {
+            authModal.classList.remove('active');
+            authError.classList.remove('show');
+            authForm.reset();
+        }
+
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = authEmail.value.trim();
+            const password = authPassword.value.trim();
+            const name = authName.value.trim();
+            if (!email || !password) {
+                authError.textContent = 'Please enter email and password!';
+                authError.classList.add('show');
+                return;
+            }
+            authSubmitBtn.disabled = true;
+            authSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            authError.classList.remove('show');
+            try {
+                if (isAuthModeLogin) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    closeAuthModalFn();
+                } else {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    if (name) await updateProfile(userCredential.user, { displayName: name });
+                    await setDoc(doc(db, 'users', userCredential.user.uid), {
+                        name: name || 'User',
+                        email: email,
+                        createdAt: serverTimestamp(),
+                        subscription: 'free',
+                        avatar: ''
+                    });
+                    closeAuthModalFn();
+                }
+            } catch (error) {
+                console.error(error);
+                authError.textContent = error.message;
+                authError.classList.add('show');
+            } finally {
+                authSubmitBtn.disabled = false;
+                authSubmitBtn.textContent = isAuthModeLogin ? 'Login' : 'Sign Up';
+            }
         });
 
-        // ===== ইউআরএল ডিটেক্ট =====
+        googleAuthBtn.addEventListener('click', async () => {
+            googleAuthBtn.disabled = true;
+            googleAuthBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                const userRef = doc(db, 'users', user.uid);
+                const userSnap = await getDoc(userRef);
+                if (!userSnap.exists()) {
+                    await setDoc(userRef, {
+                        name: user.displayName || 'User',
+                        email: user.email,
+                        createdAt: serverTimestamp(),
+                        subscription: 'free',
+                        avatar: user.photoURL || ''
+                    });
+                }
+                closeAuthModalFn();
+            } catch (error) {
+                console.error(error);
+                authError.textContent = error.message;
+                authError.classList.add('show');
+            } finally {
+                googleAuthBtn.disabled = false;
+                googleAuthBtn.innerHTML = '<i class="fab fa-google"></i> Google';
+            }
+        });
+
+        facebookAuthBtn.addEventListener('click', async () => {
+            facebookAuthBtn.disabled = true;
+            facebookAuthBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            try {
+                const result = await signInWithPopup(auth, facebookProvider);
+                const user = result.user;
+                const userRef = doc(db, 'users', user.uid);
+                const userSnap = await getDoc(userRef);
+                if (!userSnap.exists()) {
+                    await setDoc(userRef, {
+                        name: user.displayName || 'User',
+                        email: user.email,
+                        createdAt: serverTimestamp(),
+                        subscription: 'free',
+                        avatar: user.photoURL || ''
+                    });
+                }
+                closeAuthModalFn();
+            } catch (error) {
+                console.error(error);
+                authError.textContent = error.message;
+                authError.classList.add('show');
+            } finally {
+                facebookAuthBtn.disabled = false;
+                facebookAuthBtn.innerHTML = '<i class="fab fa-facebook"></i> Facebook';
+            }
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const userRef = doc(db, 'users', user.uid);
+                const userSnap = await getDoc(userRef);
+                if (userSnap.exists()) {
+                    currentUserData = userSnap.data();
+                    userName.textContent = currentUserData.name || 'User';
+                    userAvatar.textContent = (currentUserData.name || 'U')[0].toUpperCase();
+                    if (currentUserData.avatar) {
+                        userAvatar.style.backgroundImage = `url(${currentUserData.avatar})`;
+                        userAvatar.style.backgroundSize = 'cover';
+                        userAvatar.textContent = '';
+                    }
+                } else {
+                    userName.textContent = user.email || 'User';
+                    userAvatar.textContent = (user.displayName || 'U')[0].toUpperCase();
+                }
+                userProfile.style.display = 'flex';
+                document.querySelector('.auth-buttons').style.display = 'none';
+                mobileLogoutBtn.style.display = 'block';
+                mobileLoginBtn.style.display = 'none';
+                mobileSignupBtn.style.display = 'none';
+            } else {
+                currentUser = null;
+                currentUserData = null;
+                userProfile.style.display = 'none';
+                document.querySelector('.auth-buttons').style.display = 'flex';
+                mobileLogoutBtn.style.display = 'none';
+                mobileLoginBtn.style.display = 'block';
+                mobileSignupBtn.style.display = 'block';
+            }
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+            try { await signOut(auth); profileDropdown.classList.remove('active'); } catch (error) { console.error(error); }
+        });
+
+        window.logoutUser = async function() {
+            try { await signOut(auth); mobileMenu.classList.remove('active'); } catch (error) { console.error(error); }
+        };
+
+        // ============================================================
+        // PROFILE MODAL
+        // ============================================================
+        function showProfileModal() {
+            if (!currentUser) {
+                alert('Please login first!');
+                showAuthModal('login');
+                return;
+            }
+
+            // Remove existing modal if any
+            const existing = document.getElementById('profileModal');
+            if (existing) existing.remove();
+
+            const modalHtml = `
+                <div class="modal-overlay active" id="profileModal" style="display:flex;">
+                    <div class="modal-box" style="max-width:450px;">
+                        <div class="modal-header">
+                            <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
+                            <span class="close-modal" onclick="document.getElementById('profileModal').remove()"><i class="fas fa-times"></i></span>
+                        </div>
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label>Display Name</label>
+                                <input type="text" id="profileName" value="${currentUserData?.name || ''}" placeholder="Your name" />
+                            </div>
+                            <div class="form-group">
+                                <label>Profile Picture (Upload)</label>
+                                <input type="file" id="profilePic" accept="image/*" />
+                                <div class="image-preview" id="profilePicPreview" style="${currentUserData?.avatar ? 'display:block;' : 'display:none;'}">
+                                    <img id="profilePicImg" src="${currentUserData?.avatar || ''}" alt="Preview" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password (leave blank to keep current)</label>
+                                <input type="password" id="profilePassword" placeholder="Enter new password" />
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit" id="profileSaveBtn">Save Changes</button>
+                                <button type="button" class="btn-cancel" onclick="document.getElementById('profileModal').remove()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            // Preview
+            document.getElementById('profilePic').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        const img = document.getElementById('profilePicImg');
+                        img.src = ev.target.result;
+                        document.getElementById('profilePicPreview').style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Submit
+            document.getElementById('profileForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('profileName').value.trim();
+                const password = document.getElementById('profilePassword').value.trim();
+                const picFile = document.getElementById('profilePic').files[0];
+
+                const saveBtn = document.getElementById('profileSaveBtn');
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Saving...';
+
+                try {
+                    let avatarUrl = currentUserData?.avatar || '';
+
+                    if (picFile) {
+                        avatarUrl = await uploadToCloudinary(picFile);
+                    }
+
+                    if (name && name !== currentUserData?.name) {
+                        await updateProfile(currentUser, { displayName: name });
+                    }
+
+                    if (password && password.length >= 6) {
+                        await updatePassword(currentUser, password);
+                    }
+
+                    const userRef = doc(db, 'users', currentUser.uid);
+                    await updateDoc(userRef, {
+                        name: name || currentUserData?.name || 'User',
+                        avatar: avatarUrl,
+                        updatedAt: serverTimestamp()
+                    });
+
+                    userName.textContent = name || currentUserData?.name || 'User';
+                    userAvatar.textContent = (name || 'U')[0].toUpperCase();
+                    if (avatarUrl) {
+                        userAvatar.style.backgroundImage = `url(${avatarUrl})`;
+                        userAvatar.style.backgroundSize = 'cover';
+                        userAvatar.textContent = '';
+                    }
+                    currentUserData.name = name || currentUserData?.name || 'User';
+                    currentUserData.avatar = avatarUrl;
+
+                    showToast('✅ Profile updated successfully!', 'success');
+                    document.getElementById('profileModal').remove();
+
+                } catch (error) {
+                    console.error(error);
+                    alert('Error updating profile: ' + error.message);
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save Changes';
+                }
+            });
+        }
+
+        document.getElementById('profileBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            profileDropdown.classList.remove('active');
+            showProfileModal();
+        });
+
+        // ============================================================
+        // CLOUDINARY UPLOAD
+        // ============================================================
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'apna45');
+            formData.append('cloud_name', 'drwjjz7l7');
+            try {
+                const response = await fetch('https://api.cloudinary.com/v1_1/drwjjz7l7/image/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.secure_url) return data.secure_url;
+                throw new Error(data.error?.message || 'Upload failed');
+            } catch (error) {
+                console.error('Cloudinary error:', error);
+                throw error;
+            }
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.4s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // ============================================================
+        // AD SYSTEM
+        // ============================================================
+        function loadAdsList() {
+            const q = query(collection(db, 'ads'), where('active', '==', true));
+            onSnapshot(q, (snapshot) => {
+                adsList = [];
+                snapshot.forEach(doc => { adsList.push({ id: doc.id, ...doc.data() }); });
+            });
+        }
+
+        function showAd() {
+            if (currentUserData && currentUserData.subscription === 'premium') {
+                resumeVideo();
+                return;
+            }
+            if (adSkipped) { resumeVideo(); return; }
+            const availableAds = adsList.filter(a => a.active);
+            if (availableAds.length === 0) { resumeVideo(); return; }
+            const randomAd = availableAds[Math.floor(Math.random() * availableAds.length)];
+            if (randomAd.imageUrl) {
+                adImage.src = randomAd.imageUrl;
+                adImage.style.display = 'block';
+                adVideo.style.display = 'none';
+                adVideo.pause();
+            } else if (randomAd.videoUrl) {
+                adVideo.src = randomAd.videoUrl;
+                adVideo.style.display = 'block';
+                adImage.style.display = 'none';
+                adVideo.load();
+                adVideo.play().catch(e => {});
+            }
+            adOverlay.classList.add('active');
+            video.pause();
+            let timeLeft = randomAd.duration || 5;
+            adTimer.textContent = timeLeft + 's';
+            skipAdBtn.classList.remove('active');
+            clearInterval(adTimerInterval);
+            adTimerInterval = setInterval(() => {
+                timeLeft--;
+                adTimer.textContent = timeLeft + 's';
+                if (timeLeft <= 0) {
+                    clearInterval(adTimerInterval);
+                    skipAdBtn.classList.add('active');
+                    adTimer.textContent = 'Skip';
+                }
+            }, 1000);
+            skipAdBtn.onclick = () => {
+                if (skipAdBtn.classList.contains('active')) {
+                    clearInterval(adTimerInterval);
+                    adOverlay.classList.remove('active');
+                    adSkipped = true;
+                    resumeVideo();
+                }
+            };
+            setTimeout(() => {
+                if (adOverlay.classList.contains('active')) {
+                    clearInterval(adTimerInterval);
+                    adOverlay.classList.remove('active');
+                    adSkipped = true;
+                    resumeVideo();
+                }
+            }, (randomAd.duration || 5) * 1000 + 1000);
+        }
+
+        function resumeVideo() {
+            if (video.paused && video.currentTime > 0) {
+                video.play().catch(e => {});
+            }
+        }
+
+        // ============================================================
+        // URL HELPERS
+        // ============================================================
         function isYouTubeUrl(url) {
-            return url.includes('youtube.com/watch') ||
-                url.includes('youtu.be/') ||
-                url.includes('youtube.com/embed/') ||
-                url.includes('youtube.com/live/') ||
+            return url.includes('youtube.com/watch') || url.includes('youtu.be/') ||
+                url.includes('youtube.com/embed/') || url.includes('youtube.com/live/') ||
                 url.includes('youtube.com/shorts/');
         }
 
         function isEmbeddableUrl(url) {
-            return isYouTubeUrl(url) ||
-                url.includes('facebook.com') ||
-                url.includes('dailymotion.com') ||
-                url.includes('vimeo.com') ||
-                url.includes('twitch.tv');
+            return isYouTubeUrl(url) || url.includes('facebook.com') || url.includes('dailymotion.com') ||
+                url.includes('vimeo.com') || url.includes('twitch.tv');
         }
 
         function getEmbedUrl(url) {
@@ -778,340 +2159,745 @@
                 } else if (url.includes('youtube.com/shorts/')) {
                     videoId = url.split('youtube.com/shorts/')[1]?.split('?')[0] || '';
                 }
-                if (videoId) {
-                    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-                }
+                if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
             }
             if (url.includes('vimeo.com')) {
                 const videoId = url.split('vimeo.com/')[1]?.split('/')[0] || '';
-                if (videoId) {
-                    return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
-                }
+                if (videoId) return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
             }
             if (url.includes('dailymotion.com')) {
                 const videoId = url.split('dailymotion.com/video/')[1]?.split('_')[0] || '';
-                if (videoId) {
-                    return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
-                }
+                if (videoId) return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
             }
             return url;
         }
 
-        // ===== ভিডিও লোড =====
-        function loadVideo(url, name = '', channel = '', videoId = '') {
+        // ============================================================
+        // VIDEO LOAD (UPDATED)
+        // ============================================================
+        function loadVideo(url, name = '', channel = '', videoId = '', category = '') {
             if (!url) return;
             currentStreamUrl = url;
-            currentStreamName = name || 'লাইভ স্ট্রিম';
-            currentStreamChannel = channel || 'চ্যানেল';
+            currentStreamName = name || 'Live Stream';
+            currentStreamChannel = channel || 'Channel';
             currentStreamId = videoId || '';
+            adSkipped = false;
 
-            // সব লুকান
+            // Hide hero, show player
+            heroSection.style.display = 'none';
+            videoPlayerSection.style.display = 'block';
+            document.getElementById('rowsContainer').style.display = 'none';
+            gridView.style.display = 'none';
+
+            // Hide all video elements
             video.style.display = 'none';
             embedPlayer.style.display = 'none';
-            embedNotice.style.display = 'none';
+            videoSource.src = '';
+            videoSourceMp4.src = '';
+            embedPlayer.src = '';
+
+            // Update video info (BELOW the player)
+            streamTitle.textContent = name || 'Live Stream';
+            streamChannel.textContent = channel || 'Channel';
+            videoViews.textContent = (Math.floor(Math.random() * 10000) + 1000) + ' views';
+            videoDate.textContent = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
             qualitySelect.disabled = false;
 
-            // লাইভ ইন্ডিকেটর দেখান
-            showLiveIndicator();
-
-            // URL আপডেট (শেয়ারের জন্য)
-            const newUrl = new URL(window.location);
-            if (videoId) {
-                newUrl.searchParams.set('v', videoId);
-            } else {
-                newUrl.searchParams.delete('v');
-            }
-            window.history.replaceState({}, '', newUrl);
-
-            // ভিডিও লোড
             if (isEmbeddableUrl(url)) {
                 const embedUrl = getEmbedUrl(url);
                 embedPlayer.src = embedUrl;
                 embedPlayer.style.display = 'block';
-                embedNotice.style.display = 'block';
-                streamTitle.textContent = name || 'এম্বেড ভিডিও';
-                streamChannel.textContent = channel || 'প্ল্যাটফর্ম';
                 qualitySelect.disabled = true;
-                // এম্বেডের জন্য ভলিউম কন্ট্রোল ডিজেবল
-                video.style.display = 'none';
             } else if (url.endsWith('.m3u8') || url.includes('.m3u8')) {
                 videoSource.src = url;
-                videoSourceMp4.src = '';
                 video.load();
-                video.play().catch(e => console.log('অটোপ্লে ব্লক:', e));
+                video.play().catch(e => console.log('Autoplay blocked:', e));
                 video.style.display = 'block';
-                streamTitle.textContent = name || 'লাইভ স্ট্রিম';
-                streamChannel.textContent = channel || 'চ্যানেল';
-                qualitySelect.disabled = false;
             } else if (url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg')) {
                 videoSourceMp4.src = url;
-                videoSource.src = '';
                 video.load();
-                video.play().catch(e => console.log('অটোপ্লে ব্লক:', e));
+                video.play().catch(e => console.log('Autoplay blocked:', e));
                 video.style.display = 'block';
-                streamTitle.textContent = name || 'ভিডিও';
-                streamChannel.textContent = channel || 'ফাইল';
-                qualitySelect.disabled = false;
             } else {
-                try {
-                    new URL(url);
-                    embedPlayer.src = url;
-                    embedPlayer.style.display = 'block';
-                    embedNotice.style.display = 'block';
-                    streamTitle.textContent = name || 'এম্বেড কন্টেন্ট';
-                    streamChannel.textContent = channel || 'প্ল্যাটফর্ম';
-                    qualitySelect.disabled = true;
-                    video.style.display = 'none';
-                } catch {
-                    alert('❌ এই URL সাপোর্টেড নয়! YouTube, M3U8 বা MP4 URL দিন।');
-                }
+                embedPlayer.src = url;
+                embedPlayer.style.display = 'block';
+                qualitySelect.disabled = true;
             }
 
-            // লাইক রিসেট
+            showLiveIndicator();
+
+            const newUrl = new URL(window.location);
+            if (videoId) newUrl.searchParams.set('v', videoId);
+            else newUrl.searchParams.delete('v');
+            window.history.replaceState({}, '', newUrl);
+
             isLiked = false;
             likeBtn.classList.remove('liked');
-            if (videoId) {
-                loadLikes(videoId);
-            } else {
-                likeCount.textContent = '0';
-            }
+            if (videoId) loadLikes(videoId);
+            else likeCount.textContent = '0';
             currentVideoId.textContent = videoId || url;
+            currentVideoUrl.textContent = url;
+
+            // Load recommended
+            loadRecommended(videoId);
+
+            // Update subscribe button
+            updateSubscribeButton(channel);
+
+            setTimeout(() => customControls.classList.add('show'), 300);
         }
 
-        // ===== লাইক ফাংশন =====
+        function showLiveIndicator() {
+            liveIndicator.classList.add('show');
+            clearTimeout(liveIndicatorTimeout);
+            liveIndicatorTimeout = setTimeout(() => {
+                liveIndicator.classList.remove('show');
+            }, 3000);
+        }
+
+        liveIndicator.addEventListener('click', () => {
+            liveIndicator.classList.add('show');
+            clearTimeout(liveIndicatorTimeout);
+            liveIndicatorTimeout = setTimeout(() => {
+                liveIndicator.classList.remove('show');
+            }, 3000);
+        });
+
+        // ============================================================
+        // RECOMMENDED VIDEOS
+        // ============================================================
+        function loadRecommended(excludeId) {
+            recommendedGrid.innerHTML = '';
+            let recs = allStreams.filter(s => s.id !== excludeId);
+            recs = recs.sort(() => 0.5 - Math.random()).slice(0, 6);
+            if (recs.length === 0) {
+                recommendedGrid.innerHTML =
+                    `<div style="grid-column:1/-1;text-align:center;padding:20px;color:#555;font-size:14px;">No recommendations available</div>`;
+                return;
+            }
+            recs.forEach((data) => {
+                const card = document.createElement('div');
+                card.className = 'rec-card';
+                card.innerHTML = `
+                    <div class="thumb">
+                        <img src="${data.thumbnail || 'https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'}" 
+                             alt="${data.name}" 
+                             onerror="this.src='https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'"
+                             loading="lazy">
+                        ${data.category === 'live' ? '<span style="position:absolute;top:6px;left:6px;background:#e50914;color:#fff;font-size:9px;font-weight:700;padding:1px 8px;border-radius:3px;">LIVE</span>' : ''}
+                    </div>
+                    <div class="rec-info">
+                        <h4>${data.name || 'Untitled'}</h4>
+                        <p>${data.channel || 'Channel'}</p>
+                        <div class="rec-views">${data.views || 0} views</div>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    if (data.url) {
+                        loadVideo(data.url, data.name, data.channel, data.id, data.category);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+                recommendedGrid.appendChild(card);
+            });
+        }
+
+        // ============================================================
+        // SUBSCRIBE
+        // ============================================================
+        function updateSubscribeButton(channelName) {
+            if (!currentUser) {
+                subscribeText.textContent = 'Subscribe';
+                subscribeBtn.classList.remove('subscribed');
+                return;
+            }
+            if (!channelName || channelName === 'Channel') {
+                subscribeText.textContent = 'Subscribe';
+                subscribeBtn.classList.remove('subscribed');
+                return;
+            }
+            const subRef = doc(db, 'users', currentUser.uid, 'subscriptions', channelName);
+            getDoc(subRef).then((snap) => {
+                if (snap.exists() && snap.data().subscribed) {
+                    subscribeText.textContent = 'Subscribed';
+                    subscribeBtn.classList.add('subscribed');
+                } else {
+                    subscribeText.textContent = 'Subscribe';
+                    subscribeBtn.classList.remove('subscribed');
+                }
+            }).catch(() => {
+                subscribeText.textContent = 'Subscribe';
+                subscribeBtn.classList.remove('subscribed');
+            });
+        }
+
+        subscribeBtn.addEventListener('click', async function() {
+            const channel = streamChannel.textContent;
+            if (!currentUser) {
+                alert('Please login to subscribe!');
+                showAuthModal('login');
+                return;
+            }
+            if (!channel || channel === 'Channel') {
+                alert('No channel selected!');
+                return;
+            }
+            try {
+                const subRef = doc(db, 'users', currentUser.uid, 'subscriptions', channel);
+                const snap = await getDoc(subRef);
+                if (snap.exists() && snap.data().subscribed) {
+                    await updateDoc(subRef, { subscribed: false });
+                    subscribeText.textContent = 'Subscribe';
+                    subscribeBtn.classList.remove('subscribed');
+                    showToast('Unsubscribed from ' + channel, 'info');
+                } else {
+                    await setDoc(subRef, {
+                        channel: channel,
+                        subscribed: true,
+                        subscribedAt: serverTimestamp()
+                    });
+                    subscribeText.textContent = 'Subscribed';
+                    subscribeBtn.classList.add('subscribed');
+                    showToast('Subscribed to ' + channel, 'success');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error updating subscription!');
+            }
+        });
+
+        // ============================================================
+        // VIDEO CONTROLS
+        // ============================================================
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) { video.play(); playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; } else { video.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; }
+        });
+        video.addEventListener('play', () => { playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; });
+        video.addEventListener('pause', () => { playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; });
+
+        volumeSlider.addEventListener('input', function() {
+            video.volume = this.value / 100;
+            video.muted = false;
+            updateMuteIcon();
+        });
+        muteBtn.addEventListener('click', () => { video.muted = !video.muted;
+            updateMuteIcon(); });
+
+        function updateMuteIcon() {
+            if (video.muted || video.volume === 0) {
+                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                volumeSlider.value = 0;
+            } else if (video.volume < 0.5) {
+                muteBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+            } else {
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+        }
+        video.addEventListener('volumechange', updateMuteIcon);
+        setTimeout(updateMuteIcon, 100);
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        video.addEventListener('timeupdate', () => {
+            const current = video.currentTime || 0;
+            const duration = video.duration || 0;
+            const percent = duration ? (current / duration) * 100 : 0;
+            progressFilled.style.width = percent + '%';
+            timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+        });
+        video.addEventListener('loadedmetadata', () => {
+            timeDisplay.textContent = `0:00 / ${formatTime(video.duration)}`;
+        });
+
+        progressBar.addEventListener('mousedown', (e) => { isDragging = true;
+            setProgress(e); });
+        window.addEventListener('mousemove', (e) => { if (isDragging) setProgress(e); });
+        window.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                if (video.duration && !isNaN(video.duration)) {
+                    const rect = progressBar.getBoundingClientRect();
+                    const x = Math.min(Math.max(0, (event?.clientX || 0) - rect.left), rect.width);
+                    const percent = x / rect.width;
+                    video.currentTime = percent * video.duration;
+                }
+            }
+        });
+
+        function setProgress(e) {
+            const rect = progressBar.getBoundingClientRect();
+            const x = Math.min(Math.max(0, e.clientX - rect.left), rect.width);
+            const percent = x / rect.width;
+            progressFilled.style.width = (percent * 100) + '%';
+            if (video.duration && !isNaN(video.duration)) {
+                const time = percent * video.duration;
+                timeDisplay.textContent = `${formatTime(time)} / ${formatTime(video.duration)}`;
+            }
+        }
+
+        progressBar.addEventListener('touchstart', (e) => { e.preventDefault();
+            isDragging = true;
+            setProgress(e.touches[0]); });
+        progressBar.addEventListener('touchmove', (e) => { e.preventDefault(); if (isDragging) setProgress(e.touches[0]); });
+        progressBar.addEventListener('touchend', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                if (video.duration && !isNaN(video.duration)) {
+                    const rect = progressBar.getBoundingClientRect();
+                    const touch = e.changedTouches[0];
+                    const x = Math.min(Math.max(0, touch.clientX - rect.left), rect.width);
+                    const percent = x / rect.width;
+                    video.currentTime = percent * video.duration;
+                }
+            }
+        });
+
+        speedSelect.addEventListener('change', function() { video.playbackRate = parseFloat(this.value); });
+        qualitySelect.addEventListener('change', function() { console.log('Quality changed to:', this.value); });
+
+        pipBtn.addEventListener('click', () => {
+            if (document.pictureInPictureElement) { document.exitPictureInPicture(); } else if (document
+                .pictureInPictureEnabled) { video.requestPictureInPicture().catch(e => console.log('PIP error:', e)); }
+        });
+        video.addEventListener('enterpictureinpicture', () => { pipBtn.innerHTML = '<i class="fas fa-compress"></i>'; });
+        video.addEventListener('leavepictureinpicture', () => { pipBtn.innerHTML = '<i class="fas fa-window-restore"></i>'; });
+
+        fullscreenBtn.addEventListener('click', () => {
+            const elem = playerWrapper;
+            if (document.fullscreenElement) { document.exitFullscreen(); } else { elem.requestFullscreen().catch(e =>
+                    console.log('Fullscreen error:', e)); }
+        });
+        document.addEventListener('fullscreenchange', () => {
+            fullscreenBtn.innerHTML = document.fullscreenElement ? '<i class="fas fa-compress"></i>' :
+                '<i class="fas fa-expand"></i>';
+        });
+
+        function showControls() {
+            customControls.classList.add('show');
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => { if (!video.paused) customControls.classList.remove('show'); }, 3000);
+        }
+        playerWrapper.addEventListener('mousemove', showControls);
+        playerWrapper.addEventListener('mouseleave', () => { if (!video.paused) { setTimeout(() => { customControls
+                    .classList.remove('show'); }, 1000); } });
+        video.addEventListener('play', () => { setTimeout(() => { if (!video.paused) customControls.classList.remove(
+                'show'); }, 3000); });
+        video.addEventListener('pause', () => { customControls.classList.add('show'); });
+        setTimeout(() => customControls.classList.add('show'), 500);
+
+        // ============================================================
+        // LIKE, SHARE, DOWNLOAD, SAVE
+        // ============================================================
         async function loadLikes(videoId) {
             if (!videoId) return;
             try {
                 const docRef = doc(db, 'likes', videoId);
                 const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    likeCount.textContent = docSnap.data().count || 0;
-                } else {
-                    likeCount.textContent = '0';
-                }
-            } catch (error) {
-                console.error('লাইক লোড করতে সমস্যা:', error);
-            }
+                likeCount.textContent = docSnap.exists() ? docSnap.data().count || 0 : '0';
+            } catch (error) { console.error(error); }
         }
 
         async function toggleLike() {
             const videoId = currentVideoId.textContent;
-            if (!videoId) {
-                alert('কোন ভিডিও নির্বাচন করা হয়নি!');
-                return;
-            }
-
+            if (!videoId) { alert('No video selected!'); return; }
+            if (!currentUser) { alert('Please login to like!'); showAuthModal('login'); return; }
             try {
                 const docRef = doc(db, 'likes', videoId);
                 const docSnap = await getDoc(docRef);
-
                 if (isLiked) {
-                    if (docSnap.exists()) {
-                        await updateDoc(docRef, { count: increment(-1) });
-                    }
+                    if (docSnap.exists()) await updateDoc(docRef, { count: increment(-1) });
                     isLiked = false;
                     likeBtn.classList.remove('liked');
                 } else {
-                    if (docSnap.exists()) {
-                        await updateDoc(docRef, { count: increment(1) });
-                    } else {
-                        await setDoc(docRef, {
-                            count: 1,
-                            videoId: videoId,
-                            timestamp: new Date().toISOString()
-                        });
-                    }
+                    if (docSnap.exists()) await updateDoc(docRef, { count: increment(1) });
+                    else await setDoc(docRef, { count: 1, videoId, timestamp: serverTimestamp() });
                     isLiked = true;
                     likeBtn.classList.add('liked');
                 }
                 await loadLikes(videoId);
-            } catch (error) {
-                console.error('লাইক আপডেট করতে সমস্যা:', error);
-                alert('লাইক দিতে সমস্যা হয়েছে!');
-            }
+            } catch (error) { console.error(error); alert('Error updating like!'); }
         }
+        likeBtn.addEventListener('click', toggleLike);
 
-        // ===== শেয়ার ফাংশন =====
         function shareVideo() {
             const url = window.location.href;
             if (navigator.share) {
-                navigator.share({
-                    title: currentStreamName || 'LEgUle Sa',
-                    text: `${currentStreamName || 'লাইভ স্ট্রিম'} দেখুন!`,
-                    url: url
-                }).catch(err => console.log('শেয়ার বাতিল:', err));
+                navigator.share({ title: currentStreamName || 'LEgUle Sa', text: `Watch ${currentStreamName || 'Live Stream'} on LEgUle Sa!`, url })
+                    .catch(e => {});
             } else {
-                navigator.clipboard.writeText(url).then(() => {
-                    alert('✅ লিংক কপি করা হয়েছে!');
-                }).catch(() => {
+                navigator.clipboard.writeText(url).then(() => showToast('✅ Link copied!', 'success')).catch(() => {
                     const textarea = document.createElement('textarea');
                     textarea.value = url;
                     document.body.appendChild(textarea);
                     textarea.select();
                     document.execCommand('copy');
                     document.body.removeChild(textarea);
-                    alert('✅ লিংক কপি করা হয়েছে!');
+                    showToast('✅ Link copied!', 'success');
                 });
             }
         }
-
-        // ===== ভলিউম কন্ট্রোল =====
-        volumeSlider.addEventListener('input', function() {
-            const val = this.value / 100;
-            video.volume = val;
-        });
-
-        volumeUpBtn.addEventListener('click', () => {
-            let val = Math.min(1, video.volume + 0.1);
-            video.volume = val;
-            volumeSlider.value = val * 100;
-        });
-
-        volumeDownBtn.addEventListener('click', () => {
-            let val = Math.max(0, video.volume - 0.1);
-            video.volume = val;
-            volumeSlider.value = val * 100;
-        });
-
-        // ===== প্লে/পজ =====
-        playPauseBtn.addEventListener('click', () => {
-            if (video.paused) {
-                video.play();
-                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            } else {
-                video.pause();
-                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-            }
-        });
-
-        video.addEventListener('play', () => {
-            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            isPlaying = true;
-        });
-
-        video.addEventListener('pause', () => {
-            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-            isPlaying = false;
-        });
-
-        // ===== স্পীড কন্ট্রোল =====
-        speedBtn.addEventListener('click', () => {
-            const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
-            let index = speeds.indexOf(currentSpeed);
-            index = (index + 1) % speeds.length;
-            currentSpeed = speeds[index];
-            video.playbackRate = currentSpeed;
-            speedText.textContent = currentSpeed + 'x';
-        });
-
-        // ===== কোয়ালিটি চেঞ্জ =====
-        qualitySelect.addEventListener('change', function() {
-            const quality = this.value;
-            if (currentStreamUrl && currentStreamUrl.includes('.m3u8')) {
-                // HLS কোয়ালিটি চেঞ্জ - বিভিন্ন স্ট্রিমের জন্য আলাদা
-                console.log('কোয়ালিটি পরিবর্তন:', quality);
-                // এখানে HLS প্লেয়ারের কোয়ালিটি চেঞ্জের কোড
-            }
-        });
-
-        // ===== ফুলস্ক্রিন =====
-        fullscreenBtn.addEventListener('click', () => {
-            const elem = playerWrapper;
-            if (elem.requestFullscreen) elem.requestFullscreen();
-            else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-        });
-
-        // ===== লাইক ও শেয়ার ইভেন্ট =====
-        likeBtn.addEventListener('click', toggleLike);
         shareBtn.addEventListener('click', shareVideo);
 
-        // ===== ফায়ারস্টোর থেকে স্ট্রিম লোড =====
+        function downloadVideo() {
+            if (!currentStreamUrl) { alert('No video selected!'); return; }
+            if (!currentUser) { alert('Please login to download!'); showAuthModal('login'); return; }
+            if (currentUserData && currentUserData.subscription !== 'premium') { alert('Download is for premium users only!');
+                return; }
+            if (currentStreamUrl.includes('.m3u8')) { alert('Live streams cannot be downloaded!'); return; }
+            if (currentStreamUrl.includes('.mp4') || currentStreamUrl.includes('.webm')) {
+                const link = document.createElement('a');
+                link.href = currentStreamUrl;
+                link.download = currentStreamName + '.mp4';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else { alert('This video cannot be downloaded!'); }
+        }
+        downloadBtn.addEventListener('click', downloadVideo);
+
+        async function saveVideo() {
+            const videoId = currentVideoId.textContent;
+            if (!videoId) { alert('No video selected!'); return; }
+            if (!currentUser) { alert('Please login to save!'); showAuthModal('login'); return; }
+            try {
+                await setDoc(doc(db, 'users', currentUser.uid, 'saved', videoId), {
+                    videoId,
+                    name: currentStreamName,
+                    channel: currentStreamChannel,
+                    savedAt: serverTimestamp()
+                });
+                showToast('✅ Video saved!', 'success');
+            } catch (error) { console.error(error); alert('Error saving!'); }
+        }
+        saveBtn.addEventListener('click', saveVideo);
+
+        // ============================================================
+        // STREAMS LOAD
+        // ============================================================
         function loadStreams() {
             const q = query(collection(db, 'streams'), orderBy('timestamp', 'desc'));
             onSnapshot(q, (snapshot) => {
-                streamGrid.innerHTML = '';
-                if (snapshot.empty) {
-                    streamGrid.innerHTML =
-                        `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#555;font-size:16px;"><i class="fas fa-video-slash" style="font-size:40px;display:block;margin-bottom:15px;color:#333;"></i>কোনো লাইভ স্ট্রিম নেই</div>`;
-                    return;
-                }
+                allStreams = [];
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    const card = document.createElement('div');
-                    card.className = 'stream-card';
-                    card.innerHTML = `
-                            <img src="${data.thumbnail || 'https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'}" 
-                                 alt="${data.name}" 
-                                 onerror="this.src='https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'">
-                            <div class="stream-info-card">
-                                <h4>${data.name || 'নামহীন স্ট্রিম'}</h4>
-                                <p>${data.channel || 'চ্যানেল'}</p>
-                                <span class="live-tag">লাইভ</span>
-                            </div>
-                        `;
-                    card.addEventListener('click', () => {
-                        if (data.url) {
-                            const videoId = doc.id;
-                            loadVideo(data.url, data.name || 'লাইভ স্ট্রিম', data.channel || 'চ্যানেল',
-                                videoId);
-                        }
-                    });
-                    streamGrid.appendChild(card);
+                    data.id = doc.id;
+                    allStreams.push(data);
                 });
-
-                // ইউআরএল প্যারামিটার চেক
+                renderAllRows();
+                updateStats();
                 const params = new URLSearchParams(window.location.search);
                 const videoParam = params.get('v');
                 if (videoParam) {
-                    snapshot.forEach((doc) => {
-                        if (doc.id === videoParam) {
-                            const data = doc.data();
-                            if (data.url) {
-                                loadVideo(data.url, data.name || 'লাইভ স্ট্রিম', data.channel || 'চ্যানেল',
-                                    doc.id);
-                            }
+                    setTimeout(() => {
+                        const found = allStreams.find(s => s.id === videoParam);
+                        if (found && found.url) {
+                            loadVideo(found.url, found.name, found.channel, found.id, found.category);
                         }
-                    });
+                    }, 1000);
                 }
-            }, (err) => console.error('স্ট্রিম লোডে সমস্যা:', err));
+            });
         }
 
-        // ===== ফায়ারস্টোর থেকে বিজ্ঞাপন লোড =====
-        function loadAds() {
-            const q = query(collection(db, 'ads'), orderBy('timestamp', 'desc'));
-            onSnapshot(q, (snapshot) => {
-                adContainer.innerHTML = '';
-                if (snapshot.empty) {
-                    adContainer.innerHTML =
-                        `<div style="grid-column:1/-1;text-align:center;padding:30px;color:#333;font-size:14px;"><i class="fas fa-ad" style="font-size:30px;display:block;margin-bottom:10px;"></i>কোনো বিজ্ঞাপন নেই</div>`;
-                    return;
-                }
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const div = document.createElement('div');
-                    div.className = 'ad-item';
-                    div.innerHTML = `
-                            <img src="${data.imageUrl || 'https://via.placeholder.com/400x200/1a1a1a/444?text=বিজ্ঞাপন'}" 
-                                 alt="${data.name || 'বিজ্ঞাপন'}"
-                                 onerror="this.src='https://via.placeholder.com/400x200/1a1a1a/444?text=বিজ্ঞাপন'">
-                            <div class="ad-content">
-                                <h4>${data.name || 'বিজ্ঞাপন'}</h4>
-                                ${data.link ? `<a href="${data.link}" target="_blank">বিস্তারিত দেখুন <i class="fas fa-arrow-right"></i></a>` : ''}
-                            </div>
-                        `;
-                    adContainer.appendChild(div);
+        function renderAllRows() {
+            const categories = {
+                trending: allStreams.slice(0, 10),
+                live: allStreams.filter(s => s.category === 'live').slice(0, 10),
+                movie: allStreams.filter(s => s.category === 'movie').slice(0, 10),
+                series: allStreams.filter(s => s.category === 'series').slice(0, 10),
+                cartoon: allStreams.filter(s => s.category === 'cartoon').slice(0, 10),
+                sports: allStreams.filter(s => s.category === 'sports').slice(0, 10)
+            };
+            renderRow(trendingRow, categories.trending);
+            renderRow(liveRow, categories.live);
+            renderRow(movieRow, categories.movie);
+            renderRow(seriesRow, categories.series);
+            renderRow(cartoonRow, categories.cartoon);
+            renderRow(sportsRow, categories.sports);
+        }
+
+        function renderRow(container, streams) {
+            container.innerHTML = '';
+            if (streams.length === 0) {
+                container.innerHTML =
+                    `<div style="flex:0 0 100%;padding:20px;color:#555;text-align:center;font-size:14px;">No videos found</div>`;
+                return;
+            }
+            streams.forEach((data) => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                const isLive = data.category === 'live';
+                card.innerHTML = `
+                    <div class="thumb">
+                        <img src="${data.thumbnail || 'https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'}" 
+                             alt="${data.name}" 
+                             onerror="this.src='https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'"
+                             loading="lazy">
+                        ${isLive ? '<span class="top-badge live">🔴 LIVE</span>' : ''}
+                        <span class="duration">${data.duration || '2:30'}</span>
+                    </div>
+                    <div class="info">
+                        <h4>${data.name || 'Untitled'}</h4>
+                        <p>${data.channel || 'Channel'}</p>
+                        <div class="meta">
+                            <span class="rating"><i class="fas fa-star"></i> ${data.rating || '4.5'}</span>
+                            <span>${data.views || 0} views</span>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    if (data.url) {
+                        loadVideo(data.url, data.name, data.channel, data.id, data.category);
+                    }
                 });
-            }, (err) => console.error('বিজ্ঞাপন লোডে সমস্যা:', err));
+                container.appendChild(card);
+            });
         }
 
-        // ===== শুরু করুন =====
-        loadStreams();
-        loadAds();
+        function updateStats() {
+            document.getElementById('statStreams').textContent = allStreams.length + '+';
+            const q = query(collection(db, 'users'));
+            onSnapshot(q, (snapshot) => {
+                document.getElementById('statUsers').textContent = snapshot.size + '+';
+            });
+        }
 
-        console.log('🔴 LEgUle Sa লাইভ স্ট্রিমিং প্ল্যাটফর্ম সক্রিয়!');
-        console.log('✅ লাইভ ইন্ডিকেটর ৩ সেকেন্ড পর会自动 লুকাবে');
-        console.log('✅ URL শেয়ার করলে সরাসরি ভিডিও চালু হবে');
-        console.log('✅ ভলিউম, স্পীড, রেজোলিউশন কন্ট্রোল কাজ করছে');
+        // ============================================================
+        // GRID VIEW
+        // ============================================================
+        document.querySelectorAll('.view-all').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                if (btn.id === 'closeGridView') return;
+                const cat = btn.dataset.category;
+                if (cat) filterByCategory(cat);
+            });
+        });
+
+        closeGridView.addEventListener('click', () => {
+            gridView.style.display = 'none';
+            document.getElementById('rowsContainer').style.display = 'block';
+            heroSection.style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.nav-menu a[data-category], .mobile-menu a[data-category]').forEach(el => {
+                el.classList.toggle('active', el.dataset.category === category);
+            });
+            showGridView(category);
+        }
+
+        function showGridView(category = 'all') {
+            document.getElementById('rowsContainer').style.display = 'none';
+            heroSection.style.display = 'none';
+            videoPlayerSection.style.display = 'none';
+            gridView.style.display = 'block';
+
+            let filtered = allStreams;
+            if (category !== 'all') filtered = filtered.filter(s => s.category === category);
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filtered = filtered.filter(s => s.name?.toLowerCase().includes(term) || s.channel?.toLowerCase()
+                    .includes(term));
+            }
+
+            streamGrid.innerHTML = '';
+            if (filtered.length === 0) {
+                streamGrid.innerHTML =
+                    `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#555;">No videos found</div>`;
+                return;
+            }
+            filtered.forEach((data) => {
+                const card = document.createElement('div');
+                card.style.cssText =
+                    'background:linear-gradient(145deg,#111,#1a1a1a);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:all 0.4s;';
+                card.innerHTML = `
+                    <div style="position:relative;padding-top:56.25%;background:#0a0a0a;">
+                        <img src="${data.thumbnail || 'https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'}" 
+                             style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
+                             onerror="this.src='https://via.placeholder.com/400x225/1a1a1a/444?text=LEgUle+Sa'"
+                             loading="lazy">
+                        ${data.category === 'live' ? '<span style="position:absolute;top:8px;left:8px;background:#e50914;color:#fff;font-size:10px;font-weight:700;padding:2px 10px;border-radius:4px;">🔴 LIVE</span>' : ''}
+                    </div>
+                    <div style="padding:10px 14px;">
+                        <h4 style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${data.name || 'Untitled'}</h4>
+                        <p style="color:#888;font-size:12px;">${data.channel || 'Channel'}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    if (data.url) loadVideo(data.url, data.name, data.channel, data.id, data.category);
+                });
+                streamGrid.appendChild(card);
+            });
+        }
+
+        // ============================================================
+        // SEARCH
+        // ============================================================
+        function performSearch() {
+            const term = searchInput.value.trim();
+            if (term) {
+                searchTerm = term;
+                document.getElementById('rowsContainer').style.display = 'none';
+                heroSection.style.display = 'none';
+                videoPlayerSection.style.display = 'none';
+                showGridView(currentCategory === 'all' ? 'all' : currentCategory);
+            }
+        }
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(); });
+
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const cat = link.dataset.category;
+                if (cat === 'all') {
+                    document.getElementById('rowsContainer').style.display = 'block';
+                    gridView.style.display = 'none';
+                    heroSection.style.display = 'flex';
+                    videoPlayerSection.style.display = 'none';
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    mobileNavLinks.forEach(l => l.classList.remove('active'));
+                    mobileNavLinks.forEach(l => { if (l.dataset.category === 'all') l.classList.add('active'); });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    filterByCategory(cat);
+                }
+            });
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const cat = link.dataset.category;
+                mobileMenu.classList.remove('active');
+                if (cat === 'all') {
+                    document.getElementById('rowsContainer').style.display = 'block';
+                    gridView.style.display = 'none';
+                    heroSection.style.display = 'flex';
+                    videoPlayerSection.style.display = 'none';
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    navLinks.forEach(l => { if (l.dataset.category === 'all') l.classList.add('active'); });
+                    mobileNavLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    filterByCategory(cat);
+                }
+            });
+        });
+
+        viewAllBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cat = btn.dataset.category;
+                if (cat) filterByCategory(cat);
+            });
+        });
+
+        // ============================================================
+        // HERO ACTIONS
+        // ============================================================
+        heroWatchBtn.addEventListener('click', () => {
+            if (allStreams.length > 0) {
+                const first = allStreams[0];
+                if (first.url) loadVideo(first.url, first.name, first.channel, first.id, first.category);
+            }
+        });
+        heroInfoBtn.addEventListener('click', () => {
+            alert(
+                'LEgUle Sa - The best live streaming platform!\nWatch anytime, anywhere.\nLive streams, Movies, Series, Cartoon, Sports and more!');
+        });
+
+        // ============================================================
+        // MOBILE MENU
+        // ============================================================
+        hamburgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('active'));
+        closeMobileMenu.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        mobileLoginBtn.addEventListener('click', () => { mobileMenu.classList.remove('active');
+            showAuthModal('login'); });
+        mobileSignupBtn.addEventListener('click', () => { mobileMenu.classList.remove('active');
+            showAuthModal('signup'); });
+        mobileLogoutBtn.addEventListener('click', () => { mobileMenu.classList.remove('active');
+            window.logoutUser(); });
+
+        // ============================================================
+        // AUTH MODAL TOGGLE
+        // ============================================================
+        loginOpenBtn.addEventListener('click', () => showAuthModal('login'));
+        signupOpenBtn.addEventListener('click', () => showAuthModal('signup'));
+        closeAuthModal.addEventListener('click', closeAuthModalFn);
+        authModal.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModalFn(); });
+
+        // ============================================================
+        // KEYBOARD SHORTCUTS
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            if (document.activeElement?.tagName === 'INPUT') return;
+            switch (e.key) {
+                case ' ':
+                case 'k':
+                    e.preventDefault();
+                    playPauseBtn.click();
+                    break;
+                case 'f':
+                    fullscreenBtn.click();
+                    break;
+                case 'm':
+                    muteBtn.click();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    video.volume = Math.min(1, video.volume + 0.1);
+                    volumeSlider.value = video.volume * 100;
+                    updateMuteIcon();
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    video.volume = Math.max(0, video.volume - 0.1);
+                    volumeSlider.value = video.volume * 100;
+                    updateMuteIcon();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    video.currentTime = Math.min(video.duration || 0, video.currentTime + 5);
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    video.currentTime = Math.max(0, video.currentTime - 5);
+                    break;
+            }
+        });
+
+        // ============================================================
+        // START
+        // ============================================================
+        loadStreams();
+        loadAdsList();
+
+        console.log('🔴 LEgUle Sa Netflix-style Platform Active!');
+        console.log('📺 Categories: Live, Movies, Series, Cartoon, Sports');
+        console.log('📢 Ad System: Pre-roll + Mid-roll (skippable)');
+        console.log('💎 Premium Users: Ad Free');
+        console.log('🎬 Custom video controls with full functionality');
+        console.log('👤 Profile update: name, photo, password');
+        console.log('🔔 Subscribe/Unsubscribe channels');
+        console.log('📽️ Video info & recommendations below player');
     </script>
 
 </body>
