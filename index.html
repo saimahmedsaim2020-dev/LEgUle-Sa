@@ -507,20 +507,17 @@
         }
         .custom-video-wrapper iframe { display: none; }
 
-        /* ===== CONTROLS OVERLAY ===== */
+        /* ===== CONTROLS (BELOW VIDEO) ===== */
         .video-controls-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 60px 20px 16px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.85) 60%);
+            padding: 12px 20px 16px;
+            background: #0a0a0a;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            transition: opacity 0.3s ease;
+        }
+        .video-controls-overlay.hidden {
             opacity: 0;
-            transition: opacity 0.4s ease;
             pointer-events: none;
         }
-        .custom-video-wrapper:hover .video-controls-overlay,
-        .video-controls-overlay.show { opacity: 1; pointer-events: auto; }
 
         .progress-bar-container {
             width: 100%;
@@ -1379,40 +1376,41 @@
                         </div>
                         <button class="skip-btn" id="skipAdBtn">Skip Ad <i class="fas fa-forward"></i></button>
                     </div>
+                </div>
 
-                    <div class="video-controls-overlay" id="customControls">
-                        <div class="progress-bar-container" id="progressBar">
-                            <div class="progress-filled" id="progressFilled"></div>
-                        </div>
-                        <div class="controls-row">
-                            <button id="playPauseBtn" title="Play/Pause"><i class="fas fa-play"></i></button>
-                            <button id="muteBtn" title="Mute/Unmute"><i class="fas fa-volume-up"></i></button>
-                            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" title="Volume" />
-                            <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
-                            <select class="speed-select" id="speedSelect" title="Speed">
-                                <option value="0.5">0.5x</option>
-                                <option value="0.75">0.75x</option>
-                                <option value="1" selected>1x</option>
-                                <option value="1.25">1.25x</option>
-                                <option value="1.5">1.5x</option>
-                                <option value="2">2x</option>
-                            </select>
-                            <select class="quality-select" id="qualitySelect" title="Quality">
-                                <option value="auto">Auto</option>
-                                <option value="1080">1080p</option>
-                                <option value="720">720p</option>
-                                <option value="480">480p</option>
-                                <option value="360">360p</option>
-                            </select>
-                            <div class="right-controls">
-                                <button id="pipBtn" title="Picture-in-Picture"><i class="fas fa-window-restore"></i></button>
-                                <button id="fullscreenBtn" title="Fullscreen"><i class="fas fa-expand"></i></button>
-                            </div>
+                <!-- ===== CONTROLS BELOW VIDEO ===== -->
+                <div class="video-controls-overlay" id="customControls">
+                    <div class="progress-bar-container" id="progressBar">
+                        <div class="progress-filled" id="progressFilled"></div>
+                    </div>
+                    <div class="controls-row">
+                        <button id="playPauseBtn" title="Play/Pause"><i class="fas fa-play"></i></button>
+                        <button id="muteBtn" title="Mute/Unmute"><i class="fas fa-volume-up"></i></button>
+                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" title="Volume" />
+                        <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                        <select class="speed-select" id="speedSelect" title="Speed">
+                            <option value="0.5">0.5x</option>
+                            <option value="0.75">0.75x</option>
+                            <option value="1" selected>1x</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                            <option value="2">2x</option>
+                        </select>
+                        <select class="quality-select" id="qualitySelect" title="Quality">
+                            <option value="auto">Auto</option>
+                            <option value="1080">1080p</option>
+                            <option value="720">720p</option>
+                            <option value="480">480p</option>
+                            <option value="360">360p</option>
+                        </select>
+                        <div class="right-controls">
+                            <button id="pipBtn" title="Picture-in-Picture"><i class="fas fa-window-restore"></i></button>
+                            <button id="fullscreenBtn" title="Fullscreen"><i class="fas fa-expand"></i></button>
                         </div>
                     </div>
                 </div>
 
-                <!-- ===== VIDEO INFO (BELOW PLAYER) ===== -->
+                <!-- ===== VIDEO INFO (BELOW CONTROLS) ===== -->
                 <div class="video-info" id="videoInfo">
                     <h2 class="video-title" id="streamTitle">Select a stream</h2>
                     <div class="video-meta">
@@ -2213,20 +2211,27 @@
                 embedPlayer.src = embedUrl;
                 embedPlayer.style.display = 'block';
                 qualitySelect.disabled = true;
-            } else if (url.endsWith('.m3u8') || url.includes('.m3u8')) {
-                videoSource.src = url;
-                video.load();
-                video.play().catch(e => console.log('Autoplay blocked:', e));
-                video.style.display = 'block';
-            } else if (url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg')) {
-                videoSourceMp4.src = url;
-                video.load();
-                video.play().catch(e => console.log('Autoplay blocked:', e));
-                video.style.display = 'block';
+                // Hide custom controls for embeds
+                customControls.style.display = 'none';
             } else {
-                embedPlayer.src = url;
-                embedPlayer.style.display = 'block';
-                qualitySelect.disabled = true;
+                customControls.style.display = 'block';
+                if (url.endsWith('.m3u8') || url.includes('.m3u8')) {
+                    videoSource.src = url;
+                    video.load();
+                    video.play().catch(e => console.log('Autoplay blocked:', e));
+                    video.style.display = 'block';
+                } else if (url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg')) {
+                    videoSourceMp4.src = url;
+                    video.load();
+                    video.play().catch(e => console.log('Autoplay blocked:', e));
+                    video.style.display = 'block';
+                } else {
+                    // Fallback to embed
+                    embedPlayer.src = url;
+                    embedPlayer.style.display = 'block';
+                    qualitySelect.disabled = true;
+                    customControls.style.display = 'none';
+                }
             }
 
             showLiveIndicator();
@@ -2249,7 +2254,11 @@
             // Update subscribe button
             updateSubscribeButton(channel);
 
-            setTimeout(() => customControls.classList.add('show'), 300);
+            // Show controls after a short delay (for auto-hide timer)
+            setTimeout(() => {
+                customControls.classList.remove('hidden');
+                resetControlsTimer();
+            }, 500);
         }
 
         function showLiveIndicator() {
@@ -2266,6 +2275,51 @@
             liveIndicatorTimeout = setTimeout(() => {
                 liveIndicator.classList.remove('show');
             }, 3000);
+        });
+
+        // ============================================================
+        // CONTROLS AUTO-HIDE (3 seconds after mouse leaves)
+        // ============================================================
+        function resetControlsTimer() {
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => {
+                if (!video.paused && !isDragging) {
+                    customControls.classList.add('hidden');
+                }
+            }, 3000);
+        }
+
+        // Show controls on mouse move over player area
+        const playerContainer = document.querySelector('.player-container');
+        playerContainer.addEventListener('mousemove', () => {
+            customControls.classList.remove('hidden');
+            resetControlsTimer();
+        });
+
+        playerContainer.addEventListener('mouseleave', () => {
+            // Start timer when mouse leaves the player container
+            resetControlsTimer();
+        });
+
+        // Also show controls when video is paused or user interacts
+        video.addEventListener('pause', () => {
+            customControls.classList.remove('hidden');
+        });
+
+        video.addEventListener('play', () => {
+            resetControlsTimer();
+        });
+
+        // When dragging progress bar, keep controls visible
+        progressBar.addEventListener('mousedown', () => {
+            isDragging = true;
+            customControls.classList.remove('hidden');
+        });
+        window.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                resetControlsTimer();
+            }
         });
 
         // ============================================================
@@ -2432,6 +2486,7 @@
                     const percent = x / rect.width;
                     video.currentTime = percent * video.duration;
                 }
+                resetControlsTimer();
             }
         });
 
@@ -2460,6 +2515,7 @@
                     const percent = x / rect.width;
                     video.currentTime = percent * video.duration;
                 }
+                resetControlsTimer();
             }
         });
 
@@ -2482,19 +2538,6 @@
             fullscreenBtn.innerHTML = document.fullscreenElement ? '<i class="fas fa-compress"></i>' :
                 '<i class="fas fa-expand"></i>';
         });
-
-        function showControls() {
-            customControls.classList.add('show');
-            clearTimeout(controlsTimeout);
-            controlsTimeout = setTimeout(() => { if (!video.paused) customControls.classList.remove('show'); }, 3000);
-        }
-        playerWrapper.addEventListener('mousemove', showControls);
-        playerWrapper.addEventListener('mouseleave', () => { if (!video.paused) { setTimeout(() => { customControls
-                    .classList.remove('show'); }, 1000); } });
-        video.addEventListener('play', () => { setTimeout(() => { if (!video.paused) customControls.classList.remove(
-                'show'); }, 3000); });
-        video.addEventListener('pause', () => { customControls.classList.add('show'); });
-        setTimeout(() => customControls.classList.add('show'), 500);
 
         // ============================================================
         // LIKE, SHARE, DOWNLOAD, SAVE
