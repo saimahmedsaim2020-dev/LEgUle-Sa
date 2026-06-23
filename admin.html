@@ -475,8 +475,6 @@
         }
         .list-item .status-badge.active { background: rgba(46,204,113,0.2); color: #2ecc71; }
         .list-item .status-badge.inactive { background: rgba(229,9,20,0.2); color: #e50914; }
-        .list-item .item-actions .btn-view { color: #2ecc71; }
-        .list-item .item-actions .btn-view:hover { background: rgba(46,204,113,0.15); }
         .empty-state {
             text-align: center;
             padding: 30px;
@@ -526,21 +524,6 @@
             transition: all 0.3s;
         }
         .modal-box .modal-header .close-modal:hover { color: #fff; }
-
-        .backup-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background: #0a0a0a;
-            border-radius: 8px;
-            border-left: 3px solid #3498db;
-            margin-bottom: 6px;
-        }
-        .backup-item .backup-info { flex: 1; }
-        .backup-item .backup-name { font-weight: 600; font-size: 14px; }
-        .backup-item .backup-date { color: #888; font-size: 12px; }
-        .backup-item .backup-size { color: #666; font-size: 12px; margin-left: 12px; }
 
         /* ===== AI CHAT BOT ===== */
         .ai-chat-toggle {
@@ -777,7 +760,8 @@
 
             <!-- TABS -->
             <div class="admin-tabs" id="adminTabs">
-                <button class="tab-btn active" data-tab="streams"><i class="fas fa-video"></i> Streams</button>
+                <button class="tab-btn active" data-tab="banner"><i class="fas fa-image"></i> Banner</button>
+                <button class="tab-btn" data-tab="streams"><i class="fas fa-video"></i> Streams</button>
                 <button class="tab-btn" data-tab="ads"><i class="fas fa-ad"></i> Ads</button>
                 <button class="tab-btn" data-tab="backups"><i class="fas fa-database"></i> Backups</button>
                 <button class="tab-btn" data-tab="users" id="usersTabBtn"><i class="fas fa-users"></i> Users</button>
@@ -785,8 +769,55 @@
                 <button class="tab-btn" data-tab="ai"><i class="fas fa-robot"></i> AI Assistant</button>
             </div>
 
+            <!-- ===== BANNER TAB (NEW) ===== -->
+            <div class="tab-content active" id="tab-banner">
+                <div class="admin-card">
+                    <h2><i class="fas fa-image"></i> Banner Configuration</h2>
+                    <p style="color:#888;font-size:13px;margin-bottom:16px;">Manage the main banner on the homepage. The "Watch Now" button will load the external URL in an iframe (URL hidden from users).</p>
+                    <form id="bannerForm">
+                        <div class="form-group">
+                            <label>Background Image URL (or upload)</label>
+                            <input type="file" id="bannerImageFile" accept="image/*" />
+                            <div class="image-preview" id="bannerImagePreview"><img id="bannerImagePreviewImg" src="#" alt="Preview" /></div>
+                            <input type="url" id="bannerImageUrl" placeholder="https://example.com/banner.jpg" style="margin-top:6px;" />
+                        </div>
+                        <div class="form-group">
+                            <label>Background Video URL (optional)</label>
+                            <input type="url" id="bannerVideoUrl" placeholder="https://example.com/banner.mp4" />
+                        </div>
+                        <div class="form-group">
+                            <label>Title (HTML allowed)</label>
+                            <input type="text" id="bannerTitle" placeholder="LEgUle Sa <span>Live</span>" />
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="bannerDesc" placeholder="The best live streaming platform..." />
+                        </div>
+                        <div class="form-group">
+                            <label>Badge Text</label>
+                            <input type="text" id="bannerBadge" placeholder="🔥 Live Now" />
+                        </div>
+                        <div class="form-group">
+                            <label>Watch Now Link (External URL) - <span style="color:#e50914;">This will be hidden from users</span></label>
+                            <input type="url" id="bannerWatchLink" placeholder="https://www.example.com" />
+                            <p style="color:#666;font-size:12px;margin-top:4px;">Users will see only ?v=banner_watch in the address bar.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Active</label>
+                            <select id="bannerActive">
+                                <option value="true">✅ Active</option>
+                                <option value="false">❌ Inactive</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit" id="bannerSaveBtn"><i class="fas fa-save"></i> Save Banner</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- ===== STREAMS TAB ===== -->
-            <div class="tab-content active" id="tab-streams">
+            <div class="tab-content" id="tab-streams">
                 <div class="admin-card">
                     <h2><i class="fas fa-video"></i> Manage Streams</h2>
                     <div class="card-actions" id="streamActions">
@@ -836,7 +867,7 @@
             <div class="tab-content" id="tab-admins">
                 <div class="admin-card">
                     <h2><i class="fas fa-user-shield"></i> Admin Management</h2>
-                    <p style="color:#888;font-size:13px;margin-bottom:16px;">Super Admin: Full control | Junior Admin: Manage Streams, Ads, Backups</p>
+                    <p style="color:#888;font-size:13px;margin-bottom:16px;">Super Admin: Full control | Junior Admin: Manage Streams, Ads, Backups, Banner</p>
                     <div class="card-actions">
                         <button class="btn-add" id="addAdminBtn"><i class="fas fa-plus"></i> Add Admin</button>
                         <button class="btn-refresh" id="refreshAdmins"><i class="fas fa-sync"></i> Refresh</button>
@@ -927,8 +958,7 @@
             signInWithPopup,
             GoogleAuthProvider,
             onAuthStateChanged,
-            signOut,
-            updateProfile
+            signOut
         } from "firebase/auth";
         import {
             getFirestore,
@@ -1002,6 +1032,20 @@
         const userList = document.getElementById('userList');
         const adminList = document.getElementById('adminList');
 
+        // Banner form
+        const bannerForm = document.getElementById('bannerForm');
+        const bannerImageFile = document.getElementById('bannerImageFile');
+        const bannerImagePreview = document.getElementById('bannerImagePreview');
+        const bannerImagePreviewImg = document.getElementById('bannerImagePreviewImg');
+        const bannerImageUrl = document.getElementById('bannerImageUrl');
+        const bannerVideoUrl = document.getElementById('bannerVideoUrl');
+        const bannerTitle = document.getElementById('bannerTitle');
+        const bannerDesc = document.getElementById('bannerDesc');
+        const bannerBadge = document.getElementById('bannerBadge');
+        const bannerWatchLink = document.getElementById('bannerWatchLink');
+        const bannerActive = document.getElementById('bannerActive');
+        const bannerSaveBtn = document.getElementById('bannerSaveBtn');
+
         const modalOverlay = document.getElementById('modalOverlay');
         const modalTitle = document.getElementById('modalTitle');
         const modalBody = document.getElementById('modalBody');
@@ -1056,6 +1100,107 @@
                 toast.classList.remove('show');
             }, 4000);
         }
+
+        // ============================================================
+        // CLOUDINARY UPLOAD
+        // ============================================================
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'apna45');
+            formData.append('cloud_name', 'drwjjz7l7');
+            try {
+                const response = await fetch('https://api.cloudinary.com/v1_1/drwjjz7l7/image/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.secure_url) return data.secure_url;
+                throw new Error(data.error?.message || 'Upload failed');
+            } catch (error) {
+                console.error('Cloudinary error:', error);
+                throw error;
+            }
+        }
+
+        // ============================================================
+        // BANNER FUNCTIONS
+        // ============================================================
+        async function loadBannerData() {
+            try {
+                const docRef = doc(db, 'banner', 'config');
+                const snap = await getDoc(docRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    bannerImageUrl.value = data.imageUrl || '';
+                    bannerVideoUrl.value = data.videoUrl || '';
+                    bannerTitle.value = data.title || '';
+                    bannerDesc.value = data.description || '';
+                    bannerBadge.value = data.badge || '';
+                    bannerWatchLink.value = data.watchLink || '';
+                    bannerActive.value = data.active !== undefined ? String(data.active) : 'true';
+                    if (data.imageUrl) {
+                        bannerImagePreviewImg.src = data.imageUrl;
+                        bannerImagePreview.style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading banner:', error);
+            }
+        }
+
+        bannerImageFile.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    bannerImagePreviewImg.src = e.target.result;
+                    bannerImagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        bannerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const imageFile = bannerImageFile.files[0];
+            let imageUrl = bannerImageUrl.value.trim();
+            const videoUrl = bannerVideoUrl.value.trim();
+            const title = bannerTitle.value.trim();
+            const desc = bannerDesc.value.trim();
+            const badge = bannerBadge.value.trim();
+            const watchLink = bannerWatchLink.value.trim();
+            const active = bannerActive.value === 'true';
+
+            bannerSaveBtn.disabled = true;
+            bannerSaveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                if (imageFile) {
+                    imageUrl = await uploadToCloudinary(imageFile);
+                }
+
+                const data = {
+                    imageUrl: imageUrl || '',
+                    videoUrl: videoUrl || '',
+                    title: title || 'LEgUle Sa <span>Live</span>',
+                    description: desc || 'The best live streaming platform. Watch anytime, anywhere.',
+                    badge: badge || '🔥 Live Now',
+                    watchLink: watchLink || '',
+                    active: active,
+                    updatedAt: serverTimestamp()
+                };
+
+                await setDoc(doc(db, 'banner', 'config'), data);
+                showToast('✅ Banner updated successfully!', 'success');
+            } catch (error) {
+                console.error(error);
+                showToast('❌ Error: ' + error.message, 'error');
+            } finally {
+                bannerSaveBtn.disabled = false;
+                bannerSaveBtn.innerHTML = '<i class="fas fa-save"></i> Save Banner';
+            }
+        });
 
         // ============================================================
         // AUTH FUNCTIONS
@@ -1114,6 +1259,7 @@
             loginPage.style.display = 'none';
             adminPanel.style.display = 'block';
 
+            // Super admin sees Users & Admins tabs; junior admin doesn't
             if (isSuper) {
                 usersTabBtn.style.display = 'inline-block';
                 adminsTabBtn.style.display = 'inline-block';
@@ -1121,11 +1267,13 @@
                 usersTabBtn.style.display = 'none';
                 adminsTabBtn.style.display = 'none';
             }
+
+            // Both can manage streams, ads, backups, banner
             addStreamBtn.style.display = 'inline-flex';
             addAdBtn.style.display = 'inline-flex';
 
             loadAllData();
-            switchTab('streams');
+            switchTab('banner');
         }
 
         // ============================================================
@@ -1229,52 +1377,6 @@
         });
 
         // ============================================================
-        // CLOUDINARY UPLOAD (for images)
-        // ============================================================
-        async function uploadToCloudinary(file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', 'apna45');
-            formData.append('cloud_name', 'drwjjz7l7');
-            try {
-                const response = await fetch('https://api.cloudinary.com/v1_1/drwjjz7l7/image/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-                if (data.secure_url) return data.secure_url;
-                throw new Error(data.error?.message || 'Upload failed');
-            } catch (error) {
-                console.error('Cloudinary error:', error);
-                throw error;
-            }
-        }
-
-        // ============================================================
-        // MEGA.NZ UPLOAD (via Cloud Function proxy)
-        // ============================================================
-        async function uploadToMega(file) {
-            // Here you would call your Cloud Function
-            // For now, we simulate with a fake URL
-            // In production, replace with your actual Cloud Function URL
-            showToast('⚠️ Mega.nz upload requires Cloud Function setup. Using placeholder URL.', 'warning');
-            return 'https://mega.nz/file/placeholder';
-        }
-
-        // ============================================================
-        // AUTO DETECT UPLOAD TARGET
-        // ============================================================
-        function getUploadTarget(file) {
-            if (file.type.startsWith('image/')) {
-                return 'cloudinary';
-            } else if (file.type.startsWith('video/')) {
-                return 'mega';
-            } else {
-                return 'cloudinary';
-            }
-        }
-
-        // ============================================================
         // LOAD ALL DATA
         // ============================================================
         function loadAllData() {
@@ -1283,6 +1385,7 @@
             loadUsers();
             loadAdmins();
             loadBackups();
+            loadBannerData();
         }
 
         // ============================================================
@@ -1497,14 +1600,8 @@
                     let finalVideoUrl = videoUrlInput;
                     let storageUsed = 'URL';
                     if (videoFile) {
-                        const target = getUploadTarget(videoFile);
-                        if (target === 'mega') {
-                            finalVideoUrl = await uploadToMega(videoFile);
-                            storageUsed = 'Mega.nz';
-                        } else {
-                            finalVideoUrl = await uploadToCloudinary(videoFile);
-                            storageUsed = 'Cloudinary';
-                        }
+                        finalVideoUrl = await uploadToCloudinary(videoFile);
+                        storageUsed = 'Cloudinary';
                     }
 
                     let finalImage = imageUrl;
@@ -1970,7 +2067,7 @@
                 <div class="form-group">
                     <label>Role</label>
                     <select id="fAdminRole">
-                        <option value="junior">Junior Admin (Manage Streams, Ads, Backups)</option>
+                        <option value="junior">Junior Admin (Manage Streams, Ads, Backups, Banner)</option>
                     </select>
                 </div>
                 <p style="color:#888;font-size:13px;margin-top:6px;">New admins need approval from Super Admin.</p>
@@ -2035,7 +2132,7 @@
         // ============================================================
         // AI ASSISTANT (Gemini)
         // ============================================================
-        const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY'; // Replace with your actual Gemini API key
+        const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY';
 
         async function askGemini(prompt) {
             if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
@@ -2073,7 +2170,6 @@
             const message = chatInput.value.trim();
             if (!message) return;
 
-            // Add user message
             const userMsg = document.createElement('div');
             userMsg.className = 'msg user';
             userMsg.textContent = message;
@@ -2081,7 +2177,6 @@
             chatInput.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Show typing indicator
             const typingMsg = document.createElement('div');
             typingMsg.className = 'msg ai';
             typingMsg.innerHTML = '<span class="typing"></span><span class="typing"></span><span class="typing"></span>';
@@ -2092,10 +2187,7 @@
 
             try {
                 const response = await askGemini(message);
-                // Remove typing indicator
                 chatMessages.removeChild(typingMsg);
-
-                // Add AI response
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'msg ai';
                 aiMsg.textContent = response;
@@ -2141,7 +2233,6 @@
             if (e.key === 'Enter') sendAIPrompt();
         });
 
-        // Quick AI buttons
         aiSuggestBtn.addEventListener('click', () => {
             aiPrompt.value = 'Give me 5 content ideas for a live streaming platform like LEgUle Sa.';
             sendAIPrompt();
@@ -2180,7 +2271,7 @@
 
         console.log('🛠️ LEgUle Sa Admin Panel Active!');
         console.log('👑 Super Admin: saimahmedsaim2020@gmail.com');
-        console.log('📌 Junior Admin: Manage Streams, Ads, Backups');
+        console.log('📌 Junior Admin: Manage Streams, Ads, Backups, Banner');
         console.log('🔒 Only Super Admin can manage Users and Admins.');
         console.log('🤖 Gemini AI Assistant integrated. Set your API key.');
     </script>
