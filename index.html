@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET & BASE ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a0a;
@@ -16,11 +19,17 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #e50914; border-radius: 10px; }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e50914;
+            border-radius: 10px;
+        }
 
-        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -32,16 +41,28 @@
             z-index: 9999;
             background: #2ecc71;
             color: #fff;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             animation: slideIn 0.4s ease;
             max-width: 400px;
         }
-        .toast.error { background: #e50914; }
-        .toast.info { background: #3498db; }
-        .toast.warning { background: #f39c12; }
+        .toast.error {
+            background: #e50914;
+        }
+        .toast.info {
+            background: #3498db;
+        }
+        .toast.warning {
+            background: #f39c12;
+        }
         @keyframes slideIn {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         /* ===== HEADER ===== */
@@ -51,11 +72,14 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.7) 80%, transparent 100%);
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.7) 80%, transparent 100%);
             padding: 12px 30px;
             transition: all 0.4s ease;
         }
-        header.scrolled { background: rgba(10,10,10,0.98); box-shadow: 0 4px 30px rgba(0,0,0,0.8); }
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.98);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+        }
         .header-container {
             max-width: 1440px;
             margin: 0 auto;
@@ -76,7 +100,7 @@
         .logo-icon {
             font-size: 28px;
             color: #e50914;
-            background: rgba(229,9,20,0.15);
+            background: rgba(229, 9, 20, 0.15);
             padding: 6px 10px;
             border-radius: 10px;
         }
@@ -89,8 +113,6 @@
             background-clip: text;
             letter-spacing: -0.5px;
         }
-
-        /* ---- category + live badge ---- */
         .logo-badge-group {
             display: flex;
             flex-direction: column;
@@ -124,7 +146,17 @@
             line-height: 20px;
             white-space: nowrap;
         }
-        @keyframes pulse-badge { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(0.95); } }
+        @keyframes pulse-badge {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(0.95);
+            }
+        }
 
         .nav-menu {
             display: flex;
@@ -142,7 +174,10 @@
             padding: 4px 0;
             cursor: pointer;
         }
-        .nav-menu a:hover, .nav-menu a.active { color: #fff; }
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #fff;
+        }
         .nav-menu a.active::after {
             content: '';
             position: absolute;
@@ -162,13 +197,17 @@
         .search-box {
             display: flex;
             align-items: center;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 30px;
             padding: 4px 14px;
             transition: all 0.3s ease;
         }
-        .search-box:focus-within { border-color: #e50914; box-shadow: 0 0 20px rgba(229,9,20,0.1); background: rgba(0,0,0,0.6); }
+        .search-box:focus-within {
+            border-color: #e50914;
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.1);
+            background: rgba(0, 0, 0, 0.6);
+        }
         .search-box input {
             background: transparent;
             border: none;
@@ -179,7 +218,9 @@
             width: 140px;
             font-family: inherit;
         }
-        .search-box input::placeholder { color: #666; }
+        .search-box input::placeholder {
+            color: #666;
+        }
         .search-box button {
             background: transparent;
             border: none;
@@ -188,7 +229,9 @@
             padding: 4px;
             transition: all 0.3s;
         }
-        .search-box button:hover { color: #fff; }
+        .search-box button:hover {
+            color: #fff;
+        }
 
         .auth-buttons {
             display: flex;
@@ -197,7 +240,7 @@
         }
         .btn-login {
             background: transparent;
-            border: 2px solid rgba(229,9,20,0.3);
+            border: 2px solid rgba(229, 9, 20, 0.3);
             color: #fff;
             padding: 6px 18px;
             border-radius: 30px;
@@ -207,7 +250,10 @@
             transition: all 0.3s ease;
             font-family: inherit;
         }
-        .btn-login:hover { border-color: #e50914; background: rgba(229,9,20,0.1); }
+        .btn-login:hover {
+            border-color: #e50914;
+            background: rgba(229, 9, 20, 0.1);
+        }
         .btn-signup {
             background: linear-gradient(135deg, #e50914, #b20710);
             border: none;
@@ -220,7 +266,10 @@
             transition: all 0.3s ease;
             font-family: inherit;
         }
-        .btn-signup:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+        }
 
         .user-profile {
             display: none;
@@ -239,27 +288,34 @@
             justify-content: center;
             font-weight: 700;
             font-size: 14px;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
             background-size: cover;
             background-position: center;
         }
-        .user-profile .avatar:hover { border-color: #e50914; }
-        .user-profile .username { font-size: 13px; font-weight: 600; }
+        .user-profile .avatar:hover {
+            border-color: #e50914;
+        }
+        .user-profile .username {
+            font-size: 13px;
+            font-weight: 600;
+        }
         .user-profile .dropdown {
             position: absolute;
             top: 45px;
             right: 0;
-            background: rgba(20,20,20,0.98);
+            background: rgba(20, 20, 20, 0.98);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             padding: 10px 0;
             min-width: 200px;
             display: none;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
-        .user-profile .dropdown.active { display: block; }
+        .user-profile .dropdown.active {
+            display: block;
+        }
         .user-profile .dropdown a {
             display: flex;
             align-items: center;
@@ -270,100 +326,154 @@
             font-size: 14px;
             transition: all 0.3s;
         }
-        .user-profile .dropdown a:hover { background: rgba(255,255,255,0.05); color: #fff; }
-        .user-profile .dropdown a i { width: 20px; color: #888; }
-        .user-profile .dropdown .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 6px 20px; }
+        .user-profile .dropdown a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        .user-profile .dropdown a i {
+            width: 20px;
+            color: #888;
+        }
+        .user-profile .dropdown .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 6px 20px;
+        }
 
-        .hamburger { display: none; font-size: 24px; cursor: pointer; color: #fff; padding: 4px; }
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+            padding: 4px;
+        }
 
-        /* ===== HERO ===== */
+        /* ===== HERO (BANNER) ===== */
         .hero {
             position: relative;
             height: 85vh;
             min-height: 500px;
             display: flex;
             align-items: center;
-            padding: 0 50px;
-            margin-top: 0;
+            justify-content: flex-start;
+            padding: 0 60px;
+            margin-top: 70px;
             overflow: hidden;
             background: #0a0a0a;
         }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 60%, transparent 100%);
-            z-index: 1;
-        }
         .hero .hero-bg {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             object-fit: cover;
             width: 100%;
             height: 100%;
             z-index: 0;
         }
-        .hero .hero-bg video, .hero .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        .hero .hero-bg video,
+        .hero .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
+            z-index: 1;
+        }
         .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 600px;
+            max-width: 700px;
         }
         .hero-content .badge {
             display: inline-block;
-            background: rgba(229,9,20,0.2);
-            border: 1px solid rgba(229,9,20,0.3);
-            color: #e50914;
-            padding: 4px 16px;
-            border-radius: 30px;
-            font-size: 12px;
+            background: rgba(229, 9, 20, 0.9);
+            color: #fff;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+        }
+        .hero-content .badge i {
+            margin-right: 6px;
+            font-size: 10px;
         }
         .hero-content h1 {
-            font-size: 56px;
+            font-size: 64px;
             font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 12px;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+            text-transform: uppercase;
         }
-        .hero-content h1 span { color: #e50914; }
+        .hero-content h1 span {
+            color: #e50914;
+        }
+        .hero-content .sub-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f1c40f;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
         .hero-content p {
             font-size: 18px;
-            color: #ccc;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            color: #ddd;
+            margin-bottom: 24px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            max-width: 500px;
         }
         .hero-content .hero-buttons {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             flex-wrap: wrap;
         }
         .hero-content .hero-buttons .btn-primary {
             background: linear-gradient(135deg, #e50914, #b20710);
             border: none;
             color: #fff;
-            padding: 12px 32px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 700;
+            padding: 16px 44px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: inherit;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            box-shadow: 0 0 40px rgba(229, 9, 20, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .hero-content .hero-buttons .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(229,9,20,0.4); }
+        .hero-content .hero-buttons .btn-primary:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 15px 50px rgba(229, 9, 20, 0.6);
+        }
+        .hero-content .hero-buttons .btn-primary i {
+            font-size: 22px;
+        }
         .hero-content .hero-buttons .btn-secondary {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 12px 32px;
-            border-radius: 30px;
+            padding: 16px 36px;
+            border-radius: 50px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
@@ -373,28 +483,35 @@
             align-items: center;
             gap: 8px;
         }
-        .hero-content .hero-buttons .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+        .hero-content .hero-buttons .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
         .hero-content .hero-stats {
             display: flex;
-            gap: 30px;
-            margin-top: 25px;
+            gap: 40px;
+            margin-top: 30px;
         }
         .hero-content .hero-stats .stat h3 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             color: #e50914;
         }
-        .hero-content .hero-stats .stat p { font-size: 13px; color: #888; margin: 0; }
+        .hero-content .hero-stats .stat p {
+            font-size: 13px;
+            color: #aaa;
+            margin: 0;
+        }
 
         /* ===== IFRAME SECTION ===== */
         .iframe-section {
             display: none;
             position: relative;
             width: 100%;
-            height: 85vh;
-            min-height: 500px;
+            height: calc(100vh - 70px - 60px);
+            min-height: 400px;
             background: #000;
-            margin-top: 0;
+            margin-top: 70px;
             overflow: hidden;
         }
         .iframe-section.active {
@@ -409,16 +526,16 @@
         }
         .iframe-section .iframe-close-btn {
             position: absolute;
-            top: 16px;
+            top: 20px;
             right: 20px;
             z-index: 100;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 14px;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -434,17 +551,17 @@
         }
         .iframe-section .iframe-label {
             position: absolute;
-            top: 16px;
+            top: 20px;
             left: 20px;
             z-index: 100;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 12px;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 13px;
             font-weight: 600;
             color: #aaa;
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -463,7 +580,9 @@
             align-items: center;
             gap: 12px;
         }
-        .section-title i { color: #e50914; }
+        .section-title i {
+            color: #e50914;
+        }
         .section-title .view-all {
             font-size: 14px;
             color: #888;
@@ -472,7 +591,9 @@
             transition: all 0.3s;
             margin-left: auto;
         }
-        .section-title .view-all:hover { color: #e50914; }
+        .section-title .view-all:hover {
+            color: #e50914;
+        }
 
         .row-container {
             padding: 0 30px;
@@ -487,7 +608,9 @@
             scroll-behavior: smooth;
             scrollbar-width: none;
         }
-        .row-scroll::-webkit-scrollbar { display: none; }
+        .row-scroll::-webkit-scrollbar {
+            display: none;
+        }
 
         .row-scroll .movie-card {
             flex: 0 0 220px;
@@ -502,7 +625,7 @@
         .row-scroll .movie-card:hover {
             transform: scale(1.08);
             z-index: 10;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
         .row-scroll .movie-card .thumb {
             position: relative;
@@ -513,16 +636,20 @@
         }
         .row-scroll .movie-card .thumb img {
             position: absolute;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s;
         }
-        .row-scroll .movie-card:hover .thumb img { transform: scale(1.05); }
+        .row-scroll .movie-card:hover .thumb img {
+            transform: scale(1.05);
+        }
         .row-scroll .movie-card .thumb .top-badge {
             position: absolute;
-            top: 8px; left: 8px;
+            top: 8px;
+            left: 8px;
             background: #e50914;
             color: #fff;
             font-size: 10px;
@@ -530,11 +657,14 @@
             padding: 2px 10px;
             border-radius: 4px;
         }
-        .row-scroll .movie-card .thumb .top-badge.live { animation: pulse-badge 1.5s infinite; }
+        .row-scroll .movie-card .thumb .top-badge.live {
+            animation: pulse-badge 1.5s infinite;
+        }
         .row-scroll .movie-card .thumb .duration {
             position: absolute;
-            bottom: 8px; right: 8px;
-            background: rgba(0,0,0,0.8);
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
             color: #fff;
             font-size: 11px;
             padding: 2px 8px;
@@ -566,7 +696,9 @@
             font-size: 11px;
             color: #666;
         }
-        .row-scroll .movie-card .info .meta .rating { color: #f1c40f; }
+        .row-scroll .movie-card .info .meta .rating {
+            color: #f1c40f;
+        }
 
         /* ===== VIDEO PLAYER ===== */
         .video-player-section {
@@ -580,8 +712,8 @@
             background: #111;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
         }
         .custom-video-wrapper {
@@ -597,13 +729,14 @@
             display: block;
             background: #000;
         }
-        .custom-video-wrapper iframe { display: none; }
+        .custom-video-wrapper iframe {
+            display: none;
+        }
 
-        /* ===== CONTROLS (BELOW VIDEO) ===== */
         .video-controls-overlay {
             padding: 12px 20px 16px;
             background: #0a0a0a;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             transition: opacity 0.3s ease;
         }
         .video-controls-overlay.hidden {
@@ -614,14 +747,16 @@
         .progress-bar-container {
             width: 100%;
             height: 4px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
             cursor: pointer;
             position: relative;
             margin-bottom: 8px;
             transition: height 0.2s;
         }
-        .progress-bar-container:hover { height: 6px; }
+        .progress-bar-container:hover {
+            height: 6px;
+        }
         .progress-bar-container .progress-filled {
             height: 100%;
             background: #e50914;
@@ -641,7 +776,9 @@
             opacity: 0;
             transition: opacity 0.2s;
         }
-        .progress-bar-container:hover .progress-filled::after { opacity: 1; }
+        .progress-bar-container:hover .progress-filled::after {
+            opacity: 1;
+        }
 
         .controls-row {
             display: flex;
@@ -663,7 +800,9 @@
             gap: 4px;
             font-family: inherit;
         }
-        .controls-row button:hover { background: rgba(255,255,255,0.1); }
+        .controls-row button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
         .controls-row .time-display {
             color: #ccc;
             font-size: 13px;
@@ -675,7 +814,7 @@
             width: 70px;
             height: 4px;
             -webkit-appearance: none;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 4px;
             outline: none;
             cursor: pointer;
@@ -699,9 +838,9 @@
         }
         .controls-row .quality-select,
         .controls-row .speed-select {
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             color: #fff;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
             padding: 4px 8px;
             font-size: 12px;
@@ -710,9 +849,14 @@
             outline: none;
         }
         .controls-row .quality-select:hover,
-        .controls-row .speed-select:hover { border-color: #e50914; }
+        .controls-row .speed-select:hover {
+            border-color: #e50914;
+        }
         .controls-row .quality-select option,
-        .controls-row .speed-select option { background: #1a1a1a; color: #fff; }
+        .controls-row .speed-select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
 
         .controls-row .right-controls {
             display: flex;
@@ -721,7 +865,6 @@
             margin-left: auto;
         }
 
-        /* ===== LIVE INDICATOR ===== */
         .live-indicator {
             position: absolute;
             top: 20px;
@@ -729,14 +872,14 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             padding: 6px 14px;
             border-radius: 50px;
             font-weight: 700;
             font-size: 13px;
             color: #e50914;
-            border: 1px solid rgba(229,9,20,0.3);
+            border: 1px solid rgba(229, 9, 20, 0.3);
             cursor: pointer;
             z-index: 10;
             opacity: 0;
@@ -744,7 +887,11 @@
             pointer-events: none;
             transition: all 0.3s ease;
         }
-        .live-indicator.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .live-indicator.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
         .live-indicator .pulse {
             display: inline-block;
             width: 8px;
@@ -754,22 +901,34 @@
             animation: pulse-dot 1.2s infinite;
         }
         @keyframes pulse-dot {
-            0%,100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.6); opacity: 0.4; }
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.6);
+                opacity: 0.4;
+            }
         }
 
         /* ===== AD OVERLAY ===== */
         .ad-overlay {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 20;
         }
-        .ad-overlay.active { display: flex; }
+        .ad-overlay.active {
+            display: flex;
+        }
         .ad-overlay .ad-content {
             text-align: center;
             max-width: 80%;
@@ -779,13 +938,13 @@
             max-width: 100%;
             max-height: 60vh;
             border-radius: 12px;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
         .ad-overlay .ad-timer {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             color: #fff;
             padding: 6px 14px;
             border-radius: 30px;
@@ -796,9 +955,9 @@
             position: absolute;
             bottom: 30px;
             right: 30px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             color: #fff;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 8px 20px;
             border-radius: 30px;
             cursor: pointer;
@@ -809,13 +968,20 @@
             opacity: 0.5;
             pointer-events: none;
         }
-        .ad-overlay .skip-btn.active { opacity: 1; pointer-events: auto; background: #e50914; border-color: #e50914; }
-        .ad-overlay .skip-btn:hover { transform: scale(1.05); }
+        .ad-overlay .skip-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+            background: #e50914;
+            border-color: #e50914;
+        }
+        .ad-overlay .skip-btn:hover {
+            transform: scale(1.05);
+        }
         .ad-overlay .ad-label {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(229,9,20,0.8);
+            background: rgba(229, 9, 20, 0.8);
             color: #fff;
             padding: 4px 12px;
             border-radius: 4px;
@@ -823,11 +989,11 @@
             font-weight: 700;
         }
 
-        /* ===== VIDEO INFO (BELOW PLAYER) ===== */
+        /* ===== VIDEO INFO ===== */
         .video-info {
             padding: 16px 20px 10px;
             background: #0a0a0a;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .video-info .video-title {
             font-size: 24px;
@@ -848,18 +1014,23 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .video-info .video-meta .channel-name:hover { text-decoration: underline; }
-        .video-info .video-meta .video-views { color: #666; }
-        .video-info .video-meta .video-date { color: #555; }
+        .video-info .video-meta .channel-name:hover {
+            text-decoration: underline;
+        }
+        .video-info .video-meta .video-views {
+            color: #666;
+        }
+        .video-info .video-meta .video-date {
+            color: #555;
+        }
 
-        /* ===== VIDEO ACTIONS ROW ===== */
         .video-actions-row {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 10px 0 4px;
             flex-wrap: wrap;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             margin-top: 8px;
         }
         .video-actions-row .action-btn {
@@ -877,11 +1048,23 @@
             transition: all 0.3s;
             font-family: inherit;
         }
-        .video-actions-row .action-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
-        .video-actions-row .action-btn.liked { color: #e50914; }
-        .video-actions-row .action-btn.liked i { color: #e50914; }
-        .video-actions-row .action-btn i { font-size: 18px; }
-        .video-actions-row .action-btn .count { font-size: 13px; color: #888; }
+        .video-actions-row .action-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        .video-actions-row .action-btn.liked {
+            color: #e50914;
+        }
+        .video-actions-row .action-btn.liked i {
+            color: #e50914;
+        }
+        .video-actions-row .action-btn i {
+            font-size: 18px;
+        }
+        .video-actions-row .action-btn .count {
+            font-size: 13px;
+            color: #888;
+        }
         .video-actions-row .action-btn#subscribeBtn {
             color: #e50914;
             border: 2px solid #e50914;
@@ -889,13 +1072,14 @@
             padding: 4px 16px;
         }
         .video-actions-row .action-btn#subscribeBtn.subscribed {
-            background: rgba(229,9,20,0.15);
+            background: rgba(229, 9, 20, 0.15);
             color: #fff;
             border-color: #333;
         }
-        .video-actions-row .action-btn#subscribeBtn:hover { background: rgba(229,9,20,0.2); }
+        .video-actions-row .action-btn#subscribeBtn:hover {
+            background: rgba(229, 9, 20, 0.2);
+        }
 
-        /* ===== RECOMMENDED SECTION ===== */
         .recommended-section {
             padding: 16px 20px 20px;
             background: #0a0a0a;
@@ -909,7 +1093,9 @@
             align-items: center;
             gap: 10px;
         }
-        .recommended-section .recommended-title i { color: #e50914; }
+        .recommended-section .recommended-title i {
+            color: #e50914;
+        }
         .recommended-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -921,12 +1107,12 @@
             overflow: hidden;
             cursor: pointer;
             transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .recommended-grid .rec-card:hover {
             transform: translateY(-4px);
             border-color: #e50914;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
         .recommended-grid .rec-card .thumb {
             position: relative;
@@ -937,13 +1123,16 @@
         }
         .recommended-grid .rec-card .thumb img {
             position: absolute;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.4s;
         }
-        .recommended-grid .rec-card:hover .thumb img { transform: scale(1.04); }
+        .recommended-grid .rec-card:hover .thumb img {
+            transform: scale(1.04);
+        }
         .recommended-grid .rec-card .rec-info {
             padding: 10px 12px;
         }
@@ -972,23 +1161,28 @@
         .auth-modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(20px);
             z-index: 4000;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        .auth-modal.active { display: flex; }
+        .auth-modal.active {
+            display: flex;
+        }
         .auth-modal .auth-box {
             background: linear-gradient(145deg, #111, #1a1a1a);
             border-radius: 20px;
             padding: 35px 30px;
             max-width: 400px;
             width: 100%;
-            border: 1px solid rgba(229,9,20,0.15);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid rgba(229, 9, 20, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -999,7 +1193,9 @@
             color: #888;
             transition: all 0.3s;
         }
-        .auth-modal .auth-box .close-auth:hover { color: #fff; }
+        .auth-modal .auth-box .close-auth:hover {
+            color: #fff;
+        }
         .auth-modal .auth-box h2 {
             font-size: 24px;
             font-weight: 800;
@@ -1014,7 +1210,9 @@
             font-size: 13px;
             margin-bottom: 20px;
         }
-        .auth-modal .form-group { margin-bottom: 14px; }
+        .auth-modal .form-group {
+            margin-bottom: 14px;
+        }
         .auth-modal .form-group label {
             display: block;
             color: #aaa;
@@ -1034,7 +1232,9 @@
             transition: all 0.3s;
             font-family: inherit;
         }
-        .auth-modal .form-group input:focus { border-color: #e50914; }
+        .auth-modal .form-group input:focus {
+            border-color: #e50914;
+        }
         .auth-modal .auth-btn {
             width: 100%;
             padding: 12px;
@@ -1048,8 +1248,14 @@
             transition: all 0.3s;
             font-family: inherit;
         }
-        .auth-modal .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
-        .auth-modal .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .auth-modal .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+        }
+        .auth-modal .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         .auth-modal .social-auth {
             display: flex;
             gap: 8px;
@@ -1072,7 +1278,10 @@
             justify-content: center;
             gap: 6px;
         }
-        .auth-modal .social-auth button:hover { border-color: #e50914; background: #111; }
+        .auth-modal .social-auth button:hover {
+            border-color: #e50914;
+            background: #111;
+        }
         .auth-modal .auth-switch {
             text-align: center;
             margin-top: 12px;
@@ -1085,28 +1294,37 @@
             font-weight: 600;
             text-decoration: none;
         }
-        .auth-modal .auth-switch a:hover { text-decoration: underline; }
+        .auth-modal .auth-switch a:hover {
+            text-decoration: underline;
+        }
         .auth-error {
             color: #e50914;
             font-size: 13px;
             margin-top: 6px;
             display: none;
         }
-        .auth-error.show { display: block; }
+        .auth-error.show {
+            display: block;
+        }
 
         /* ===== PROFILE MODAL ===== */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             z-index: 5000;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active {
+            display: flex;
+        }
         .modal-box {
             background: linear-gradient(145deg, #111, #1a1a1a);
             border-radius: 16px;
@@ -1115,8 +1333,8 @@
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            border: 1px solid rgba(229,9,20,0.1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid rgba(229, 9, 20, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
         .modal-box .modal-header {
             display: flex;
@@ -1135,7 +1353,9 @@
             color: #888;
             transition: all 0.3s;
         }
-        .modal-box .modal-header .close-modal:hover { color: #fff; }
+        .modal-box .modal-header .close-modal:hover {
+            color: #fff;
+        }
 
         .image-preview {
             margin-top: 8px;
@@ -1145,7 +1365,12 @@
             border: 2px solid #222;
             max-width: 150px;
         }
-        .image-preview img { width: 100%; max-height: 150px; object-fit: cover; display: block; }
+        .image-preview img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            display: block;
+        }
 
         .form-actions {
             display: flex;
@@ -1165,8 +1390,14 @@
             transition: all 0.3s;
             font-family: inherit;
         }
-        .form-actions .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
-        .form-actions .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .form-actions .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+        }
+        .form-actions .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         .form-actions .btn-cancel {
             padding: 10px 28px;
             border: 1px solid #333;
@@ -1179,21 +1410,29 @@
             transition: all 0.3s;
             font-family: inherit;
         }
-        .form-actions .btn-cancel:hover { border-color: #e50914; color: #fff; }
+        .form-actions .btn-cancel:hover {
+            border-color: #e50914;
+            color: #fff;
+        }
 
         /* ===== MOBILE MENU ===== */
         .mobile-menu {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10,10,10,0.98);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.98);
             backdrop-filter: blur(20px);
             z-index: 2000;
             padding: 50px 25px;
             flex-direction: column;
             gap: 15px;
         }
-        .mobile-menu.active { display: flex; }
+        .mobile-menu.active {
+            display: flex;
+        }
         .mobile-menu .close-btn {
             position: absolute;
             top: 15px;
@@ -1208,15 +1447,17 @@
             font-size: 18px;
             font-weight: 600;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .mobile-menu a:hover { color: #e50914; }
+        .mobile-menu a:hover {
+            color: #e50914;
+        }
 
         /* ===== FOOTER ===== */
         footer {
             background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
             padding: 30px 20px 15px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 20px;
         }
         .footer-container {
@@ -1232,7 +1473,8 @@
             margin-bottom: 10px;
             color: #fff;
         }
-        .footer-col p, .footer-col a {
+        .footer-col p,
+        .footer-col a {
             color: #888;
             font-size: 13px;
             text-decoration: none;
@@ -1240,7 +1482,9 @@
             padding: 3px 0;
             transition: all 0.3s;
         }
-        .footer-col a:hover { color: #e50914; }
+        .footer-col a:hover {
+            color: #e50914;
+        }
         .footer-social {
             display: flex;
             gap: 10px;
@@ -1253,72 +1497,207 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: #aaa;
             transition: all 0.3s;
             font-size: 14px;
         }
-        .footer-social a:hover { background: #e50914; color: #fff; transform: translateY(-3px); }
+        .footer-social a:hover {
+            background: #e50914;
+            color: #fff;
+            transform: translateY(-3px);
+        }
         .footer-bottom {
             text-align: center;
             padding-top: 15px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 20px;
             color: #555;
             font-size: 12px;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 992px) {
-            .hero { height: 70vh; padding: 0 30px; }
-            .hero-content h1 { font-size: 40px; }
-            .hero-content p { font-size: 16px; }
-            .iframe-section { height: 70vh; }
+            .hero {
+                height: 70vh;
+                padding: 0 30px;
+            }
+            .hero-content h1 {
+                font-size: 40px;
+            }
+            .hero-content .sub-title {
+                font-size: 22px;
+            }
+            .hero-content p {
+                font-size: 16px;
+            }
+            .iframe-section {
+                height: calc(100vh - 70px - 60px);
+            }
         }
         @media (max-width: 768px) {
-            header { padding: 10px 16px; }
-            .nav-menu { display: none; }
-            .hamburger { display: block; }
-            .auth-buttons .btn-login, .auth-buttons .btn-signup { display: none; }
-            .hero { height: 60vh; min-height: 400px; padding: 0 20px; }
-            .hero-content h1 { font-size: 30px; }
-            .hero-content p { font-size: 14px; }
-            .hero-content .hero-stats { gap: 15px; }
-            .hero-content .hero-stats .stat h3 { font-size: 18px; }
-            .row-scroll .movie-card { flex: 0 0 160px; min-width: 160px; }
-            .section-title { font-size: 18px; padding: 0 16px; }
-            .row-container { padding: 0 16px; }
-            .video-player-section { padding: 0 10px; margin-top: 70px; }
-            .video-info .video-title { font-size: 20px; }
-            .video-actions-row .action-btn { font-size: 13px; padding: 4px 10px; }
-            .recommended-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-            .footer-container { grid-template-columns: 1fr 1fr; }
-            .auth-modal .auth-box { padding: 25px 20px; }
-            .search-box input { width: 80px; }
-            .controls-row .volume-slider { width: 50px; }
-            .controls-row button { font-size: 15px; padding: 3px 4px; }
-            .controls-row .time-display { font-size: 11px; min-width: 70px; }
-            .controls-row .quality-select, .controls-row .speed-select { font-size: 10px; padding: 2px 6px; }
-            .iframe-section { height: 60vh; min-height: 400px; }
-            .iframe-section .iframe-close-btn { top: 10px; right: 12px; padding: 6px 14px; font-size: 12px; }
-            .iframe-section .iframe-label { top: 10px; left: 12px; font-size: 10px; padding: 4px 12px; }
+            header {
+                padding: 10px 16px;
+            }
+            .nav-menu {
+                display: none;
+            }
+            .hamburger {
+                display: block;
+            }
+            .auth-buttons .btn-login,
+            .auth-buttons .btn-signup {
+                display: none;
+            }
+            .hero {
+                height: 60vh;
+                min-height: 400px;
+                padding: 0 20px;
+                margin-top: 60px;
+            }
+            .hero-content h1 {
+                font-size: 30px;
+            }
+            .hero-content .sub-title {
+                font-size: 18px;
+            }
+            .hero-content p {
+                font-size: 14px;
+            }
+            .hero-content .hero-buttons .btn-primary {
+                padding: 12px 28px;
+                font-size: 16px;
+            }
+            .hero-content .hero-stats {
+                gap: 15px;
+            }
+            .hero-content .hero-stats .stat h3 {
+                font-size: 18px;
+            }
+            .row-scroll .movie-card {
+                flex: 0 0 160px;
+                min-width: 160px;
+            }
+            .section-title {
+                font-size: 18px;
+                padding: 0 16px;
+            }
+            .row-container {
+                padding: 0 16px;
+            }
+            .video-player-section {
+                padding: 0 10px;
+                margin-top: 70px;
+            }
+            .video-info .video-title {
+                font-size: 20px;
+            }
+            .video-actions-row .action-btn {
+                font-size: 13px;
+                padding: 4px 10px;
+            }
+            .recommended-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .auth-modal .auth-box {
+                padding: 25px 20px;
+            }
+            .search-box input {
+                width: 80px;
+            }
+            .controls-row .volume-slider {
+                width: 50px;
+            }
+            .controls-row button {
+                font-size: 15px;
+                padding: 3px 4px;
+            }
+            .controls-row .time-display {
+                font-size: 11px;
+                min-width: 70px;
+            }
+            .controls-row .quality-select,
+            .controls-row .speed-select {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+            .iframe-section {
+                height: calc(100vh - 60px - 50px);
+                margin-top: 60px;
+            }
+            .iframe-section .iframe-close-btn {
+                top: 10px;
+                right: 12px;
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+            .iframe-section .iframe-label {
+                top: 10px;
+                left: 12px;
+                font-size: 10px;
+                padding: 4px 12px;
+            }
         }
         @media (max-width: 480px) {
-            .hero-content h1 { font-size: 24px; }
-            .hero-content .hero-buttons .btn-primary,
-            .hero-content .hero-buttons .btn-secondary { padding: 8px 20px; font-size: 14px; }
-            .row-scroll .movie-card { flex: 0 0 130px; min-width: 130px; }
-            .row-scroll .movie-card .info h4 { font-size: 13px; }
-            .logo h1 { font-size: 20px; }
-            .logo-icon { font-size: 20px; padding: 4px 8px; }
-            .footer-container { grid-template-columns: 1fr; }
-            .video-info .video-title { font-size: 17px; }
-            .video-actions-row .action-btn { font-size: 12px; padding: 3px 8px; }
-            .video-actions-row .action-btn i { font-size: 15px; }
-            .recommended-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .recommended-grid .rec-card .rec-info h4 { font-size: 12px; }
-            .video-player-section { margin-top: 60px; padding: 0 6px; }
-            .iframe-section { height: 50vh; min-height: 300px; }
+            .hero-content h1 {
+                font-size: 24px;
+            }
+            .hero-content .sub-title {
+                font-size: 16px;
+            }
+            .hero-content .hero-buttons .btn-primary {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            .hero-content .hero-buttons .btn-secondary {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            .row-scroll .movie-card {
+                flex: 0 0 130px;
+                min-width: 130px;
+            }
+            .row-scroll .movie-card .info h4 {
+                font-size: 13px;
+            }
+            .logo h1 {
+                font-size: 20px;
+            }
+            .logo-icon {
+                font-size: 20px;
+                padding: 4px 8px;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            .video-info .video-title {
+                font-size: 17px;
+            }
+            .video-actions-row .action-btn {
+                font-size: 12px;
+                padding: 3px 8px;
+            }
+            .video-actions-row .action-btn i {
+                font-size: 15px;
+            }
+            .recommended-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .recommended-grid .rec-card .rec-info h4 {
+                font-size: 12px;
+            }
+            .video-player-section {
+                margin-top: 60px;
+                padding: 0 6px;
+            }
+            .iframe-section {
+                height: calc(100vh - 60px - 50px);
+                min-height: 300px;
+            }
         }
     </style>
 </head>
@@ -1330,7 +1709,6 @@
             <div class="logo" id="logoHome">
                 <span class="logo-icon"><i class="fas fa-bolt"></i></span>
                 <h1>LEgUle Sa</h1>
-                <!-- NEW: category tag + live badge (ইংরেজি) -->
                 <div class="logo-badge-group">
                     <span class="category-tag">Smart</span>
                     <span class="live-badge"><i class="fas fa-circle" style="font-size:6px;margin-right:4px;"></i> Live</span>
@@ -1421,18 +1799,19 @@
     <!-- ====== MAIN ====== -->
     <main>
 
-        <!-- ====== HERO ====== -->
+        <!-- ====== HERO (BANNER) – ডিজাইন ছবির মতো ====== -->
         <section class="hero" id="heroSection">
             <div class="hero-bg">
-                <img src="https://via.placeholder.com/1920x1080/1a1a1a/444?text=LEgUle+Sa" alt="Hero Banner" id="heroImage" />
+                <img src="https://via.placeholder.com/1920x1080/0a1a2a/444?text=FIFA+WorldCup+2026" alt="Banner" id="heroImage" />
                 <video id="heroVideo" muted autoplay loop playsinline style="display:none;"></video>
             </div>
             <div class="hero-content">
-                <div class="badge" id="heroBadge">🔥 Live Now</div>
-                <h1 id="heroTitle">LEgUle Sa <span>Live</span></h1>
-                <p id="heroDesc">The best live streaming platform. Watch anytime, anywhere.</p>
+                <div class="badge" id="heroBadge"><i class="fas fa-circle" style="font-size:8px;color:#e50914;"></i> LIVE NOW</div>
+                <h1 id="heroTitle">FIFA <span>WorldCup</span></h1>
+                <div class="sub-title" id="heroSubTitle">2026 STARTS JUNE 11</div>
+                <p id="heroDesc">Watch every match live. The biggest football event is here.</p>
                 <div class="hero-buttons">
-                    <button class="btn-primary" id="heroWatchBtn"><i class="fas fa-play"></i> Watch Now</button>
+                    <button class="btn-primary" id="heroWatchBtn"><i class="fas fa-play"></i> WATCH NOW</button>
                     <button class="btn-secondary" id="heroInfoBtn"><i class="fas fa-info-circle"></i> More Info</button>
                 </div>
                 <div class="hero-stats">
@@ -1452,7 +1831,7 @@
             </div>
         </section>
 
-        <!-- ====== IFRAME SECTION (for external content) ====== -->
+        <!-- ====== IFRAME SECTION ====== -->
         <div class="iframe-section" id="iframeSection">
             <div class="iframe-label"><i class="fas fa-globe"></i> External Content</div>
             <button class="iframe-close-btn" id="iframeCloseBtn"><i class="fas fa-times"></i> Close</button>
@@ -1469,12 +1848,10 @@
                         Your browser does not support video.
                     </video>
                     <iframe id="embedPlayer" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
                     <div class="live-indicator" id="liveIndicator">
                         <span class="pulse"></span>
                         <span>Live</span>
                     </div>
-
                     <div class="ad-overlay" id="adOverlay">
                         <div class="ad-label">Advertisement</div>
                         <div class="ad-timer" id="adTimer">5s</div>
@@ -1485,8 +1862,6 @@
                         <button class="skip-btn" id="skipAdBtn">Skip Ad <i class="fas fa-forward"></i></button>
                     </div>
                 </div>
-
-                <!-- CONTROLS BELOW VIDEO -->
                 <div class="video-controls-overlay" id="customControls">
                     <div class="progress-bar-container" id="progressBar">
                         <div class="progress-filled" id="progressFilled"></div>
@@ -1517,8 +1892,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- VIDEO INFO -->
                 <div class="video-info" id="videoInfo">
                     <h2 class="video-title" id="streamTitle">Select a stream</h2>
                     <div class="video-meta">
@@ -1551,8 +1924,6 @@
                         <span id="currentVideoUrl" style="display:none;"></span>
                     </div>
                 </div>
-
-                <!-- RECOMMENDED -->
                 <div class="recommended-section" id="recommendedSection">
                     <h3 class="recommended-title"><i class="fas fa-play-circle"></i> Recommended Videos</h3>
                     <div class="recommended-grid" id="recommendedGrid"></div>
@@ -1638,7 +2009,7 @@
     </footer>
 
     <!-- ============================================================ -->
-    <!-- =============== FIREBASE + JAVASCRIPT ====================== -->
+    <!-- FIREBASE + JAVASCRIPT -->
     <!-- ============================================================ -->
 
     <script type="importmap">
@@ -1716,7 +2087,7 @@
         // ============================================================
         // CONSTANTS
         // ============================================================
-        const BANNER_STREAM_ID = 'banner_watch'; // fixed ID for the banner external link
+        const BANNER_STREAM_ID = 'banner_watch';
 
         // ============================================================
         // DOM REFS
@@ -1756,6 +2127,7 @@
         const heroImage = document.getElementById('heroImage');
         const heroVideo = document.getElementById('heroVideo');
         const heroTitle = document.getElementById('heroTitle');
+        const heroSubTitle = document.getElementById('heroSubTitle');
         const heroDesc = document.getElementById('heroDesc');
         const heroBadge = document.getElementById('heroBadge');
         const heroWatchBtn = document.getElementById('heroWatchBtn');
@@ -1845,23 +2217,21 @@
         let isDragging = false;
 
         // ============================================================
-        // BANNER CONFIG (from Firestore)
+        // BANNER CONFIG
         // ============================================================
         let bannerConfig = {
-            imageUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/444?text=LEgUle+Sa',
+            imageUrl: 'https://via.placeholder.com/1920x1080/0a1a2a/444?text=FIFA+WorldCup+2026',
             videoUrl: '',
-            title: 'LEgUle Sa <span>Live</span>',
-            description: 'The best live streaming platform. Watch anytime, anywhere.',
-            badge: '🔥 Live Now',
+            title: 'FIFA <span>WorldCup</span>',
+            subTitle: '2026 STARTS JUNE 11',
+            description: 'Watch every match live. The biggest football event is here.',
+            badge: 'LIVE NOW',
             watchLink: '',
             active: true
         };
 
-        // Function to update the banner stream document
         async function updateBannerStream(watchLink, title, description) {
             if (!watchLink) {
-                // If watchLink is empty, we can delete the stream or set empty url
-                // We'll set url to empty so it won't be used
                 await setDoc(doc(db, 'streams', BANNER_STREAM_ID), {
                     url: '',
                     name: 'Banner Stream',
@@ -1875,8 +2245,6 @@
                 }, { merge: true });
                 return;
             }
-
-            // Update the stream with the watchLink
             await setDoc(doc(db, 'streams', BANNER_STREAM_ID), {
                 url: watchLink,
                 name: title || 'Live Stream',
@@ -1899,20 +2267,20 @@
                         imageUrl: data.imageUrl || bannerConfig.imageUrl,
                         videoUrl: data.videoUrl || '',
                         title: data.title || bannerConfig.title,
+                        subTitle: data.subTitle || bannerConfig.subTitle,
                         description: data.description || bannerConfig.description,
                         badge: data.badge || bannerConfig.badge,
                         watchLink: data.watchLink || '',
                         active: data.active !== undefined ? data.active : true
                     };
                     applyBannerConfig();
-                    // Update the banner stream with the watchLink
                     updateBannerStream(bannerConfig.watchLink, bannerConfig.title, bannerConfig.description);
                 } else {
-                    // Create default config
                     setDoc(docRef, {
                         imageUrl: bannerConfig.imageUrl,
                         videoUrl: '',
                         title: bannerConfig.title,
+                        subTitle: bannerConfig.subTitle,
                         description: bannerConfig.description,
                         badge: bannerConfig.badge,
                         watchLink: '',
@@ -1922,7 +2290,6 @@
                 }
             }).catch(console.error);
 
-            // Real-time listener
             onSnapshot(doc(db, 'banner', 'config'), (snap) => {
                 if (snap.exists()) {
                     const data = snap.data();
@@ -1930,13 +2297,13 @@
                         imageUrl: data.imageUrl || bannerConfig.imageUrl,
                         videoUrl: data.videoUrl || '',
                         title: data.title || bannerConfig.title,
+                        subTitle: data.subTitle || bannerConfig.subTitle,
                         description: data.description || bannerConfig.description,
                         badge: data.badge || bannerConfig.badge,
                         watchLink: data.watchLink || '',
                         active: data.active !== undefined ? data.active : true
                     };
                     applyBannerConfig();
-                    // Update the banner stream whenever config changes
                     updateBannerStream(bannerConfig.watchLink, bannerConfig.title, bannerConfig.description);
                 }
             });
@@ -1948,7 +2315,6 @@
                 return;
             }
             heroSection.style.display = 'flex';
-
             if (bannerConfig.imageUrl) {
                 heroImage.src = bannerConfig.imageUrl;
                 heroImage.style.display = 'block';
@@ -1961,10 +2327,26 @@
                 heroVideo.load();
                 heroVideo.play().catch(() => {});
             }
-
-            heroTitle.innerHTML = bannerConfig.title || 'LEgUle Sa <span>Live</span>';
-            heroDesc.textContent = bannerConfig.description || 'The best live streaming platform. Watch anytime, anywhere.';
-            heroBadge.textContent = bannerConfig.badge || '🔥 Live Now';
+            heroTitle.innerHTML = bannerConfig.title || 'FIFA <span>WorldCup</span>';
+            heroSubTitle.textContent = bannerConfig.subTitle || '2026 STARTS JUNE 11';
+            heroDesc.textContent = bannerConfig.description || 'Watch every match live. The biggest football event is here.';
+            heroBadge.innerHTML = (bannerConfig.badge || 'LIVE NOW').toUpperCase();
+            // Apply badge style
+            heroBadge.style.display = 'inline-block';
+            heroBadge.style.background = 'rgba(229,9,20,0.9)';
+            heroBadge.style.color = '#fff';
+            heroBadge.style.padding = '6px 20px';
+            heroBadge.style.borderRadius = '50px';
+            heroBadge.style.fontSize = '14px';
+            heroBadge.style.fontWeight = '700';
+            heroBadge.style.textTransform = 'uppercase';
+            heroBadge.style.letterSpacing = '2px';
+            heroBadge.style.marginBottom = '16px';
+            heroBadge.style.border = '1px solid rgba(255,255,255,0.2)';
+            heroBadge.style.backdropFilter = 'blur(4px)';
+            if (!heroBadge.innerHTML.includes('i')) {
+                heroBadge.innerHTML = `<i class="fas fa-circle" style="font-size:8px;color:#e50914;"></i> ${heroBadge.textContent}`;
+            }
         }
 
         // ============================================================
@@ -2131,11 +2513,13 @@
         });
 
         logoutBtn.addEventListener('click', async () => {
-            try { await signOut(auth); profileDropdown.classList.remove('active'); } catch (error) { console.error(error); }
+            try { await signOut(auth);
+                profileDropdown.classList.remove('active'); } catch (error) { console.error(error); }
         });
 
         window.logoutUser = async function() {
-            try { await signOut(auth); mobileMenu.classList.remove('active'); } catch (error) { console.error(error); }
+            try { await signOut(auth);
+                mobileMenu.classList.remove('active'); } catch (error) { console.error(error); }
         };
 
         // ============================================================
@@ -2418,21 +2802,18 @@
             currentStreamId = videoId || '';
             adSkipped = false;
 
-            // Hide hero, iframe, show player
             heroSection.style.display = 'none';
             iframeSection.classList.remove('active');
             videoPlayerSection.style.display = 'block';
             document.getElementById('rowsContainer').style.display = 'none';
             gridView.style.display = 'none';
 
-            // Hide all video elements
             video.style.display = 'none';
             embedPlayer.style.display = 'none';
             videoSource.src = '';
             videoSourceMp4.src = '';
             embedPlayer.src = '';
 
-            // Update video info
             streamTitle.textContent = name || 'Live Stream';
             streamChannel.textContent = channel || 'Channel';
             videoViews.textContent = (Math.floor(Math.random() * 10000) + 1000) + ' views';
@@ -2472,7 +2853,6 @@
 
             showLiveIndicator();
 
-            // Update URL with videoId if provided
             const newUrl = new URL(window.location);
             if (videoId) newUrl.searchParams.set('v', videoId);
             else newUrl.searchParams.delete('v');
@@ -2654,7 +3034,8 @@
         // VIDEO CONTROLS
         // ============================================================
         playPauseBtn.addEventListener('click', () => {
-            if (video.paused) { video.play(); playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; } else { video.pause();
+            if (video.paused) { video.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; } else { video.pause();
                 playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; }
         });
         video.addEventListener('play', () => { playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; });
@@ -2794,7 +3175,8 @@
                     likeBtn.classList.add('liked');
                 }
                 await loadLikes(videoId);
-            } catch (error) { console.error(error); alert('Error updating like!'); }
+            } catch (error) { console.error(error);
+                alert('Error updating like!'); }
         }
         likeBtn.addEventListener('click', toggleLike);
 
@@ -2846,7 +3228,8 @@
                     savedAt: serverTimestamp()
                 });
                 showToast('✅ Video saved!', 'success');
-            } catch (error) { console.error(error); alert('Error saving!'); }
+            } catch (error) { console.error(error);
+                alert('Error saving!'); }
         }
         saveBtn.addEventListener('click', saveVideo);
 
@@ -2872,10 +3255,8 @@
                         if (found && found.url) {
                             loadVideo(found.url, found.name, found.channel, found.id, found.category);
                         } else {
-                            // If not found, maybe it's a deleted stream, fallback to home
                             if (videoParam === BANNER_STREAM_ID) {
-                                // Banner stream might not be loaded yet, try again
-                                // but we already have a listener, it will update.
+                                // banner stream will be loaded later via listener
                             }
                         }
                     }, 1000);
@@ -2908,8 +3289,6 @@
                 return;
             }
             streams.forEach((data) => {
-                // Skip banner stream from rows if it's external and has no thumbnail?
-                // We'll include it but maybe categorize as external.
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 const isLive = data.category === 'live';
@@ -3080,60 +3459,57 @@
         });
 
         // ============================================================
-        // GO HOME FUNCTION (for logo click and close)
+        // GO HOME
         // ============================================================
         function goHome() {
-            // Hide iframe, video player, grid
             iframeSection.classList.remove('active');
             externalIframe.src = '';
             videoPlayerSection.style.display = 'none';
             gridView.style.display = 'none';
-            // Show hero and rows
             heroSection.style.display = 'flex';
             document.getElementById('rowsContainer').style.display = 'block';
-            // Reset URL without any ?v parameter
             const newUrl = new URL(window.location);
             newUrl.searchParams.delete('v');
             window.history.replaceState({}, '', newUrl);
-            // If video is playing, pause it
             video.pause();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Logo click
         logoHome.addEventListener('click', goHome);
-
-        // Iframe close button
         iframeCloseBtn.addEventListener('click', goHome);
-
-        // Also close iframe when clicking on background
         iframeSection.addEventListener('click', (e) => {
-            if (e.target === iframeSection) {
-                goHome();
-            }
+            if (e.target === iframeSection) goHome();
         });
 
         // ============================================================
-        // HERO ACTIONS (Watch Now → use banner stream)
+        // HERO WATCH NOW → FULL SCREEN IFRAME
         // ============================================================
         heroWatchBtn.addEventListener('click', () => {
-            // Find the banner stream in allStreams
             const bannerStream = allStreams.find(s => s.id === BANNER_STREAM_ID);
+            let watchUrl = '';
             if (bannerStream && bannerStream.url) {
-                loadVideo(bannerStream.url, bannerStream.name, bannerStream.channel, bannerStream.id, bannerStream.category);
+                watchUrl = bannerStream.url;
+            } else if (bannerConfig.watchLink) {
+                watchUrl = bannerConfig.watchLink;
+            }
+
+            if (watchUrl) {
+                heroSection.style.display = 'none';
+                videoPlayerSection.style.display = 'none';
+                document.getElementById('rowsContainer').style.display = 'none';
+                gridView.style.display = 'none';
+                externalIframe.src = watchUrl;
+                iframeSection.classList.add('active');
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('v', BANNER_STREAM_ID);
+                window.history.replaceState({}, '', newUrl);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                // If not found, maybe it's not loaded yet; try to load from config directly
-                if (bannerConfig.watchLink) {
-                    // Create a temporary stream
-                    loadVideo(bannerConfig.watchLink, bannerConfig.title || 'Live Stream', 'LEgUle Sa', BANNER_STREAM_ID, 'external');
+                if (allStreams.length > 0) {
+                    const first = allStreams[0];
+                    if (first.url) loadVideo(first.url, first.name, first.channel, first.id, first.category);
                 } else {
-                    // Fallback to first stream
-                    if (allStreams.length > 0) {
-                        const first = allStreams[0];
-                        if (first.url) loadVideo(first.url, first.name, first.channel, first.id, first.category);
-                    } else {
-                        alert('No stream available. Please configure a watch link in banner config.');
-                    }
+                    alert('No stream available. Please configure a watch link in banner config.');
                 }
             }
         });
@@ -3225,8 +3601,9 @@
         console.log('📽️ Video info & recommendations');
         console.log('🧠 Category tag: Smart (English)');
         console.log('🌐 Banner watch link stored in stream: ' + BANNER_STREAM_ID);
-        console.log('🔄 Watch Now → uses stream ID to hide external URL');
+        console.log('🔄 Watch Now → full screen iframe (only header + footer)');
         console.log('🏠 Logo click → go home');
+        console.log('🏆 Banner design: FIFA WorldCup 2026 style');
     </script>
 
 </body>
