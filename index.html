@@ -71,6 +71,7 @@
             gap: 10px;
             cursor: pointer;
             text-decoration: none;
+            flex-wrap: wrap;
         }
         .logo-icon {
             font-size: 28px;
@@ -88,16 +89,40 @@
             background-clip: text;
             letter-spacing: -0.5px;
         }
+
+        /* ---- category + live badge ---- */
+        .logo-badge-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0px;
+            margin-left: 2px;
+        }
+        .logo-badge-group .category-tag {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #f1c40f;
+            background: rgba(241, 196, 15, 0.12);
+            padding: 0px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(241, 196, 15, 0.2);
+            line-height: 18px;
+            white-space: nowrap;
+        }
         .live-badge {
             background: #e50914;
             color: #fff;
-            padding: 2px 10px;
+            padding: 1px 12px;
             border-radius: 30px;
             font-size: 10px;
             font-weight: 700;
             animation: pulse-badge 1.5s infinite;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            line-height: 20px;
+            white-space: nowrap;
         }
         @keyframes pulse-badge { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(0.95); } }
 
@@ -360,6 +385,73 @@
             color: #e50914;
         }
         .hero-content .hero-stats .stat p { font-size: 13px; color: #888; margin: 0; }
+
+        /* ===== IFRAME SECTION ===== */
+        .iframe-section {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 85vh;
+            min-height: 500px;
+            background: #000;
+            margin-top: 0;
+            overflow: hidden;
+        }
+        .iframe-section.active {
+            display: block;
+        }
+        .iframe-section iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
+            display: block;
+        }
+        .iframe-section .iframe-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .iframe-section .iframe-close-btn:hover {
+            background: #e50914;
+            border-color: #e50914;
+            transform: scale(1.05);
+        }
+        .iframe-section .iframe-label {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .iframe-section .iframe-label i {
+            color: #e50914;
+        }
 
         /* ===== ROWS ===== */
         .section-title {
@@ -731,7 +823,7 @@
             font-weight: 700;
         }
 
-        /* ===== VIDEO INFO (BELOW PLAYER - YOUTUBE STYLE) ===== */
+        /* ===== VIDEO INFO (BELOW PLAYER) ===== */
         .video-info {
             padding: 16px 20px 10px;
             background: #0a0a0a;
@@ -1181,6 +1273,7 @@
             .hero { height: 70vh; padding: 0 30px; }
             .hero-content h1 { font-size: 40px; }
             .hero-content p { font-size: 16px; }
+            .iframe-section { height: 70vh; }
         }
         @media (max-width: 768px) {
             header { padding: 10px 16px; }
@@ -1206,6 +1299,9 @@
             .controls-row button { font-size: 15px; padding: 3px 4px; }
             .controls-row .time-display { font-size: 11px; min-width: 70px; }
             .controls-row .quality-select, .controls-row .speed-select { font-size: 10px; padding: 2px 6px; }
+            .iframe-section { height: 60vh; min-height: 400px; }
+            .iframe-section .iframe-close-btn { top: 10px; right: 12px; padding: 6px 14px; font-size: 12px; }
+            .iframe-section .iframe-label { top: 10px; left: 12px; font-size: 10px; padding: 4px 12px; }
         }
         @media (max-width: 480px) {
             .hero-content h1 { font-size: 24px; }
@@ -1222,6 +1318,7 @@
             .recommended-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .recommended-grid .rec-card .rec-info h4 { font-size: 12px; }
             .video-player-section { margin-top: 60px; padding: 0 6px; }
+            .iframe-section { height: 50vh; min-height: 300px; }
         }
     </style>
 </head>
@@ -1233,7 +1330,11 @@
             <div class="logo" id="logoHome">
                 <span class="logo-icon"><i class="fas fa-bolt"></i></span>
                 <h1>LEgUle Sa</h1>
-                <span class="live-badge"><i class="fas fa-circle" style="font-size:6px;margin-right:4px;"></i> Live</span>
+                <!-- NEW: category tag + live badge (ইংরেজি) -->
+                <div class="logo-badge-group">
+                    <span class="category-tag">Smart</span>
+                    <span class="live-badge"><i class="fas fa-circle" style="font-size:6px;margin-right:4px;"></i> Live</span>
+                </div>
             </div>
 
             <div class="nav-menu" id="navMenu">
@@ -1327,7 +1428,7 @@
                 <video id="heroVideo" muted autoplay loop playsinline style="display:none;"></video>
             </div>
             <div class="hero-content">
-                <div class="badge">🔥 Trending</div>
+                <div class="badge" id="heroBadge">🔥 Live Now</div>
                 <h1 id="heroTitle">LEgUle Sa <span>Live</span></h1>
                 <p id="heroDesc">The best live streaming platform. Watch anytime, anywhere.</p>
                 <div class="hero-buttons">
@@ -1351,7 +1452,14 @@
             </div>
         </section>
 
-        <!-- ====== VIDEO PLAYER (FULL UPDATED) ====== -->
+        <!-- ====== IFRAME SECTION (for external content) ====== -->
+        <div class="iframe-section" id="iframeSection">
+            <div class="iframe-label"><i class="fas fa-globe"></i> External Content</div>
+            <button class="iframe-close-btn" id="iframeCloseBtn"><i class="fas fa-times"></i> Close</button>
+            <iframe id="externalIframe" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <!-- ====== VIDEO PLAYER ====== -->
         <section class="video-player-section" id="videoPlayerSection">
             <div class="player-container">
                 <div class="custom-video-wrapper" id="playerWrapper">
@@ -1378,7 +1486,7 @@
                     </div>
                 </div>
 
-                <!-- ===== CONTROLS BELOW VIDEO ===== -->
+                <!-- CONTROLS BELOW VIDEO -->
                 <div class="video-controls-overlay" id="customControls">
                     <div class="progress-bar-container" id="progressBar">
                         <div class="progress-filled" id="progressFilled"></div>
@@ -1410,7 +1518,7 @@
                     </div>
                 </div>
 
-                <!-- ===== VIDEO INFO (BELOW CONTROLS) ===== -->
+                <!-- VIDEO INFO -->
                 <div class="video-info" id="videoInfo">
                     <h2 class="video-title" id="streamTitle">Select a stream</h2>
                     <div class="video-meta">
@@ -1444,7 +1552,7 @@
                     </div>
                 </div>
 
-                <!-- ===== RECOMMENDED SECTION ===== -->
+                <!-- RECOMMENDED -->
                 <div class="recommended-section" id="recommendedSection">
                     <h3 class="recommended-title"><i class="fas fa-play-circle"></i> Recommended Videos</h3>
                     <div class="recommended-grid" id="recommendedGrid"></div>
@@ -1606,6 +1714,11 @@
         const storage = getStorage(app);
 
         // ============================================================
+        // CONSTANTS
+        // ============================================================
+        const BANNER_STREAM_ID = 'banner_watch'; // fixed ID for the banner external link
+
+        // ============================================================
         // DOM REFS
         // ============================================================
         const header = document.getElementById('header');
@@ -1644,8 +1757,13 @@
         const heroVideo = document.getElementById('heroVideo');
         const heroTitle = document.getElementById('heroTitle');
         const heroDesc = document.getElementById('heroDesc');
+        const heroBadge = document.getElementById('heroBadge');
         const heroWatchBtn = document.getElementById('heroWatchBtn');
         const heroInfoBtn = document.getElementById('heroInfoBtn');
+
+        const iframeSection = document.getElementById('iframeSection');
+        const externalIframe = document.getElementById('externalIframe');
+        const iframeCloseBtn = document.getElementById('iframeCloseBtn');
 
         const videoPlayerSection = document.getElementById('videoPlayerSection');
         const video = document.getElementById('mainVideo');
@@ -1659,7 +1777,6 @@
         const videoDate = document.getElementById('videoDate');
         const liveIndicator = document.getElementById('liveIndicator');
 
-        // Controls
         const playPauseBtn = document.getElementById('playPauseBtn');
         const muteBtn = document.getElementById('muteBtn');
         const volumeSlider = document.getElementById('volumeSlider');
@@ -1726,6 +1843,129 @@
         let searchTerm = '';
         let controlsTimeout = null;
         let isDragging = false;
+
+        // ============================================================
+        // BANNER CONFIG (from Firestore)
+        // ============================================================
+        let bannerConfig = {
+            imageUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/444?text=LEgUle+Sa',
+            videoUrl: '',
+            title: 'LEgUle Sa <span>Live</span>',
+            description: 'The best live streaming platform. Watch anytime, anywhere.',
+            badge: '🔥 Live Now',
+            watchLink: '',
+            active: true
+        };
+
+        // Function to update the banner stream document
+        async function updateBannerStream(watchLink, title, description) {
+            if (!watchLink) {
+                // If watchLink is empty, we can delete the stream or set empty url
+                // We'll set url to empty so it won't be used
+                await setDoc(doc(db, 'streams', BANNER_STREAM_ID), {
+                    url: '',
+                    name: 'Banner Stream',
+                    channel: 'LEgUle Sa',
+                    category: 'external',
+                    timestamp: serverTimestamp(),
+                    thumbnail: bannerConfig.imageUrl || '',
+                    views: 0,
+                    rating: 4.5,
+                    duration: 'N/A'
+                }, { merge: true });
+                return;
+            }
+
+            // Update the stream with the watchLink
+            await setDoc(doc(db, 'streams', BANNER_STREAM_ID), {
+                url: watchLink,
+                name: title || 'Live Stream',
+                channel: 'LEgUle Sa',
+                category: 'external',
+                timestamp: serverTimestamp(),
+                thumbnail: bannerConfig.imageUrl || '',
+                views: Math.floor(Math.random() * 5000) + 1000,
+                rating: 4.8,
+                duration: 'N/A'
+            }, { merge: true });
+        }
+
+        function loadBannerConfig() {
+            const docRef = doc(db, 'banner', 'config');
+            getDoc(docRef).then((snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    bannerConfig = {
+                        imageUrl: data.imageUrl || bannerConfig.imageUrl,
+                        videoUrl: data.videoUrl || '',
+                        title: data.title || bannerConfig.title,
+                        description: data.description || bannerConfig.description,
+                        badge: data.badge || bannerConfig.badge,
+                        watchLink: data.watchLink || '',
+                        active: data.active !== undefined ? data.active : true
+                    };
+                    applyBannerConfig();
+                    // Update the banner stream with the watchLink
+                    updateBannerStream(bannerConfig.watchLink, bannerConfig.title, bannerConfig.description);
+                } else {
+                    // Create default config
+                    setDoc(docRef, {
+                        imageUrl: bannerConfig.imageUrl,
+                        videoUrl: '',
+                        title: bannerConfig.title,
+                        description: bannerConfig.description,
+                        badge: bannerConfig.badge,
+                        watchLink: '',
+                        active: true,
+                        updatedAt: serverTimestamp()
+                    }).catch(console.error);
+                }
+            }).catch(console.error);
+
+            // Real-time listener
+            onSnapshot(doc(db, 'banner', 'config'), (snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    bannerConfig = {
+                        imageUrl: data.imageUrl || bannerConfig.imageUrl,
+                        videoUrl: data.videoUrl || '',
+                        title: data.title || bannerConfig.title,
+                        description: data.description || bannerConfig.description,
+                        badge: data.badge || bannerConfig.badge,
+                        watchLink: data.watchLink || '',
+                        active: data.active !== undefined ? data.active : true
+                    };
+                    applyBannerConfig();
+                    // Update the banner stream whenever config changes
+                    updateBannerStream(bannerConfig.watchLink, bannerConfig.title, bannerConfig.description);
+                }
+            });
+        }
+
+        function applyBannerConfig() {
+            if (!bannerConfig.active) {
+                heroSection.style.display = 'none';
+                return;
+            }
+            heroSection.style.display = 'flex';
+
+            if (bannerConfig.imageUrl) {
+                heroImage.src = bannerConfig.imageUrl;
+                heroImage.style.display = 'block';
+                heroVideo.style.display = 'none';
+            }
+            if (bannerConfig.videoUrl) {
+                heroVideo.src = bannerConfig.videoUrl;
+                heroVideo.style.display = 'block';
+                heroImage.style.display = 'none';
+                heroVideo.load();
+                heroVideo.play().catch(() => {});
+            }
+
+            heroTitle.innerHTML = bannerConfig.title || 'LEgUle Sa <span>Live</span>';
+            heroDesc.textContent = bannerConfig.description || 'The best live streaming platform. Watch anytime, anywhere.';
+            heroBadge.textContent = bannerConfig.badge || '🔥 Live Now';
+        }
 
         // ============================================================
         // AUTH FUNCTIONS
@@ -1908,7 +2148,6 @@
                 return;
             }
 
-            // Remove existing modal if any
             const existing = document.getElementById('profileModal');
             if (existing) existing.remove();
 
@@ -1945,7 +2184,6 @@
             `;
             document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-            // Preview
             document.getElementById('profilePic').addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
@@ -1959,7 +2197,6 @@
                 }
             });
 
-            // Submit
             document.getElementById('profileForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const name = document.getElementById('profileName').value.trim();
@@ -2171,7 +2408,7 @@
         }
 
         // ============================================================
-        // VIDEO LOAD (UPDATED)
+        // VIDEO LOAD
         // ============================================================
         function loadVideo(url, name = '', channel = '', videoId = '', category = '') {
             if (!url) return;
@@ -2181,8 +2418,9 @@
             currentStreamId = videoId || '';
             adSkipped = false;
 
-            // Hide hero, show player
+            // Hide hero, iframe, show player
             heroSection.style.display = 'none';
+            iframeSection.classList.remove('active');
             videoPlayerSection.style.display = 'block';
             document.getElementById('rowsContainer').style.display = 'none';
             gridView.style.display = 'none';
@@ -2194,7 +2432,7 @@
             videoSourceMp4.src = '';
             embedPlayer.src = '';
 
-            // Update video info (BELOW the player)
+            // Update video info
             streamTitle.textContent = name || 'Live Stream';
             streamChannel.textContent = channel || 'Channel';
             videoViews.textContent = (Math.floor(Math.random() * 10000) + 1000) + ' views';
@@ -2211,7 +2449,6 @@
                 embedPlayer.src = embedUrl;
                 embedPlayer.style.display = 'block';
                 qualitySelect.disabled = true;
-                // Hide custom controls for embeds
                 customControls.style.display = 'none';
             } else {
                 customControls.style.display = 'block';
@@ -2226,7 +2463,6 @@
                     video.play().catch(e => console.log('Autoplay blocked:', e));
                     video.style.display = 'block';
                 } else {
-                    // Fallback to embed
                     embedPlayer.src = url;
                     embedPlayer.style.display = 'block';
                     qualitySelect.disabled = true;
@@ -2236,6 +2472,7 @@
 
             showLiveIndicator();
 
+            // Update URL with videoId if provided
             const newUrl = new URL(window.location);
             if (videoId) newUrl.searchParams.set('v', videoId);
             else newUrl.searchParams.delete('v');
@@ -2248,13 +2485,9 @@
             currentVideoId.textContent = videoId || url;
             currentVideoUrl.textContent = url;
 
-            // Load recommended
             loadRecommended(videoId);
-
-            // Update subscribe button
             updateSubscribeButton(channel);
 
-            // Show controls after a short delay (for auto-hide timer)
             setTimeout(() => {
                 customControls.classList.remove('hidden');
                 resetControlsTimer();
@@ -2278,7 +2511,7 @@
         });
 
         // ============================================================
-        // CONTROLS AUTO-HIDE (3 seconds after mouse leaves)
+        // CONTROLS AUTO-HIDE
         // ============================================================
         function resetControlsTimer() {
             clearTimeout(controlsTimeout);
@@ -2289,28 +2522,20 @@
             }, 3000);
         }
 
-        // Show controls on mouse move over player area
         const playerContainer = document.querySelector('.player-container');
         playerContainer.addEventListener('mousemove', () => {
             customControls.classList.remove('hidden');
             resetControlsTimer();
         });
-
         playerContainer.addEventListener('mouseleave', () => {
-            // Start timer when mouse leaves the player container
             resetControlsTimer();
         });
-
-        // Also show controls when video is paused or user interacts
         video.addEventListener('pause', () => {
             customControls.classList.remove('hidden');
         });
-
         video.addEventListener('play', () => {
             resetControlsTimer();
         });
-
-        // When dragging progress bar, keep controls visible
         progressBar.addEventListener('mousedown', () => {
             isDragging = true;
             customControls.classList.remove('hidden');
@@ -2646,6 +2871,12 @@
                         const found = allStreams.find(s => s.id === videoParam);
                         if (found && found.url) {
                             loadVideo(found.url, found.name, found.channel, found.id, found.category);
+                        } else {
+                            // If not found, maybe it's a deleted stream, fallback to home
+                            if (videoParam === BANNER_STREAM_ID) {
+                                // Banner stream might not be loaded yet, try again
+                                // but we already have a listener, it will update.
+                            }
                         }
                     }, 1000);
                 }
@@ -2677,6 +2908,8 @@
                 return;
             }
             streams.forEach((data) => {
+                // Skip banner stream from rows if it's external and has no thumbnail?
+                // We'll include it but maybe categorize as external.
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 const isLive = data.category === 'live';
@@ -2745,6 +2978,7 @@
             document.getElementById('rowsContainer').style.display = 'none';
             heroSection.style.display = 'none';
             videoPlayerSection.style.display = 'none';
+            iframeSection.classList.remove('active');
             gridView.style.display = 'block';
 
             let filtered = allStreams;
@@ -2795,6 +3029,7 @@
                 document.getElementById('rowsContainer').style.display = 'none';
                 heroSection.style.display = 'none';
                 videoPlayerSection.style.display = 'none';
+                iframeSection.classList.remove('active');
                 showGridView(currentCategory === 'all' ? 'all' : currentCategory);
             }
         }
@@ -2809,15 +3044,11 @@
                 e.preventDefault();
                 const cat = link.dataset.category;
                 if (cat === 'all') {
-                    document.getElementById('rowsContainer').style.display = 'block';
-                    gridView.style.display = 'none';
-                    heroSection.style.display = 'flex';
-                    videoPlayerSection.style.display = 'none';
+                    goHome();
                     navLinks.forEach(l => l.classList.remove('active'));
                     link.classList.add('active');
                     mobileNavLinks.forEach(l => l.classList.remove('active'));
                     mobileNavLinks.forEach(l => { if (l.dataset.category === 'all') l.classList.add('active'); });
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     filterByCategory(cat);
                 }
@@ -2830,15 +3061,11 @@
                 const cat = link.dataset.category;
                 mobileMenu.classList.remove('active');
                 if (cat === 'all') {
-                    document.getElementById('rowsContainer').style.display = 'block';
-                    gridView.style.display = 'none';
-                    heroSection.style.display = 'flex';
-                    videoPlayerSection.style.display = 'none';
+                    goHome();
                     navLinks.forEach(l => l.classList.remove('active'));
                     navLinks.forEach(l => { if (l.dataset.category === 'all') l.classList.add('active'); });
                     mobileNavLinks.forEach(l => l.classList.remove('active'));
                     link.classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     filterByCategory(cat);
                 }
@@ -2853,14 +3080,64 @@
         });
 
         // ============================================================
-        // HERO ACTIONS
+        // GO HOME FUNCTION (for logo click and close)
         // ============================================================
-        heroWatchBtn.addEventListener('click', () => {
-            if (allStreams.length > 0) {
-                const first = allStreams[0];
-                if (first.url) loadVideo(first.url, first.name, first.channel, first.id, first.category);
+        function goHome() {
+            // Hide iframe, video player, grid
+            iframeSection.classList.remove('active');
+            externalIframe.src = '';
+            videoPlayerSection.style.display = 'none';
+            gridView.style.display = 'none';
+            // Show hero and rows
+            heroSection.style.display = 'flex';
+            document.getElementById('rowsContainer').style.display = 'block';
+            // Reset URL without any ?v parameter
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.delete('v');
+            window.history.replaceState({}, '', newUrl);
+            // If video is playing, pause it
+            video.pause();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Logo click
+        logoHome.addEventListener('click', goHome);
+
+        // Iframe close button
+        iframeCloseBtn.addEventListener('click', goHome);
+
+        // Also close iframe when clicking on background
+        iframeSection.addEventListener('click', (e) => {
+            if (e.target === iframeSection) {
+                goHome();
             }
         });
+
+        // ============================================================
+        // HERO ACTIONS (Watch Now → use banner stream)
+        // ============================================================
+        heroWatchBtn.addEventListener('click', () => {
+            // Find the banner stream in allStreams
+            const bannerStream = allStreams.find(s => s.id === BANNER_STREAM_ID);
+            if (bannerStream && bannerStream.url) {
+                loadVideo(bannerStream.url, bannerStream.name, bannerStream.channel, bannerStream.id, bannerStream.category);
+            } else {
+                // If not found, maybe it's not loaded yet; try to load from config directly
+                if (bannerConfig.watchLink) {
+                    // Create a temporary stream
+                    loadVideo(bannerConfig.watchLink, bannerConfig.title || 'Live Stream', 'LEgUle Sa', BANNER_STREAM_ID, 'external');
+                } else {
+                    // Fallback to first stream
+                    if (allStreams.length > 0) {
+                        const first = allStreams[0];
+                        if (first.url) loadVideo(first.url, first.name, first.channel, first.id, first.category);
+                    } else {
+                        alert('No stream available. Please configure a watch link in banner config.');
+                    }
+                }
+            }
+        });
+
         heroInfoBtn.addEventListener('click', () => {
             alert(
                 'LEgUle Sa - The best live streaming platform!\nWatch anytime, anywhere.\nLive streams, Movies, Series, Cartoon, Sports and more!');
@@ -2892,6 +3169,10 @@
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
             if (document.activeElement?.tagName === 'INPUT') return;
+            if (e.key === 'Escape' && iframeSection.classList.contains('active')) {
+                goHome();
+                return;
+            }
             switch (e.key) {
                 case ' ':
                 case 'k':
@@ -2930,17 +3211,22 @@
         // ============================================================
         // START
         // ============================================================
+        loadBannerConfig();
         loadStreams();
         loadAdsList();
 
-        console.log('🔴 LEgUle Sa Netflix-style Platform Active!');
+        console.log('🔴 LEgUle Sa Platform Active!');
         console.log('📺 Categories: Live, Movies, Series, Cartoon, Sports');
         console.log('📢 Ad System: Pre-roll + Mid-roll (skippable)');
         console.log('💎 Premium Users: Ad Free');
-        console.log('🎬 Custom video controls with full functionality');
+        console.log('🎬 Custom video controls');
         console.log('👤 Profile update: name, photo, password');
         console.log('🔔 Subscribe/Unsubscribe channels');
-        console.log('📽️ Video info & recommendations below player');
+        console.log('📽️ Video info & recommendations');
+        console.log('🧠 Category tag: Smart (English)');
+        console.log('🌐 Banner watch link stored in stream: ' + BANNER_STREAM_ID);
+        console.log('🔄 Watch Now → uses stream ID to hide external URL');
+        console.log('🏠 Logo click → go home');
     </script>
 
 </body>
